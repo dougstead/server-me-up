@@ -924,6 +924,17 @@ export default function CanMyMachineRunIt({
                                     {benchmarkInsights.cpuPercentSingleCore.max.toFixed(0)}
                                     %
                                 </p>
+                                {/* CPU% is hardware-dependent -- the same
+                                    workload shows a higher percentage on a
+                                    slower CPU. Naming the tested CPU(s) here
+                                    (not just in the general footer note)
+                                    stops this being misread as a universal
+                                    number rather than this specific
+                                    hardware's experience. */}
+                                <p className="mt-2 text-xs text-slate-500">
+                                    As measured on:{" "}
+                                    {benchmarkInsights.machinesTested.join(", ")}
+                                </p>
                             </div>
                         )}
 
