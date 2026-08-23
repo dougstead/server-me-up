@@ -77,21 +77,25 @@ export const games: GameServerRequirements[] = [
         recommendedLogicalCores: null,
         minimumClockGhz: null,
         recommendedClockGhz: null,
-        minimumModel: null,
-        recommendedModel: null,
+        minimumModel:
+          "Dual-core CPU (e.g. Intel Core 2 Duo / AMD Athlon 64 X2) or better",
+        recommendedModel:
+          "Intel Nehalem-based or AMD K10-based (or newer) at 3.6 GHz+ for 8+ players",
         notes:
-          "Mojang does not currently publish dedicated-server CPU hardware requirements for Java Edition.",
+          "Mojang does not publish a formal dedicated-server CPU spec for Java Edition. The figures here are the commonly cited Minecraft Wiki server-requirements tiers, not an official Mojang document.",
       },
       ram: {
-        minimumGb: null,
-        recommendedGb: null,
+        minimumGb: 2,
+        recommendedGb: 8,
         notes:
-          "Mojang does not currently publish a dedicated-server RAM requirement for Java Edition.",
+          "Mojang does not publish a formal dedicated-server RAM spec for Java Edition. 2 GB is workable for a handful of players; the Minecraft Wiki's \"optimal\" tier for 8+ players suggests 8 GB. Plugins, mods and large explored areas increase usage well beyond this.",
       },
       storage: {
-        minimumGb: null,
-        recommendedGb: null,
-        ssd: null,
+        minimumGb: 10,
+        recommendedGb: 35,
+        ssd: "recommended",
+        notes:
+          "Community-sourced (Minecraft Wiki), not an official Mojang figure. World size, backups and plugin data grow this substantially over time.",
       },
       supportedOperatingSystems: ["windows", "linux", "macos"],
       requiredPorts: [
@@ -132,11 +136,13 @@ export const games: GameServerRequirements[] = [
         recommendedClockGhz: null,
         minimumModel:
           "Intel Core i3-3210 or AMD A8-7600 APU, or equivalent",
-        recommendedModel: null,
+        recommendedModel:
+          "Quad-core x86/64-bit CPU at 3 GHz or higher (Intel i5 Ivy Bridge or newer, or AMD FX-4100 or higher)",
       },
       ram: {
         minimumGb: 4,
         recommendedGb: null,
+        notes: "Microsoft's official download page notes this may need to be higher with more than 10 players connected at once.",
       },
       storage: {
         minimumGb: 0.18,
@@ -184,17 +190,17 @@ export const games: GameServerRequirements[] = [
         minimumLogicalCores: null,
         recommendedLogicalCores: 2,
         minimumClockGhz: null,
-        recommendedClockGhz: null,
+        recommendedClockGhz: 3.5,
         minimumModel: null,
         recommendedModel: null,
         notes:
-          "Official community documentation recommends 2 logical cores per Survival Evolved server instance and favours strong single-thread performance. Scaling beyond 4 logical cores provides little benefit.",
+          "The official ARK wiki recommends 2 logical cores per Survival Evolved server instance and favours strong single-thread performance; scaling beyond 4 logical cores provides little benefit. The 3.5 GHz clock-speed figure is community-sourced hosting guidance, not part of the official wiki entry.",
       },
       ram: {
         minimumGb: null,
         recommendedGb: null,
         notes:
-          "RAM varies heavily by map and world age. Official figures for an empty map range from roughly 3 GB to 12.5 GB depending on the map, with approximately 50-150 MiB additional memory per connected player.",
+          "RAM varies heavily by map and world age. Official figures for an empty map range from roughly 3 GB to 12.5 GB depending on the map, with approximately 50-150 MiB additional memory per connected player. Community hosting guides commonly suggest starting at 8-12 GB as a practical floor.",
       },
       storage: {
         minimumGb: 18,
@@ -252,11 +258,11 @@ export const games: GameServerRequirements[] = [
         minimumLogicalCores: null,
         recommendedLogicalCores: null,
         minimumClockGhz: null,
-        recommendedClockGhz: null,
+        recommendedClockGhz: 3.4,
         minimumModel: null,
         recommendedModel: null,
         notes:
-          "Facepunch does not publish a fixed CPU minimum; CPU demand increases with player count, world size and server activity.",
+          "Facepunch does not publish a fixed CPU minimum; CPU demand increases with player count, world size and server activity. Rust is largely single-thread bound, so hosting guides commonly recommend at least 3.4 GHz single-core performance (community-sourced, not an official Facepunch figure).",
       },
       ram: {
         minimumGb: 12,
@@ -299,27 +305,29 @@ export const games: GameServerRequirements[] = [
     name: "Hytale",
     official: {
       cpu: {
-        minimumPhysicalCores: null,
-        recommendedPhysicalCores: null,
+        minimumPhysicalCores: 2,
+        recommendedPhysicalCores: 4,
         minimumLogicalCores: null,
         recommendedLogicalCores: null,
         minimumClockGhz: null,
-        recommendedClockGhz: null,
+        recommendedClockGhz: 3.5,
         minimumModel: null,
         recommendedModel: null,
         notes:
-          "Hypixel Studios does not give a fixed CPU minimum. CPU usage is driven mainly by player and entity counts.",
+          "Hytale entered Early Access in January 2026. Hypixel Studios' own Server Manual document was unreachable during research (it returned an access-denied response), so these figures are reconstructed from multiple independent hosting-provider summaries of that manual, not verified against the primary source directly. Larger servers (20-30 players) are commonly cited as needing a 6-core CPU.",
       },
       ram: {
         minimumGb: 4,
-        recommendedGb: null,
+        recommendedGb: 6,
         notes:
-          "At least 4 GB memory is required. RAM use depends strongly on loaded world area and view distance.",
+          "At least 4 GB memory is required, 6 GB recommended. RAM use depends strongly on loaded world area and view distance; sources cite 8-10 GB for 20-30 player servers. See the CPU note above regarding sourcing.",
       },
       storage: {
-        minimumGb: null,
+        minimumGb: 20,
         recommendedGb: null,
-        ssd: null,
+        ssd: "recommended",
+        notes:
+          "Cited as \"20 GB SSD (NVMe preferred)\" across secondary sources summarizing the official Server Manual; not independently verified against the primary document.",
       },
       supportedOperatingSystems: ["windows", "linux", "macos"],
       requiredPorts: [
@@ -354,17 +362,22 @@ export const games: GameServerRequirements[] = [
         recommendedLogicalCores: null,
         minimumClockGhz: null,
         recommendedClockGhz: null,
-        minimumModel: null,
-        recommendedModel: null,
+        minimumModel: "Intel Core 2 Duo or equivalent",
+        recommendedModel: "Intel Core i3 or equivalent",
+        notes:
+          "Chucklefish has not published a formal dedicated-server hardware spec; these figures are community consensus from Starbound hosting guides and the Chucklefish forums, not an official document.",
       },
       ram: {
-        minimumGb: null,
-        recommendedGb: null,
+        minimumGb: 2,
+        recommendedGb: 4,
+        notes:
+          "Community-sourced, not officially published. Actual usage depends on world count, player count and installed mods.",
       },
       storage: {
-        minimumGb: null,
+        minimumGb: 3,
         recommendedGb: null,
         ssd: null,
+        notes: "Community-sourced; grows with the number of stored worlds and any mods.",
       },
       supportedOperatingSystems: ["windows", "linux", "macos"],
       requiredPorts: [
@@ -399,18 +412,24 @@ export const games: GameServerRequirements[] = [
         minimumLogicalCores: null,
         recommendedLogicalCores: null,
         minimumClockGhz: null,
-        recommendedClockGhz: null,
+        recommendedClockGhz: 3,
         minimumModel: null,
         recommendedModel: null,
+        notes:
+          "Re-Logic does not publish a CPU spec. Terraria's server is effectively single-threaded, so hosting guides commonly recommend 3 GHz+ single-core performance for 10+ player worlds (community-sourced, not official).",
       },
       ram: {
-        minimumGb: null,
-        recommendedGb: null,
+        minimumGb: 0.5,
+        recommendedGb: 4,
+        notes:
+          "Terraria Wiki guidance: roughly 512 MB for a small world with few players, 1-2 GB for 10+ players, and 4 GB or more recommended once you're expecting 50+ players. tModLoader's default 32-bit build is capped at 4 GB regardless of server RAM.",
       },
       storage: {
         minimumGb: null,
         recommendedGb: null,
         ssd: null,
+        notes:
+          "No official storage figure is published. The server executable and a world file together typically use well under 1 GB, though this grows with world size, backups and any mods (e.g. tModLoader).",
       },
       supportedOperatingSystems: ["windows", "linux", "macos"],
       requiredPorts: [
@@ -440,27 +459,28 @@ export const games: GameServerRequirements[] = [
     name: "Valheim",
     official: {
       cpu: {
-        minimumPhysicalCores: null,
+        minimumPhysicalCores: 4,
         recommendedPhysicalCores: null,
         minimumLogicalCores: null,
         recommendedLogicalCores: null,
         minimumClockGhz: null,
-        recommendedClockGhz: null,
+        recommendedClockGhz: 3,
         minimumModel: null,
         recommendedModel: null,
         notes:
-          "Iron Gate does not currently publish dedicated-server CPU hardware requirements.",
+          "Iron Gate does not publish a formal dedicated-server CPU spec. The 4-core figure and 3 GHz+ guidance are community-sourced (Valheim Wiki and hosting guides), commonly cited to avoid exploration lag on full 10-player vanilla servers.",
       },
       ram: {
-        minimumGb: null,
-        recommendedGb: null,
+        minimumGb: 2,
+        recommendedGb: 4,
         notes:
-          "Iron Gate does not currently publish a dedicated-server RAM requirement.",
+          "Iron Gate does not publish a formal dedicated-server RAM requirement. The Valheim Wiki lists 2 GB as a bare minimum, but real-world usage is commonly reported starting around 3-4 GB even for small worlds, with 8 GB+ recommended for modded servers.",
       },
       storage: {
-        minimumGb: null,
+        minimumGb: 2,
         recommendedGb: null,
         ssd: null,
+        notes: "Community-sourced; grows with world size, backups and any mods.",
       },
       supportedOperatingSystems: ["windows", "linux"],
       requiredPorts: [
@@ -505,15 +525,21 @@ export const games: GameServerRequirements[] = [
         recommendedClockGhz: 3.5,
         minimumModel: null,
         recommendedModel: null,
+        notes:
+          "Bohemia Interactive has confirmed it does not publish official dedicated-server hardware requirements -- load depends heavily on player count, AI, mods and mission complexity. These figures approximate Arma 3's general (client) system requirements as a rough floor; Arma 3 is largely single-thread bound, so community hosting guides commonly recommend well beyond this (e.g. a fast 4-6 core CPU) for a populated modded server.",
       },
       ram: {
         minimumGb: 2,
         recommendedGb: 4,
+        notes:
+          "Not officially published for dedicated servers -- these approximate Arma 3's general system requirements. Community guidance suggests roughly an extra 1 GB per 10 additional players, with 16 GB commonly recommended for 10-20 players with light-to-medium mods.",
       },
       storage: {
         minimumGb: 32,
         recommendedGb: 32,
         ssd: "recommended",
+        notes:
+          "Not officially published for dedicated servers specifically; NVMe/SSD storage is commonly recommended by the community for performance.",
       },
       supportedOperatingSystems: ["windows", "linux"],
       requiredPorts: [
@@ -571,14 +597,18 @@ export const games: GameServerRequirements[] = [
         recommendedPhysicalCores: null,
         minimumLogicalCores: null,
         recommendedLogicalCores: null,
-        minimumClockGhz: null,
+        minimumClockGhz: 1,
         recommendedClockGhz: null,
         minimumModel: null,
         recommendedModel: null,
+        notes:
+          "TF2 runs on Valve's Source Dedicated Server (SRCDS). The Valve Developer Community wiki gives a general SRCDS baseline of a 1.0 GHz CPU for a basic 20-slot server; this isn't a TF2-specific figure, and requirements rise with player/bot count and plugins.",
       },
       ram: {
         minimumGb: null,
         recommendedGb: null,
+        notes:
+          "Valve does not publish a fixed RAM requirement for TF2 dedicated servers; usage scales with player/bot count and any SourceMod plugins.",
       },
       storage: {
         minimumGb: 5.8,
@@ -628,12 +658,14 @@ export const games: GameServerRequirements[] = [
         minimumGb: 4,
         recommendedGb: 8,
         notes:
-          "TaleWorlds uses 4 GB for smaller battles and 8 GB for larger battles in its default hosting examples.",
+          "TaleWorlds uses 4 GB for smaller battles and 8 GB for larger battles in its default hosting examples. Community hosting guides report up to 15 GB for a full, heavily populated server.",
       },
       storage: {
-        minimumGb: null,
+        minimumGb: 30,
         recommendedGb: null,
         ssd: null,
+        notes:
+          "Not officially published in GB terms; commonly cited across hosting guides as roughly 30 GB for the SteamCMD dedicated-server download (app ID 1863440) plus save/config data.",
       },
       supportedOperatingSystems: ["windows", "linux"],
       requiredPorts: [
@@ -671,19 +703,23 @@ export const games: GameServerRequirements[] = [
         recommendedPhysicalCores: null,
         minimumLogicalCores: null,
         recommendedLogicalCores: null,
-        minimumClockGhz: null,
-        recommendedClockGhz: null,
+        minimumClockGhz: 1.8,
+        recommendedClockGhz: 2.5,
         minimumModel: null,
         recommendedModel: null,
+        notes:
+          "Facepunch's own wiki (wiki.facepunch.com/gmod) does not publish hardware requirements for dedicated servers. These figures are community-sourced from hosting-provider guides, not an official document.",
       },
       ram: {
-        minimumGb: null,
-        recommendedGb: null,
+        minimumGb: 2,
+        recommendedGb: 8,
+        notes: "Community-sourced, not officially published; scales heavily with gamemode and addons.",
       },
       storage: {
-        minimumGb: null,
-        recommendedGb: null,
-        ssd: null,
+        minimumGb: 5,
+        recommendedGb: 10,
+        ssd: "recommended",
+        notes: "Community-sourced, not officially published.",
       },
       supportedOperatingSystems: ["windows", "linux"],
       requiredPorts: [
@@ -730,11 +766,11 @@ export const games: GameServerRequirements[] = [
           "8 GB can boot the server but Pocketpair warns of increased out-of-memory crash risk. More than 32 GB is recommended for larger servers.",
       },
       storage: {
-        minimumGb: null,
-        recommendedGb: null,
+        minimumGb: 15,
+        recommendedGb: 40,
         ssd: "recommended",
         notes:
-          "Pocketpair recommends fast SSD storage and warns that slow storage can contribute to save-data corruption.",
+          "Pocketpair recommends fast SSD storage and warns that slow storage can contribute to save-data corruption. Pocketpair doesn't publish a storage size in GB; the dedicated server download itself is roughly 12-15 GB (community-reported), and hosting guides commonly suggest budgeting 40 GB+ once player bases, captures and backups accumulate.",
       },
       supportedOperatingSystems: ["windows", "linux"],
       requiredPorts: [
@@ -763,26 +799,28 @@ export const games: GameServerRequirements[] = [
     official: {
       cpu: {
         minimumPhysicalCores: null,
-        recommendedPhysicalCores: null,
+        recommendedPhysicalCores: 4,
         minimumLogicalCores: null,
         recommendedLogicalCores: null,
         minimumClockGhz: null,
-        recommendedClockGhz: null,
+        recommendedClockGhz: 4,
         minimumModel: null,
         recommendedModel: null,
         notes:
-          "The Indie Stone does not currently publish a simple dedicated-server CPU minimum.",
+          "The Indie Stone does not publish a dedicated-server CPU minimum. Project Zomboid's zombie-pathing load is concentrated on one or two threads, so community hosting guides emphasize high single-thread clock speed (4+ GHz) over core count; this is not an official figure.",
       },
       ram: {
-        minimumGb: null,
-        recommendedGb: null,
+        minimumGb: 8,
+        recommendedGb: 16,
         notes:
-          "RAM needs vary with player count, mods and world state; no current simple official minimum is published.",
+          "No official minimum is published. Community hosting guides converge on roughly 8 GB as a floor for a small group and 12-16 GB for 8-16 players, more with mods.",
       },
       storage: {
-        minimumGb: null,
+        minimumGb: 2,
         recommendedGb: null,
-        ssd: null,
+        ssd: "recommended",
+        notes:
+          "Community-sourced; roughly 2 GB for the base server files, growing with mods, saves and map data. Faster storage measurably reduces autosave/backup stutter.",
       },
       supportedOperatingSystems: ["windows", "linux"],
       requiredPorts: [
@@ -834,11 +872,11 @@ export const games: GameServerRequirements[] = [
           "The published 4 GB requirement is for the default 72x72 world size; requirements vary with world size.",
       },
       storage: {
-        minimumGb: 1,
+        minimumGb: 10,
         recommendedGb: null,
         ssd: "recommended",
         notes:
-          "SSD is recommended for complex law systems that cause heavy database access.",
+          "SSD is recommended for complex law systems that cause heavy database access. 10 GB is Eco's general published storage requirement; a dedicated-server-only figure isn't separately published, so actual server-only usage may be lower.",
       },
       supportedOperatingSystems: ["windows", "linux"],
       requiredPorts: [
@@ -879,7 +917,7 @@ export const games: GameServerRequirements[] = [
     official: {
       cpu: {
         minimumPhysicalCores: 1,
-        recommendedPhysicalCores: null,
+        recommendedPhysicalCores: 4,
         minimumLogicalCores: null,
         recommendedLogicalCores: null,
         minimumClockGhz: null,
@@ -887,7 +925,7 @@ export const games: GameServerRequirements[] = [
         minimumModel: null,
         recommendedModel: null,
         notes:
-          "Jagex's official container image documents a minimum of 1 CPU core.",
+          "Jagex's official container image documents a minimum of 1 CPU core. The 4-core recommendation is community/hosting-guide guidance for smooth performance at the full 6-player cap, not an official Jagex figure.",
       },
       ram: {
         minimumGb: 4,

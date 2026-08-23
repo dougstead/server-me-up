@@ -820,6 +820,45 @@ export default function CanMyMachineRunIt() {
                     </div>
                 </div>
             )}
+
+            <div className="mt-10 max-w-xl border-t border-slate-800 pt-6 text-sm leading-6 text-slate-500">
+                <h2 className="text-sm font-semibold uppercase tracking-widest text-slate-400">
+                    Where this data comes from
+                </h2>
+
+                <p className="mt-3">
+                    Requirements are taken from each game&apos;s official
+                    documentation where the developer publishes one -- for
+                    example Mojang&apos;s Bedrock server download page or
+                    Jagex&apos;s Dragonwilds hosting guide. Several developers
+                    (Facepunch, Iron Gate, The Indie Stone, Valve and others)
+                    don&apos;t publish formal dedicated-server hardware specs
+                    at all; where that&apos;s the case, this tool falls back
+                    to figures reported by community wikis and hosting-provider
+                    guides instead. Every field sourced that way is labelled
+                    as such in its result above rather than presented as
+                    official guidance.
+                </p>
+
+                <p className="mt-3">
+                    CPU listings are matched against{" "}
+                    <a
+                        href="https://github.com/buildcores/buildcores-open-db"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sky-400 hover:text-sky-300 hover:underline"
+                    >
+                        an open-source CPU database
+                    </a>
+                    , not Server Me Up&apos;s own testing. The compatibility
+                    results above are an automated, best-effort estimate --
+                    not a guarantee -- and can&apos;t account for mods,
+                    plugins, world size, or how you&apos;ve configured the
+                    game. Where we don&apos;t have a confident figure to
+                    compare against, a result is marked &quot;Unknown&quot;
+                    rather than guessed.
+                </p>
+            </div>
         </div>
     );
 }
