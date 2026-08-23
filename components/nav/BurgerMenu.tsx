@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { guides } from "@/lib/guides";
+import { gameGuides, guides } from "@/lib/guides";
 
 // TODO: replace with the real PayPal donation link once it's set up.
 const PAYPAL_DONATE_URL = "#";
@@ -10,6 +10,7 @@ const PAYPAL_DONATE_URL = "#";
 export default function BurgerMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const [isGuidesExpanded, setIsGuidesExpanded] = useState(false);
+  const [isGamesExpanded, setIsGamesExpanded] = useState(false);
 
   function closeMenu() {
     setIsOpen(false);
@@ -55,7 +56,7 @@ export default function BurgerMenu() {
 
       <nav
         aria-label="Site menu"
-        className={`fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] transform border-r border-slate-800 bg-slate-900 p-6 transition-transform duration-200 ease-out ${
+        className={`fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] transform overflow-y-auto border-r border-slate-800 bg-slate-900 p-6 transition-transform duration-200 ease-out ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -117,6 +118,38 @@ export default function BurgerMenu() {
                     Coming soon
                   </li>
                 )}
+
+                <li>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setIsGamesExpanded((expanded) => !expanded)
+                    }
+                    aria-expanded={isGamesExpanded}
+                    className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm font-medium text-slate-200 hover:bg-slate-800 hover:text-white"
+                  >
+                    Games
+                    <span className="text-slate-400">
+                      {isGamesExpanded ? "−" : "+"}
+                    </span>
+                  </button>
+
+                  {isGamesExpanded && (
+                    <ul className="ml-3 mt-1 max-h-64 space-y-1 overflow-y-auto border-l border-slate-800 pl-3">
+                      {gameGuides.map((guide) => (
+                        <li key={guide.id}>
+                          <Link
+                            href={guide.href}
+                            onClick={closeMenu}
+                            className="block rounded-lg px-3 py-2 text-sm text-slate-400 hover:bg-slate-800 hover:text-white"
+                          >
+                            {guide.title}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
               </ul>
             )}
           </li>
