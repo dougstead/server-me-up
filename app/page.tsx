@@ -1,0 +1,55 @@
+import Link from "next/link";
+import { Suspense } from "react";
+import CanMyMachineRunIt from "@/components/CanMyMachineRunIt";
+
+export default function Home() {
+  return (
+    <main className="min-h-screen bg-slate-950 text-white">
+      <div className="mx-auto max-w-5xl px-6 py-24">
+        <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-sky-400">
+          Dedicated server tools
+        </p>
+
+        <h1 className="max-w-3xl text-5xl font-bold tracking-tight sm:text-6xl">
+          Server Me Up
+        </h1>
+
+        <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
+          Configure and host your own game servers without digging through
+          config files and obscure setup guides. Check whether your machine
+          is up to the job, generate ready-to-use server config files, and
+          follow plain-language guides for the networking side of
+          self-hosting.
+        </p>
+      </div>
+
+      <div className="mx-auto max-w-5xl px-6 pb-24">
+        <div className="rounded-2xl border border-slate-800 bg-slate-900/40 p-6 sm:p-8">
+          <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+            <h2 className="text-2xl font-bold tracking-tight">
+              Can My Machine Run It?
+            </h2>
+
+            <Link
+              href="/can-my-pc-run-it"
+              className="text-sm font-semibold text-sky-400 hover:text-sky-300 hover:underline"
+            >
+              Open full page →
+            </Link>
+          </div>
+
+          <p className="mt-3 max-w-2xl text-slate-300">
+            Enter your machine specs and we&apos;ll estimate whether it can
+            host your game server.
+          </p>
+
+          <div className="mt-8">
+            <Suspense fallback={null}>
+              <CanMyMachineRunIt />
+            </Suspense>
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+}
