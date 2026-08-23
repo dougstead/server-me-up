@@ -5,6 +5,7 @@ import { games } from "@/lib/games";
 import { configTemplates } from "@/lib/config-templates";
 import { loadRawConfigTemplates } from "@/lib/game-config-loader";
 import ConfigGenerator from "@/components/ConfigGenerator";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 export async function generateStaticParams() {
     return games
@@ -47,6 +48,13 @@ export default async function GameConfigGeneratorPage(
     return (
         <main className="min-h-screen bg-slate-950 text-white">
             <div className="mx-auto max-w-3xl px-6 py-16">
+                <Breadcrumbs
+                    items={[
+                        { label: "Config Generators", href: "/config-generator" },
+                        { label: game.name },
+                    ]}
+                />
+
                 <p className="text-sm font-semibold uppercase tracking-widest text-sky-400">
                     {game.name}
                 </p>

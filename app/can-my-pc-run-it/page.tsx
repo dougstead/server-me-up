@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import CanMyMachineRunIt from "@/components/CanMyMachineRunIt";
 import { getAllBenchmarkInsights } from "@/lib/benchmark-insights";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 export const metadata: Metadata = {
     title: "Can My Machine Run It?",
@@ -18,6 +19,8 @@ export default function CanMyPcRunItPage() {
     return (
         <main className="min-h-screen bg-slate-950 text-white">
             <div className="mx-auto max-w-5xl px-6 py-16">
+                <Breadcrumbs items={[{ label: "Can My Machine Run It?" }]} />
+
                 <p className="text-sm font-semibold uppercase tracking-widest text-sky-400">
                     Server Me Up
                 </p>

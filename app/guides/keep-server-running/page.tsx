@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import CodeBlock from "@/components/CodeBlock";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 export const metadata: Metadata = {
   title: "Keeping Your Server Running 24/7",
@@ -13,6 +15,13 @@ export default function KeepServerRunningGuidePage() {
   return (
     <main className="min-h-screen bg-slate-950 text-white">
       <div className="mx-auto max-w-3xl px-6 py-16">
+        <Breadcrumbs
+          items={[
+            { label: "Guides", href: "/guides" },
+            { label: "Keep It Running 24/7" },
+          ]}
+        />
+
         <p className="text-sm font-semibold uppercase tracking-widest text-sky-400">
           Server Me Up Guide
         </p>
@@ -26,6 +35,15 @@ export default function KeepServerRunningGuidePage() {
           and start it by hand after every reboot, power cut, or crash.
           Both Windows and Linux have a built-in way to start it
           automatically and bring it back if it dies.
+        </p>
+
+        <p className="mt-4 text-slate-300">
+          Everything below points at a{" "}
+          <code>start-server.bat</code>/<code>start-server.sh</code> script
+          rather than a raw command line -- your game&apos;s own setup guide
+          has one ready to copy (and, for SteamCMD-based games, an{" "}
+          <code>update-server</code> script too), under &quot;Start the
+          server&quot;. Save that first, then come back here.
         </p>
 
         <div className="mt-12 space-y-10">
@@ -88,8 +106,9 @@ export default function KeepServerRunningGuidePage() {
               unit file at <code>/etc/systemd/system/myserver.service</code>:
             </p>
 
-            <pre className="mt-3 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-200">
-              {`[Unit]
+            <CodeBlock
+              className="mt-3"
+              code={`[Unit]
 Description=My game server
 After=network.target
 
@@ -103,7 +122,7 @@ RestartSec=10
 
 [Install]
 WantedBy=multi-user.target`}
-            </pre>
+            />
 
             <p className="mt-3 leading-7 text-slate-300">
               Adjust <code>User</code>, <code>WorkingDirectory</code> and{" "}
@@ -112,10 +131,11 @@ WantedBy=multi-user.target`}
               Then enable and start it:
             </p>
 
-            <pre className="mt-3 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-200">
-              {`sudo systemctl daemon-reload
+            <CodeBlock
+              className="mt-3"
+              code={`sudo systemctl daemon-reload
 sudo systemctl enable --now myserver.service`}
-            </pre>
+            />
 
             <p className="mt-3 leading-7 text-slate-300">
               Check on it with <code>systemctl status myserver</code>, and
@@ -134,26 +154,28 @@ sudo systemctl enable --now myserver.service`}
               (though not start-on-boot). On Linux/macOS:
             </p>
 
-            <pre className="mt-3 overflow-x-auto rounded-lg bg-slate-950 p-4 text-sm text-slate-300">
-              {`#!/bin/bash
+            <CodeBlock
+              className="mt-3"
+              code={`#!/bin/bash
 while true; do
   ./start-server.sh
   echo "Server stopped, restarting in 5 seconds..."
   sleep 5
 done`}
-            </pre>
+            />
 
             <p className="mt-3 text-sm leading-6 text-slate-400">
               On Windows, the equivalent in a <code>.bat</code> file:
             </p>
 
-            <pre className="mt-3 overflow-x-auto rounded-lg bg-slate-950 p-4 text-sm text-slate-300">
-              {`:loop
+            <CodeBlock
+              className="mt-3"
+              code={`:loop
 start-server.bat
 echo Server stopped, restarting...
 timeout /t 5
 goto loop`}
-            </pre>
+            />
           </section>
         </div>
       </div>

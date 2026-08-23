@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 export const metadata: Metadata = {
   title: "Dynamic DNS for a Changing IP Address",
@@ -14,6 +15,13 @@ export default function DynamicDnsGuidePage() {
   return (
     <main className="min-h-screen bg-slate-950 text-white">
       <div className="mx-auto max-w-3xl px-6 py-16">
+        <Breadcrumbs
+          items={[
+            { label: "Guides", href: "/guides" },
+            { label: "Dynamic DNS" },
+          ]}
+        />
+
         <p className="text-sm font-semibold uppercase tracking-widest text-sky-400">
           Server Me Up Guide
         </p>

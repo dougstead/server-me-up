@@ -781,7 +781,7 @@ export default function CanMyMachineRunIt({
                 </p>
 
                 <a
-                    href="/downloads/server-me-up-hardware-scan.bat"
+                    href={`/downloads/server-me-up-hardware-scan.bat?game=${selectedGame.id}`}
                     download
                     className="mt-5 inline-block rounded-lg bg-sky-500 px-5 py-3 font-semibold text-white hover:bg-sky-400"
                 >

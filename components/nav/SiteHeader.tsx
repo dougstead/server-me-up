@@ -11,7 +11,7 @@ export default function SiteHeader() {
           href="/"
           className="text-sm font-semibold uppercase tracking-widest text-sky-400"
         >
-          Server Me Up
+          Home
         </Link>
       </div>
     </header>

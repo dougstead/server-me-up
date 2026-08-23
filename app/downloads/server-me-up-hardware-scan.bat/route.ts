@@ -1,4 +1,22 @@
-<# :
+import { NextRequest } from "next/server";
+import { games } from "@/lib/games";
+import { SITE_URL } from "@/lib/site";
+
+// Generates the downloadable hardware-scan .bat on the fly instead of
+// serving a static file, so the script can remember which game's page it
+// was downloaded from -- e.g. downloading it from
+// /can-my-pc-run-it/arma-3 opens that same per-game page again once the
+// scan finishes, instead of always landing on the generic /can-my-pc-run-it
+// page (which defaults to the first game, Minecraft). The ?game= query
+// param is validated against the real games list rather than trusted
+// as-is, since it's interpolated into a URL baked into the script.
+export async function GET(request: NextRequest) {
+    const requestedGameId = request.nextUrl.searchParams.get("game");
+    const game = games.find((candidate) => candidate.id === requestedGameId);
+    const targetPath = game ? `/can-my-pc-run-it/${game.id}` : "/can-my-pc-run-it";
+    const baseUrl = `${SITE_URL}${targetPath}`;
+
+    const script = `<# :
 @echo off
 setlocal
 title Server Me Up - Hardware Scanner
@@ -25,8 +43,7 @@ exit /b
 
 $ErrorActionPreference = "SilentlyContinue"
 
-# Change this if the site ever moves to a different domain.
-$baseUrl = "https://servermeup.co.uk/can-my-pc-run-it"
+$baseUrl = "${baseUrl}"
 
 function Get-CleanCpuName {
     param([string]$RawName)
@@ -36,14 +53,14 @@ function Get-CleanCpuName {
     }
 
     $name = $RawName
-    $name = $name -replace '\(R\)', ''
-    $name = $name -replace '\(TM\)', ''
-    $name = $name -replace '\(C\)', ''
-    $name = $name -replace '\s*@\s*[\d.]+\s*GHz', ''
-    $name = $name -replace '\s*\d+-Core Processor', ''
-    $name = $name -replace '\s*Processor\s*$', ''
-    $name = $name -replace '\s*CPU\s*', ' '
-    $name = $name -replace '\s{2,}', ' '
+    $name = $name -replace '\\(R\\)', ''
+    $name = $name -replace '\\(TM\\)', ''
+    $name = $name -replace '\\(C\\)', ''
+    $name = $name -replace '\\s*@\\s*[\\d.]+\\s*GHz', ''
+    $name = $name -replace '\\s*\\d+-Core Processor', ''
+    $name = $name -replace '\\s*Processor\\s*$', ''
+    $name = $name -replace '\\s*CPU\\s*', ' '
+    $name = $name -replace '\\s{2,}', ' '
 
     return $name.Trim()
 }
@@ -85,7 +102,18 @@ $queryParams = @(
     "os=windows"
 ) -join "&"
 
-$url = "${baseUrl}?$queryParams"
+$url = "\${baseUrl}?$queryParams"
 
 Write-Host "Opening: $url"
 Start-Process $url
+`;
+
+    return new Response(script, {
+        headers: {
+            "Content-Type": "application/octet-stream",
+            "Content-Disposition":
+                'attachment; filename="server-me-up-hardware-scan.bat"',
+            "Cache-Control": "no-store",
+        },
+    });
+}

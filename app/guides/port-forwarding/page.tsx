@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import CodeBlock from "@/components/CodeBlock";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 export const metadata: Metadata = {
   title: "How to Set Up Port Forwarding",
@@ -13,6 +15,13 @@ export default function PortForwardingGuidePage() {
   return (
     <main className="min-h-screen bg-slate-950 text-white">
       <div className="mx-auto max-w-3xl px-6 py-16">
+        <Breadcrumbs
+          items={[
+            { label: "Guides", href: "/guides" },
+            { label: "Port Forwarding" },
+          ]}
+        />
+
         <p className="text-sm font-semibold uppercase tracking-widest text-sky-400">
           Server Me Up Guide
         </p>
@@ -45,9 +54,7 @@ export default function PortForwardingGuidePage() {
               Open Command Prompt or PowerShell and run:
             </p>
 
-            <pre className="mt-3 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-200">
-              ipconfig
-            </pre>
+            <CodeBlock className="mt-3" code="ipconfig" />
 
             <p className="mt-3 text-slate-300">
               Find the IPv4 address for the network adapter you&apos;re using.
@@ -61,9 +68,7 @@ export default function PortForwardingGuidePage() {
               Open a terminal and run:
             </p>
 
-            <pre className="mt-3 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-200">
-              ip addr
-            </pre>
+            <CodeBlock className="mt-3" code="ip addr" />
 
             <p className="mt-3 text-slate-300">
               Look for the private IPv4 address assigned to your active Ethernet or Wi-Fi
@@ -181,18 +186,17 @@ export default function PortForwardingGuidePage() {
               For a Palworld server using the default UDP port:
             </p>
 
-            <pre className="mt-3 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-200">
-              sudo ufw allow 8211/udp
-            </pre>
+            <CodeBlock className="mt-3" code="sudo ufw allow 8211/udp" />
 
             <h3 className="mt-6 text-lg font-semibold">
               Linux with firewalld
             </h3>
 
-            <pre className="mt-3 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-200">
-              {`sudo firewall-cmd --permanent --add-port=8211/udp
+            <CodeBlock
+              className="mt-3"
+              code={`sudo firewall-cmd --permanent --add-port=8211/udp
 sudo firewall-cmd --reload`}
-            </pre>
+            />
           </section>
 
           <section>

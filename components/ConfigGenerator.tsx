@@ -23,6 +23,7 @@ export default function ConfigGenerator({
         )
       : {},
   );
+  const [copied, setCopied] = useState(false);
 
   if (!template) {
     return null;
@@ -42,6 +43,17 @@ export default function ConfigGenerator({
 
   function setValue(id: string, value: string | number | boolean) {
     setValues((previous) => ({ ...previous, [id]: value }));
+  }
+
+  async function copyConfig() {
+    try {
+      await navigator.clipboard.writeText(output);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Clipboard API can be unavailable -- the Download button below still
+      // works as a fallback, so this isn't a dead end.
+    }
   }
 
   function downloadConfig() {
@@ -147,13 +159,23 @@ export default function ConfigGenerator({
           {output}
         </pre>
 
-        <button
-          type="button"
-          onClick={downloadConfig}
-          className="mt-4 rounded-lg bg-sky-500 px-5 py-3 font-semibold text-white hover:bg-sky-400"
-        >
-          Download {fileName}
-        </button>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <button
+            type="button"
+            onClick={downloadConfig}
+            className="rounded-lg bg-sky-500 px-5 py-3 font-semibold text-white hover:bg-sky-400"
+          >
+            Download {fileName}
+          </button>
+
+          <button
+            type="button"
+            onClick={copyConfig}
+            className="rounded-lg border border-slate-700 px-5 py-3 font-semibold text-white hover:border-sky-500"
+          >
+            {copied ? "Copied!" : "Copy to clipboard"}
+          </button>
+        </div>
       </div>
     </div>
   );

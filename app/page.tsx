@@ -15,15 +15,18 @@ export default function Home() {
         </p>
 
         <h1 className="max-w-3xl text-5xl font-bold tracking-tight sm:text-6xl">
-          Server Me Up
+          Thinking of hosting it yourself?
         </h1>
 
         <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
           Configure and host your own game servers without digging through
-          config files and obscure setup guides. Check whether your machine
-          is up to the job, generate ready-to-use server config files, and
-          follow plain-language guides for the networking side of
-          self-hosting.
+          config files and obscure setup guides --{" "}
+          <strong className="font-semibold text-white">
+            completely free to use
+          </strong>
+          . Check whether your machine is up to the job, generate
+          ready-to-use server config files, and follow plain-language guides
+          for the networking side of self-hosting.
         </p>
       </div>
 

@@ -88,17 +88,27 @@ export default function BurgerMenu() {
           </li>
 
           <li>
-            <button
-              type="button"
-              onClick={() => setIsGuidesExpanded((expanded) => !expanded)}
-              aria-expanded={isGuidesExpanded}
-              className="flex w-full items-center justify-between rounded-lg px-3 py-3 text-left font-medium text-white hover:bg-slate-800"
-            >
-              Guides
-              <span className="text-slate-400">
+            <div className="flex w-full items-center justify-between rounded-lg text-white hover:bg-slate-800">
+              <Link
+                href="/guides"
+                onClick={closeMenu}
+                className="flex-1 py-3 pl-3 font-medium"
+              >
+                Guides
+              </Link>
+
+              <button
+                type="button"
+                onClick={() => setIsGuidesExpanded((expanded) => !expanded)}
+                aria-expanded={isGuidesExpanded}
+                aria-label={
+                  isGuidesExpanded ? "Collapse guides list" : "Expand guides list"
+                }
+                className="px-3 py-3 text-slate-400 hover:text-white"
+              >
                 {isGuidesExpanded ? "−" : "+"}
-              </span>
-            </button>
+              </button>
+            </div>
 
             {isGuidesExpanded && (
               <ul className="ml-3 mt-1 space-y-1 border-l border-slate-800 pl-3">
@@ -156,19 +166,31 @@ export default function BurgerMenu() {
           </li>
 
           <li>
-            <button
-              type="button"
-              onClick={() =>
-                setIsConfigGeneratorsExpanded((expanded) => !expanded)
-              }
-              aria-expanded={isConfigGeneratorsExpanded}
-              className="flex w-full items-center justify-between rounded-lg px-3 py-3 text-left font-medium text-white hover:bg-slate-800"
-            >
-              Config Generators
-              <span className="text-slate-400">
+            <div className="flex w-full items-center justify-between rounded-lg text-white hover:bg-slate-800">
+              <Link
+                href="/config-generator"
+                onClick={closeMenu}
+                className="flex-1 py-3 pl-3 font-medium"
+              >
+                Config Generators
+              </Link>
+
+              <button
+                type="button"
+                onClick={() =>
+                  setIsConfigGeneratorsExpanded((expanded) => !expanded)
+                }
+                aria-expanded={isConfigGeneratorsExpanded}
+                aria-label={
+                  isConfigGeneratorsExpanded
+                    ? "Collapse config generators list"
+                    : "Expand config generators list"
+                }
+                className="px-3 py-3 text-slate-400 hover:text-white"
+              >
                 {isConfigGeneratorsExpanded ? "−" : "+"}
-              </span>
-            </button>
+              </button>
+            </div>
 
             {isConfigGeneratorsExpanded && (
               <ul className="ml-3 mt-1 max-h-64 space-y-1 overflow-y-auto border-l border-slate-800 pl-3">

@@ -1,5 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import CodeBlock from "@/components/CodeBlock";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 export const metadata: Metadata = {
   title: "Setting a Static Local IP Address",
@@ -14,6 +16,13 @@ export default function StaticIpGuidePage() {
   return (
     <main className="min-h-screen bg-slate-950 text-white">
       <div className="mx-auto max-w-3xl px-6 py-16">
+        <Breadcrumbs
+          items={[
+            { label: "Guides", href: "/guides" },
+            { label: "Static IP Address" },
+          ]}
+        />
+
         <p className="text-sm font-semibold uppercase tracking-widest text-sky-400">
           Server Me Up Guide
         </p>
@@ -51,9 +60,7 @@ export default function StaticIpGuidePage() {
 
             <h3 className="mt-6 text-lg font-semibold">Windows</h3>
 
-            <pre className="mt-3 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-200">
-              ipconfig /all
-            </pre>
+            <CodeBlock className="mt-3" code="ipconfig /all" />
 
             <p className="mt-3 text-slate-300">
               Look for &quot;Physical Address&quot; under the network
@@ -62,9 +69,7 @@ export default function StaticIpGuidePage() {
 
             <h3 className="mt-6 text-lg font-semibold">Linux</h3>
 
-            <pre className="mt-3 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-200">
-              ip link
-            </pre>
+            <CodeBlock className="mt-3" code="ip link" />
 
             <p className="mt-3 text-slate-300">
               Look for the <code>link/ether</code> value under your active

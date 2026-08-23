@@ -10,4 +10,9 @@ export const hostingProviders: HostingProvider[] = [
     name: "ScalaCube",
     websiteUrl: "https://scalacube.com",
   },
+  {
+    id: "gtxgaming",
+    name: "GTXGaming",
+    websiteUrl: "https://www.gtxgaming.co.uk",
+  },
 ];

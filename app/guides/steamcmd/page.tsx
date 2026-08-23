@@ -1,6 +1,8 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { gameGuides } from "@/lib/guides";
+import CodeBlock from "@/components/CodeBlock";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 export const metadata: Metadata = {
   title: "Installing SteamCMD",
@@ -15,6 +17,13 @@ export default function SteamCmdGuidePage() {
   return (
     <main className="min-h-screen bg-slate-950 text-white">
       <div className="mx-auto max-w-3xl px-6 py-16">
+        <Breadcrumbs
+          items={[
+            { label: "Guides", href: "/guides" },
+            { label: "Installing SteamCMD" },
+          ]}
+        />
+
         <p className="text-sm font-semibold uppercase tracking-widest text-sky-400">
           Server Me Up Guide
         </p>
@@ -64,12 +73,13 @@ export default function SteamCmdGuidePage() {
               equivalent) repository and install directly:
             </p>
 
-            <pre className="mt-3 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-200">
-              {`sudo add-apt-repository multiverse
+            <CodeBlock
+              className="mt-3"
+              code={`sudo add-apt-repository multiverse
 sudo dpkg --add-architecture i386
 sudo apt update
 sudo apt install steamcmd`}
-            </pre>
+            />
 
             <p className="mt-3 text-slate-300">
               Then launch it with <code>steamcmd</code> (or{" "}
@@ -91,12 +101,13 @@ sudo apt install steamcmd`}
               the basic pattern is:
             </p>
 
-            <pre className="mt-3 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-slate-200">
-              {`force_install_dir "C:\\GameServers\\MyServer"
+            <CodeBlock
+              className="mt-3"
+              code={`force_install_dir "C:\\GameServers\\MyServer"
 login anonymous
 app_update <app id> validate
 quit`}
-            </pre>
+            />
 
             <p className="mt-3 leading-7 text-slate-300">
               Replace <code>&lt;app id&gt;</code> with the Steam app ID for

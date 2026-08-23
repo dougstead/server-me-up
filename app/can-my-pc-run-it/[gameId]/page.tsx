@@ -4,9 +4,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { games } from "@/lib/games";
 import { configTemplates } from "@/lib/config-templates";
-import { SITE_URL } from "@/lib/site";
 import { getAllBenchmarkInsights } from "@/lib/benchmark-insights";
 import CanMyMachineRunIt from "@/components/CanMyMachineRunIt";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 export async function generateStaticParams() {
     return games.map((game) => ({ gameId: game.id }));
@@ -103,40 +103,21 @@ export default async function CanMyPcRunGamePage(
         })),
     };
 
-    const breadcrumbJsonLd = {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        itemListElement: [
-            { "@type": "ListItem", position: 1, name: "Server Me Up", item: SITE_URL },
-            {
-                "@type": "ListItem",
-                position: 2,
-                name: "Can My Machine Run It?",
-                item: `${SITE_URL}/can-my-pc-run-it`,
-            },
-            {
-                "@type": "ListItem",
-                position: 3,
-                name: game.name,
-                item: `${SITE_URL}/can-my-pc-run-it/${game.id}`,
-            },
-        ],
-    };
-
     return (
         <main className="min-h-screen bg-slate-950 text-white">
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
             />
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify(breadcrumbJsonLd),
-                }}
-            />
 
             <div className="mx-auto max-w-5xl px-6 py-16">
+                <Breadcrumbs
+                    items={[
+                        { label: "Can My Machine Run It?", href: "/can-my-pc-run-it" },
+                        { label: game.name },
+                    ]}
+                />
+
                 <p className="text-sm font-semibold uppercase tracking-widest text-sky-400">
                     Server Me Up
                 </p>
@@ -169,7 +150,11 @@ export default async function CanMyPcRunGamePage(
                                         ? `${cpu.recommendedPhysicalCores} physical cores recommended`
                                         : cpu.minimumPhysicalCores != null
                                           ? `${cpu.minimumPhysicalCores} physical cores minimum`
-                                          : "Not officially published for dedicated servers -- see the checker below for details.")}
+                                          : cpu.recommendedLogicalCores != null
+                                            ? `${cpu.recommendedLogicalCores} logical cores recommended`
+                                            : cpu.minimumLogicalCores != null
+                                              ? `${cpu.minimumLogicalCores} logical cores minimum`
+                                              : "Not officially published for dedicated servers -- see the checker below for details.")}
                             </dd>
                         </div>
 
