@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
-  description: "What Server Me Up does and doesn't do with your data.",
+  description: "What SelfServr does and doesn't do with your data.",
   alternates: {
     canonical: "/privacy",
   },
@@ -14,7 +14,7 @@ export default function PrivacyPolicyPage() {
     <main className="min-h-screen bg-slate-950 text-white">
       <div className="mx-auto max-w-3xl px-6 py-16">
         <p className="text-sm font-semibold uppercase tracking-widest text-sky-400">
-          Server Me Up
+          SelfServr
         </p>
 
         <h1 className="mt-3 text-4xl font-bold tracking-tight">
@@ -28,7 +28,7 @@ export default function PrivacyPolicyPage() {
             <h2 className="text-xl font-semibold">Who runs this site</h2>
 
             <p className="mt-3 leading-7 text-slate-300">
-              Server Me Up is an independent, personally-run hobby project --
+              SelfServr is an independent, personally-run hobby project --
               not a registered company. It&apos;s run by one person, contactable
               via the{" "}
               <Link
@@ -46,7 +46,7 @@ export default function PrivacyPolicyPage() {
 
             <p className="mt-3 leading-7 text-slate-300">
               There are no user accounts, no logins, and no passwords
-              collected by this site. Server Me Up doesn&apos;t run analytics
+              collected by this site. SelfServr doesn&apos;t run analytics
               or advertising scripts, and doesn&apos;t set any cookies of its
               own.
             </p>
@@ -95,7 +95,7 @@ export default function PrivacyPolicyPage() {
                 runs on keeps basic connection logs (e.g. IP address,
                 timestamp, page requested) for security and operational
                 purposes. This is standard web server behaviour, not
-                something Server Me Up adds on top.
+                something SelfServr adds on top.
               </li>
             </ul>
           </section>
@@ -106,10 +106,10 @@ export default function PrivacyPolicyPage() {
             <p className="mt-3 leading-7 text-slate-300">
               Some pages link to third-party game-hosting providers (e.g.
               ScalaCube) using affiliate links, clearly marked wherever they
-              appear. If you click through and make a purchase, Server Me Up
+              appear. If you click through and make a purchase, SelfServr
               may earn a commission. That third-party site has its own
               privacy practices and may set its own cookies once you land
-              there -- this policy only covers Server Me Up itself.
+              there -- this policy only covers SelfServr itself.
             </p>
           </section>
 

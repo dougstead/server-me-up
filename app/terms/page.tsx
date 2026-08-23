@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Terms of Use",
-  description: "The terms for using Server Me Up's tools, guides and downloads.",
+  description: "The terms for using SelfServr's tools, guides and downloads.",
   alternates: {
     canonical: "/terms",
   },
@@ -14,7 +14,7 @@ export default function TermsOfUsePage() {
     <main className="min-h-screen bg-slate-950 text-white">
       <div className="mx-auto max-w-3xl px-6 py-16">
         <p className="text-sm font-semibold uppercase tracking-widest text-sky-400">
-          Server Me Up
+          SelfServr
         </p>
 
         <h1 className="mt-3 text-4xl font-bold tracking-tight">
@@ -28,7 +28,7 @@ export default function TermsOfUsePage() {
             <h2 className="text-xl font-semibold">About this site</h2>
 
             <p className="mt-3 leading-7 text-slate-300">
-              Server Me Up is an independent, personally-run hobby project
+              SelfServr is an independent, personally-run hobby project
               providing free guides and tools for setting up self-hosted
               game servers. It isn&apos;t affiliated with, endorsed by, or
               operated by any of the game developers or publishers named on
@@ -90,7 +90,7 @@ export default function TermsOfUsePage() {
               documented settings for each game, with sensible defaults
               filled in. Always review a generated file before using it on a
               live server, and keep backups of your own configuration --
-              Server Me Up isn&apos;t responsible for how a generated file
+              SelfServr isn&apos;t responsible for how a generated file
               performs on your server.
             </p>
           </section>
@@ -100,9 +100,9 @@ export default function TermsOfUsePage() {
 
             <p className="mt-3 leading-7 text-slate-300">
               Some pages contain affiliate links to third-party hosting
-              providers, clearly marked where they appear. Server Me Up may
+              providers, clearly marked where they appear. SelfServr may
               earn a commission if you make a purchase through one of these
-              links, at no extra cost to you. Server Me Up isn&apos;t
+              links, at no extra cost to you. SelfServr isn&apos;t
               responsible for the products, services, or practices of any
               third-party site linked from here.
             </p>
@@ -112,7 +112,7 @@ export default function TermsOfUsePage() {
             <h2 className="text-xl font-semibold">Limitation of liability</h2>
 
             <p className="mt-3 leading-7 text-slate-300">
-              To the fullest extent permitted by law, Server Me Up and its
+              To the fullest extent permitted by law, SelfServr and its
               operator aren&apos;t liable for any loss or damage arising from
               your use of this site, its tools, its guides, or anything you
               download from it.

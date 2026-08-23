@@ -8,7 +8,7 @@ this game actually cost in CPU/RAM/disk/network" -- the kind of thing
 official docs and community guidance, not from real measurements.
 
 This is a **local-only tool**. It doesn't upload anything, doesn't talk to
-the Server Me Up website, and doesn't require an account. It's a
+the SelfServr website, and doesn't require an account. It's a
 standalone Node/TypeScript CLI that happens to live in this repo -- see
 "Future design" below for why.
 
@@ -234,7 +234,7 @@ them.
 The eventual goal is something like:
 
 ```
-benchmark agent -> JSON result -> Server Me Up API -> benchmark database -> aggregated recommendations
+benchmark agent -> JSON result -> SelfServr API -> benchmark database -> aggregated recommendations
 ```
 
 None of the right-hand side exists yet, and this tool deliberately doesn't

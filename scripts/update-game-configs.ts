@@ -39,7 +39,7 @@ async function checkUrl(url: string): Promise<LinkCheckResult> {
 }
 
 async function main() {
-    console.log("Server Me Up - config template source check");
+    console.log("SelfServr - config template source check");
     console.log("==============================================\n");
 
     const gameIds = Object.keys(configTemplates).sort();

@@ -805,7 +805,7 @@ export default function CanMyMachineRunIt({
 
                     <p className="mt-2 text-sm leading-6 text-slate-400">
                         These providers offer hosting for {selectedGame.name}.
-                        Links below are affiliate links, which means Server Me Up
+                        Links below are affiliate links, which means SelfServr
                         may earn a commission if you make a purchase.
                     </p>
 
@@ -1012,8 +1012,7 @@ export default function CanMyMachineRunIt({
                     >
                         BuildCores&apos; open CPU database
                     </a>{" "}
-                    (Open Data Commons Attribution License), not Server Me
-                    Up&apos;s own testing. The compatibility results above
+                    (Open Data Commons Attribution License), not SelfServr&apos;s own testing. The compatibility results above
                     are an automated, best-effort estimate --
                     not a guarantee -- and can&apos;t account for mods,
                     plugins, world size, or how you&apos;ve configured the

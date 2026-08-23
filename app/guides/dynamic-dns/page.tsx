@@ -23,7 +23,7 @@ export default function DynamicDnsGuidePage() {
         />
 
         <p className="text-sm font-semibold uppercase tracking-widest text-sky-400">
-          Server Me Up Guide
+          SelfServr Guide
         </p>
 
         <h1 className="mt-3 text-4xl font-bold tracking-tight">

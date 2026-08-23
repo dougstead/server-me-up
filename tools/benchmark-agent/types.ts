@@ -1,4 +1,4 @@
-// Shared types for the Server Me Up benchmark agent.
+// Shared types for the SelfServr benchmark agent.
 //
 // This tool is deliberately standalone -- it has zero dependency on the
 // Next.js app and is meant to be run directly from the command line
@@ -139,7 +139,7 @@ export type BenchmarkMetadata = {
 };
 
 // Top-level shape of a written benchmark JSON file. `schemaVersion` is
-// here (and only here) specifically so a future Server Me Up ingestion API
+// here (and only here) specifically so a future SelfServr ingestion API
 // can tell which shape it's looking at -- see README.md "Future design".
 export type BenchmarkResult = {
     schemaVersion: number;

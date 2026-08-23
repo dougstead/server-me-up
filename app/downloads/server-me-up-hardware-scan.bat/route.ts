@@ -19,8 +19,8 @@ export async function GET(request: NextRequest) {
     const script = `<# :
 @echo off
 setlocal
-title Server Me Up - Hardware Scanner
-echo Server Me Up - Hardware Scanner
+title SelfServr - Hardware Scanner
+echo SelfServr - Hardware Scanner
 echo ================================
 echo.
 echo Reading your CPU, RAM, storage type and OS from Windows...
@@ -34,7 +34,7 @@ exit /b
 #>
 
 # ------------------------------------------------------------------------
-# Server Me Up - Hardware Scanner (Windows)
+# SelfServr - Hardware Scanner (Windows)
 #
 # Reads local CPU, RAM, storage type and OS info via WMI/Storage cmdlets,
 # then opens the "Can My Machine Run It?" page with those values

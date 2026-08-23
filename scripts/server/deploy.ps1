@@ -1,7 +1,7 @@
 $ErrorActionPreference = "Stop"
 
 $AppDirectory = "C:\Apps\server-me-up"
-$TaskName = "Server Me Up"
+$TaskName = "SelfServr"
 
 function Assert-LastCommandSucceeded {
     param(
@@ -13,7 +13,7 @@ function Assert-LastCommandSucceeded {
     }
 }
 
-Write-Host "Deploying Server Me Up..." -ForegroundColor Cyan
+Write-Host "Deploying SelfServr..." -ForegroundColor Cyan
 
 Set-Location $AppDirectory
 
@@ -21,7 +21,7 @@ Write-Host "Pulling latest code..."
 git pull --ff-only
 Assert-LastCommandSucceeded "git pull"
 
-Write-Host "Stopping Server Me Up..."
+Write-Host "Stopping SelfServr..."
 
 Stop-ScheduledTask `
     -TaskName $TaskName `
@@ -122,7 +122,7 @@ try {
     npm.cmd run build
     Assert-LastCommandSucceeded "Next.js build"
 
-    Write-Host "Starting Server Me Up..."
+    Write-Host "Starting SelfServr..."
     Start-ScheduledTask -TaskName $TaskName
 
     Start-Sleep -Seconds 3

@@ -1,7 +1,7 @@
 $ErrorActionPreference = "Stop"
 
 $AppDirectory = "C:\Apps\server-me-up"
-$TaskName = "Server Me Up"
+$TaskName = "SelfServr"
 
 Set-Location $AppDirectory
 
@@ -9,11 +9,11 @@ Write-Host "Refreshing CPU data..."
 
 npm.cmd run update:cpus
 
-Write-Host "Building Server Me Up..."
+Write-Host "Building SelfServr..."
 
 npm.cmd run build
 
-Write-Host "Restarting Server Me Up..."
+Write-Host "Restarting SelfServr..."
 
 Stop-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue
 Start-ScheduledTask -TaskName $TaskName

@@ -2,7 +2,7 @@ $ErrorActionPreference = "Stop"
 
 $AppDirectory = "C:\Apps\server-me-up"
 
-Write-Host "Configuring Server Me Up scheduled tasks..."
+Write-Host "Configuring SelfServr scheduled tasks..."
 
 # -----------------------------
 # Main Server Task
@@ -20,14 +20,14 @@ $serverSettings = New-ScheduledTaskSettingsSet `
     -RestartInterval (New-TimeSpan -Minutes 1)
 
 Register-ScheduledTask `
-    -TaskName "Server Me Up" `
+    -TaskName "SelfServr" `
     -Action $serverAction `
     -Trigger $serverTrigger `
     -Settings $serverSettings `
     -RunLevel Highest `
     -Force
 
-Write-Host "Created Server Me Up startup task."
+Write-Host "Created SelfServr startup task."
 
 # -----------------------------
 # Weekly CPU Refresh Task
@@ -48,7 +48,7 @@ $cpuSettings = New-ScheduledTaskSettingsSet `
     -RestartInterval (New-TimeSpan -Minutes 5)
 
 Register-ScheduledTask `
-    -TaskName "Server Me Up CPU Refresh" `
+    -TaskName "SelfServr CPU Refresh" `
     -Action $cpuAction `
     -Trigger $cpuTrigger `
     -Settings $cpuSettings `

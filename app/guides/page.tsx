@@ -6,7 +6,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 export const metadata: Metadata = {
   title: "Guides",
   description:
-    "Every free guide on Server Me Up: general networking guides for port forwarding, static IPs and Dynamic DNS, plus a dedicated server setup guide for each supported game.",
+    "Every free guide on SelfServr: general networking guides for port forwarding, static IPs and Dynamic DNS, plus a dedicated server setup guide for each supported game.",
   alternates: {
     canonical: "/guides",
   },
@@ -19,7 +19,7 @@ export default function GuidesIndexPage() {
         <Breadcrumbs items={[{ label: "Guides" }]} />
 
         <p className="text-sm font-semibold uppercase tracking-widest text-sky-400">
-          Server Me Up
+          SelfServr
         </p>
 
         <h1 className="mt-3 text-4xl font-bold tracking-tight">Guides</h1>

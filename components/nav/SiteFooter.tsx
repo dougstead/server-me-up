@@ -5,7 +5,7 @@ export default function SiteFooter() {
     <footer className="mt-auto border-t border-slate-800 bg-slate-950">
       <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-4 px-6 py-6 text-sm text-slate-500">
         <span>
-          &copy; {new Date().getFullYear()} Server Me Up
+          &copy; {new Date().getFullYear()} SelfServr
         </span>
 
         <nav className="flex flex-wrap gap-x-6 gap-y-2">

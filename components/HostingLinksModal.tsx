@@ -82,7 +82,7 @@ export default function HostingLinksModal({
                             <p className="mt-2 text-sm leading-6 text-slate-400">
                                 These providers offer hosting for {game.name}.
                                 Links below are affiliate links, which means
-                                Server Me Up may earn a commission if you
+                                SelfServr may earn a commission if you
                                 make a purchase.
                             </p>
 

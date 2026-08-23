@@ -4,7 +4,7 @@ import ContactForm from "@/components/ContactForm";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Get in touch with Server Me Up -- questions, bug reports, or game suggestions.",
+    "Get in touch with SelfServr -- questions, bug reports, or game suggestions.",
   alternates: {
     canonical: "/contact",
   },
@@ -15,7 +15,7 @@ export default function ContactPage() {
     <main className="min-h-screen bg-slate-950 text-white">
       <div className="mx-auto max-w-3xl px-6 py-16">
         <p className="text-sm font-semibold uppercase tracking-widest text-sky-400">
-          Server Me Up
+          SelfServr
         </p>
 
         <h1 className="mt-3 text-4xl font-bold tracking-tight">Contact</h1>
