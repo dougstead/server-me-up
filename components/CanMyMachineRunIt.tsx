@@ -334,13 +334,13 @@ function RequirementResult({
 
   return (
     <div className="rounded-lg border border-slate-700 bg-slate-950 p-4">
-      <div className="flex items-start justify-between gap-4">
-        <div>
+      <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
+        <div className="min-w-0">
           <h3 className="font-semibold text-white">
             {label}
           </h3>
 
-          <p className="mt-2 text-sm leading-6 text-slate-300">
+          <p className="mt-2 text-sm leading-6 text-slate-300 break-words">
             {evaluation.message}
           </p>
         </div>
