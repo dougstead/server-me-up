@@ -1,0 +1,12 @@
+{
+  "PublicServer": {{public_server}},
+  "Password": "{{password}}",
+  "Description": "{{description}}",
+  "ServerCategory": "None",
+  "IPAddress": "Any",
+  "GameServerPort": 3000,
+  "WebServerPort": 3001,
+  "RconServerPort": 3002,
+  "MaxConnections": {{max_connections}},
+  "UPnPEnabled": true
+}

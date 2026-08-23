@@ -841,17 +841,18 @@ export default function CanMyMachineRunIt() {
                 </p>
 
                 <p className="mt-3">
-                    CPU listings are matched against{" "}
+                    CPU listings are sourced from{" "}
                     <a
                         href="https://github.com/buildcores/buildcores-open-db"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-sky-400 hover:text-sky-300 hover:underline"
                     >
-                        an open-source CPU database
-                    </a>
-                    , not Server Me Up&apos;s own testing. The compatibility
-                    results above are an automated, best-effort estimate --
+                        BuildCores&apos; open CPU database
+                    </a>{" "}
+                    (Open Data Commons Attribution License), not Server Me
+                    Up&apos;s own testing. The compatibility results above
+                    are an automated, best-effort estimate --
                     not a guarantee -- and can&apos;t account for mods,
                     plugins, world size, or how you&apos;ve configured the
                     game. Where we don&apos;t have a confident figure to

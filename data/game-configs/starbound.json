@@ -1,0 +1,7 @@
+{
+  "serverName": "{{server_name}}",
+  "maxPlayers": {{max_players}},
+  "serverPort": 21025,
+  "serverPassword": "{{server_password}}",
+  "allowAnonymousConnections": {{allow_anonymous_connections}}
+}

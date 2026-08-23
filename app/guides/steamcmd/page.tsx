@@ -1,5 +1,15 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { gameGuides } from "@/lib/guides";
+
+export const metadata: Metadata = {
+  title: "Installing SteamCMD",
+  description:
+    "How to install Valve's SteamCMD tool on Windows or Linux and use it to download dedicated servers for Rust, ARK, Valheim, Team Fortress 2 and more.",
+  alternates: {
+    canonical: "/guides/steamcmd",
+  },
+};
 
 export default function SteamCmdGuidePage() {
   return (

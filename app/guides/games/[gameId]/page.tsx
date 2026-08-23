@@ -1,10 +1,33 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { games } from "@/lib/games";
 import { gameSetups } from "@/lib/game-setup";
+import { configTemplates } from "@/lib/config-templates";
+import { loadRawConfigTemplates } from "@/lib/game-config-loader";
+import ConfigGenerator from "@/components/ConfigGenerator";
 
 export async function generateStaticParams() {
     return games.map((game) => ({ gameId: game.id }));
+}
+
+export async function generateMetadata(
+    props: PageProps<"/guides/games/[gameId]">,
+): Promise<Metadata> {
+    const { gameId } = await props.params;
+    const game = games.find((candidate) => candidate.id === gameId);
+
+    if (!game) {
+        return {};
+    }
+
+    return {
+        title: `${game.name} Dedicated Server Setup`,
+        description: `How to download, configure and run a ${game.name} dedicated server: getting the server files, required ports, starting it up, and generating a config file.`,
+        alternates: {
+            canonical: `/guides/games/${game.id}`,
+        },
+    };
 }
 
 export default async function GameSetupGuidePage(
@@ -21,6 +44,7 @@ export default async function GameSetupGuidePage(
 
     const requiredPorts = game.official.requiredPorts;
     const softwareRequirements = game.official.softwareRequirements ?? [];
+    const hasConfigGenerator = Boolean(configTemplates[game.id]);
 
     return (
         <main className="min-h-screen bg-slate-950 text-white">
@@ -194,6 +218,21 @@ export default async function GameSetupGuidePage(
                             </p>
                         )}
                     </section>
+
+                    {hasConfigGenerator && (
+                        <section>
+                            <h2 className="text-2xl font-semibold">
+                                4. Generate a config file
+                            </h2>
+
+                            <div className="mt-4">
+                                <ConfigGenerator
+                                    gameId={game.id}
+                                    rawTemplates={loadRawConfigTemplates(game.id)}
+                                />
+                            </div>
+                        </section>
+                    )}
 
                     {softwareRequirements.length > 0 && (
                         <section>

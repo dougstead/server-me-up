@@ -194,7 +194,7 @@ export const games: GameServerRequirements[] = [
         minimumModel: null,
         recommendedModel: null,
         notes:
-          "The official ARK wiki recommends 2 logical cores per Survival Evolved server instance and favours strong single-thread performance; scaling beyond 4 logical cores provides little benefit. The 3.5 GHz clock-speed figure is community-sourced hosting guidance, not part of the official wiki entry.",
+          "The ARK Official Community Wiki (a community-maintained resource, not operated by Studio Wildcard, despite the name) recommends 2 logical cores per Survival Evolved server instance and favours strong single-thread performance; scaling beyond 4 logical cores provides little benefit. The 3.5 GHz clock-speed figure is separate community-sourced hosting guidance.",
       },
       ram: {
         minimumGb: null,

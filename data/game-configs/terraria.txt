@@ -1,0 +1,11 @@
+worldname={{worldname}}
+autocreate={{autocreate}}
+difficulty={{difficulty}}
+maxplayers={{maxplayers}}
+port={{port}}
+password={{password}}
+motd={{motd}}
+banlist=banlist.txt
+secure=1
+language=en-US
+upnp=1

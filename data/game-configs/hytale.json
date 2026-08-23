@@ -1,0 +1,12 @@
+{
+  "Version": 3,
+  "ServerName": "{{server_name}}",
+  "MOTD": "{{motd}}",
+  "Password": "{{password}}",
+  "MaxPlayers": {{max_players}},
+  "MaxViewRadius": {{max_view_radius}},
+  "Defaults": {
+    "World": "default",
+    "GameMode": "{{game_mode}}"
+  }
+}

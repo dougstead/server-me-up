@@ -1,3 +1,14 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Keeping Your Server Running 24/7",
+  description:
+    "How to keep your dedicated game server running around the clock using Windows Task Scheduler or a Linux systemd service, with automatic restarts on crash.",
+  alternates: {
+    canonical: "/guides/keep-server-running",
+  },
+};
+
 export default function KeepServerRunningGuidePage() {
   return (
     <main className="min-h-screen bg-slate-950 text-white">

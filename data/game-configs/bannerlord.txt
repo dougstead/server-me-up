@@ -1,0 +1,4 @@
+ServerName {{server_name}}
+AdminPassword {{admin_password}}
+GameType {{game_type}}
+start_game_and_mission

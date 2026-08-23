@@ -1,5 +1,15 @@
 import { Suspense } from "react";
+import type { Metadata } from "next";
 import CanMyMachineRunIt from "@/components/CanMyMachineRunIt";
+
+export const metadata: Metadata = {
+    title: "Can My Machine Run It?",
+    description:
+        "Check whether your PC or server meets the CPU, RAM, storage and network requirements to host a dedicated game server for Minecraft, Rust, ARK, Valheim, Palworld and more.",
+    alternates: {
+        canonical: "/can-my-pc-run-it",
+    },
+};
 
 export default function CanMyPcRunItPage() {
     return (
