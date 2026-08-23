@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import CanMyMachineRunIt from "@/components/CanMyMachineRunIt";
+import { getAllBenchmarkInsights } from "@/lib/benchmark-insights";
 
 export const metadata: Metadata = {
     title: "Can My Machine Run It?",
@@ -12,6 +13,8 @@ export const metadata: Metadata = {
 };
 
 export default function CanMyPcRunItPage() {
+    const benchmarkInsightsByGame = getAllBenchmarkInsights();
+
     return (
         <main className="min-h-screen bg-slate-950 text-white">
             <div className="mx-auto max-w-5xl px-6 py-16">
@@ -30,7 +33,9 @@ export default function CanMyPcRunItPage() {
 
                 <div className="mt-10">
                     <Suspense fallback={null}>
-                        <CanMyMachineRunIt />
+                        <CanMyMachineRunIt
+                            benchmarkInsightsByGame={benchmarkInsightsByGame}
+                        />
                     </Suspense>
                 </div>
             </div>

@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { games } from "@/lib/games";
 import { configTemplates } from "@/lib/config-templates";
 import { SITE_URL } from "@/lib/site";
+import { getAllBenchmarkInsights } from "@/lib/benchmark-insights";
 import CanMyMachineRunIt from "@/components/CanMyMachineRunIt";
 
 export async function generateStaticParams() {
@@ -43,6 +44,7 @@ export default async function CanMyPcRunGamePage(
     const { cpu, ram, storage, supportedOperatingSystems, requiredPorts } =
         game.official;
     const hasConfigGenerator = Boolean(configTemplates[game.id]);
+    const benchmarkInsightsByGame = getAllBenchmarkInsights();
 
     const laptopRequirementClauses = [
         ram.minimumGb != null ? `at least ${ram.minimumGb} GB of RAM` : null,
@@ -231,7 +233,10 @@ export default async function CanMyPcRunGamePage(
 
                     <div className="mt-8">
                         <Suspense fallback={null}>
-                            <CanMyMachineRunIt defaultGameId={game.id} />
+                            <CanMyMachineRunIt
+                                defaultGameId={game.id}
+                                benchmarkInsightsByGame={benchmarkInsightsByGame}
+                            />
                         </Suspense>
                     </div>
                 </section>

@@ -11,6 +11,7 @@ import Link from "next/link";
 import { hostingProviders } from "@/lib/hosting-providers";
 import { detectHardware } from "@/lib/hardware-detection";
 import { configTemplates } from "@/lib/config-templates";
+import type { GameBenchmarkInsights } from "@/lib/benchmark-insights";
 
 type MachineSpecs = {
     cpu: string;
@@ -71,6 +72,22 @@ type ServerEvaluation = {
   operatingSystem: RequirementEvaluation;
   network: RequirementEvaluation;
 };
+
+function formatGb(mb: number): string {
+  return `${(mb / 1024).toFixed(1)} GB`;
+}
+
+function formatMbps(bytesPerSecond: number): string {
+  return `${((bytesPerSecond * 8) / 1_000_000).toFixed(1)} Mbps`;
+}
+
+function formatBenchmarkDateRange(insights: GameBenchmarkInsights): string {
+  const formatDate = (iso: string) => iso.slice(0, 10);
+  const earliest = formatDate(insights.earliestRun);
+  const latest = formatDate(insights.latestRun);
+
+  return earliest === latest ? earliest : `${earliest} to ${latest}`;
+}
 
 function formatOperatingSystem(
   operatingSystem: MachineSpecs["operatingSystem"],
@@ -359,11 +376,17 @@ function RequirementResult({
 
 export default function CanMyMachineRunIt({
     defaultGameId,
+    benchmarkInsightsByGame,
 }: {
     // Pre-selects a game (used by the per-game landing pages at
     // /can-my-pc-run-it/[gameId]). Falls back to the first game when
     // omitted or unrecognized, same as before.
     defaultGameId?: string;
+    // Aggregated local benchmark-agent data, keyed by game id -- computed
+    // server-side (data/benchmarks/*.json is gitignored, so this is only
+    // ever non-empty on a machine that's actually run benchmarks; see
+    // lib/benchmark-insights.ts). Omitted entirely -> no insights section.
+    benchmarkInsightsByGame?: Record<string, GameBenchmarkInsights>;
 } = {}) {
     const searchParams = useSearchParams();
 
@@ -473,6 +496,8 @@ export default function CanMyMachineRunIt({
         selectedCpu,
         selectedGame,
     );
+
+    const benchmarkInsights = benchmarkInsightsByGame?.[selectedGame.id];
 
     return (
         <div>
@@ -858,6 +883,94 @@ export default function CanMyMachineRunIt({
                     />
                 </div>
             </div>
+
+            {benchmarkInsights && (
+                <div className="mt-8 rounded-lg border border-emerald-800 bg-emerald-950/20 p-6">
+                    <h2 className="text-lg font-semibold">
+                        Real-world benchmark data
+                    </h2>
+
+                    <p className="mt-2 text-sm leading-6 text-slate-400">
+                        From {benchmarkInsights.runCount} local benchmark{" "}
+                        {benchmarkInsights.runCount === 1 ? "run" : "runs"} of{" "}
+                        {selectedGame.name} (
+                        {benchmarkInsights.totalSampleCount} samples,{" "}
+                        {formatBenchmarkDateRange(benchmarkInsights)}) --
+                        measured with the benchmark agent
+                        (tools/benchmark-agent), not estimated from docs.
+                    </p>
+
+                    <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                        {benchmarkInsights.ramMb && (
+                            <div className="rounded-lg border border-slate-700 bg-slate-950 p-4">
+                                <h3 className="font-semibold text-white">RAM</h3>
+                                <p className="mt-2 text-sm leading-6 text-slate-300">
+                                    Average{" "}
+                                    {formatGb(benchmarkInsights.ramMb.mean)},
+                                    peak {formatGb(benchmarkInsights.ramMb.max)}
+                                </p>
+                            </div>
+                        )}
+
+                        {benchmarkInsights.cpuPercentSingleCore && (
+                            <div className="rounded-lg border border-slate-700 bg-slate-950 p-4">
+                                <h3 className="font-semibold text-white">
+                                    CPU (single-core)
+                                </h3>
+                                <p className="mt-2 text-sm leading-6 text-slate-300">
+                                    Average{" "}
+                                    {benchmarkInsights.cpuPercentSingleCore.mean.toFixed(0)}
+                                    %, peak{" "}
+                                    {benchmarkInsights.cpuPercentSingleCore.max.toFixed(0)}
+                                    %
+                                </p>
+                            </div>
+                        )}
+
+                        {benchmarkInsights.networkDownloadBytesPerSecond && (
+                            <div className="rounded-lg border border-slate-700 bg-slate-950 p-4">
+                                <h3 className="font-semibold text-white">
+                                    Network (download)
+                                </h3>
+                                <p className="mt-2 text-sm leading-6 text-slate-300">
+                                    Average{" "}
+                                    {formatMbps(
+                                        benchmarkInsights.networkDownloadBytesPerSecond.mean,
+                                    )}
+                                </p>
+                            </div>
+                        )}
+
+                        {benchmarkInsights.networkUploadBytesPerSecond && (
+                            <div className="rounded-lg border border-slate-700 bg-slate-950 p-4">
+                                <h3 className="font-semibold text-white">
+                                    Network (upload)
+                                </h3>
+                                <p className="mt-2 text-sm leading-6 text-slate-300">
+                                    Average{" "}
+                                    {formatMbps(
+                                        benchmarkInsights.networkUploadBytesPerSecond.mean,
+                                    )}
+                                </p>
+                            </div>
+                        )}
+                    </div>
+
+                    <p className="mt-4 text-xs leading-5 text-slate-500">
+                        Tested with{" "}
+                        {benchmarkInsights.playerCountsTested.length > 0
+                            ? benchmarkInsights.playerCountsTested.join(", ")
+                            : "an unspecified number of"}{" "}
+                        player(s), on: {benchmarkInsights.machinesTested.join(", ")}.
+                        This is real measured data from whoever ran the
+                        benchmark agent locally -- not a large public
+                        dataset, and player activity level isn&apos;t
+                        reflected in this summary. Treat it as a useful
+                        data point alongside the estimate above, not a
+                        replacement for it.
+                    </p>
+                </div>
+            )}
 
             <div className="mt-10 border-t border-slate-800 pt-6 text-sm leading-6 text-slate-500">
                 <h2 className="text-sm font-semibold uppercase tracking-widest text-slate-400">

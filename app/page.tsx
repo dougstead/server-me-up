@@ -2,8 +2,11 @@ import Link from "next/link";
 import { Suspense } from "react";
 import CanMyMachineRunIt from "@/components/CanMyMachineRunIt";
 import { games } from "@/lib/games";
+import { getAllBenchmarkInsights } from "@/lib/benchmark-insights";
 
 export default function Home() {
+  const benchmarkInsightsByGame = getAllBenchmarkInsights();
+
   return (
     <main className="min-h-screen bg-slate-950 text-white">
       <div className="mx-auto max-w-5xl px-6 py-24">
@@ -46,7 +49,9 @@ export default function Home() {
 
           <div className="mt-8">
             <Suspense fallback={null}>
-              <CanMyMachineRunIt />
+              <CanMyMachineRunIt
+                benchmarkInsightsByGame={benchmarkInsightsByGame}
+              />
             </Suspense>
           </div>
         </div>

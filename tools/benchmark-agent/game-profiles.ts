@@ -16,10 +16,10 @@ export const gameProfiles: GameBenchmarkProfile[] = [
         id: "palworld",
         name: "Palworld",
         processNames: [
-            "PalServer",
-            "PalServer.exe",
             "PalServer-Win64-Shipping-Cmd",
             "PalServer-Win64-Shipping-Cmd.exe",
+            "PalServer",
+            "PalServer.exe",
         ],
         defaultPorts: [8211],
         playerCountMethod: "manual",
