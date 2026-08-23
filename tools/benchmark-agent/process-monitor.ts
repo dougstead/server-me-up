@@ -50,17 +50,29 @@ export async function findServerProcess(
     const processes = await listProcesses();
     const normalizedCandidates = candidateNames.map(normalizeProcessName);
 
-    const exactMatch = processes.find((process) =>
-        normalizedCandidates.includes(normalizeProcessName(process.name)),
-    );
+    // Check candidates in the order the profile lists them, not in
+    // whatever order the OS happens to list processes. Some games run a
+    // lightweight launcher that spawns the real dedicated-server process
+    // under a different name (e.g. Palworld's "PalServer" launcher spawns
+    // "PalServer-Win64-Shipping-Cmd", the actual heavy process) -- profiles
+    // deliberately list the real process name first to prefer it. Scanning
+    // `processes` once and taking whichever OS-listed process matches ANY
+    // candidate would let the launcher win purely because it has a lower
+    // PID / appears earlier in the listing, ignoring that preference.
+    for (const normalizedCandidate of normalizedCandidates) {
+        const exactMatch = processes.find(
+            (process) =>
+                normalizeProcessName(process.name) === normalizedCandidate,
+        );
 
-    if (exactMatch) {
-        return {
-            status: "found",
-            pid: exactMatch.id,
-            processName: exactMatch.name,
-            executablePath: exactMatch.path,
-        };
+        if (exactMatch) {
+            return {
+                status: "found",
+                pid: exactMatch.id,
+                processName: exactMatch.name,
+                executablePath: exactMatch.path,
+            };
+        }
     }
 
     const candidateMatches = processes.filter((process) => {
