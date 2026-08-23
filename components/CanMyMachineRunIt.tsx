@@ -10,6 +10,7 @@ import type { Cpu } from "@/lib/cpus";
 import Link from "next/link";
 import { hostingProviders } from "@/lib/hosting-providers";
 import { detectHardware } from "@/lib/hardware-detection";
+import { configTemplates } from "@/lib/config-templates";
 
 type MachineSpecs = {
     cpu: string;
@@ -495,6 +496,28 @@ export default function CanMyMachineRunIt() {
                         </option>
                     ))}
                 </select>
+
+                <p className="mt-2 text-sm">
+                    <Link
+                        href={`/guides/games/${selectedGame.id}`}
+                        className="text-sky-400 hover:text-sky-300 hover:underline"
+                    >
+                        {selectedGame.name} setup guide →
+                    </Link>
+
+                    {configTemplates[selectedGame.id] && (
+                        <>
+                            {" "}
+                            <span className="text-slate-600">·</span>{" "}
+                            <Link
+                                href={`/config-generator/${selectedGame.id}`}
+                                className="text-sky-400 hover:text-sky-300 hover:underline"
+                            >
+                                Config generator →
+                            </Link>
+                        </>
+                    )}
+                </p>
             </div>
 
             <div className="mt-6 max-w-xl rounded-lg border border-slate-800 bg-slate-900/60 p-4">

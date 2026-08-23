@@ -1,4 +1,5 @@
 import { games } from "@/lib/games";
+import { configTemplates } from "@/lib/config-templates";
 
 export type Guide = {
   id: string;
@@ -45,3 +46,14 @@ export const gameGuides: Guide[] = games.map((game) => ({
   title: game.name,
   href: `/guides/games/${game.id}`,
 }));
+
+// Per-game config generators, shown in their own top-level "Config
+// Generators" burger-menu section. Only includes games that actually have a
+// template -- see lib/config-templates.ts.
+export const configGeneratorGuides: Guide[] = games
+  .filter((game) => Boolean(configTemplates[game.id]))
+  .map((game) => ({
+    id: game.id,
+    title: game.name,
+    href: `/config-generator/${game.id}`,
+  }));

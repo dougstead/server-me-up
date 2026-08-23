@@ -1,7 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  async redirects() {
+    return [
+      {
+        source: "/palworld/config-generator",
+        destination: "/config-generator/palworld",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

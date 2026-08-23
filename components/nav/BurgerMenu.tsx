@@ -2,15 +2,16 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { gameGuides, guides } from "@/lib/guides";
+import { configGeneratorGuides, gameGuides, guides } from "@/lib/guides";
 
-// TODO: replace with the real PayPal donation link once it's set up.
-const PAYPAL_DONATE_URL = "#";
+const KOFI_URL = "https://ko-fi.com/douglasstead";
 
 export default function BurgerMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const [isGuidesExpanded, setIsGuidesExpanded] = useState(false);
   const [isGamesExpanded, setIsGamesExpanded] = useState(false);
+  const [isConfigGeneratorsExpanded, setIsConfigGeneratorsExpanded] =
+    useState(false);
 
   function closeMenu() {
     setIsOpen(false);
@@ -155,6 +156,38 @@ export default function BurgerMenu() {
           </li>
 
           <li>
+            <button
+              type="button"
+              onClick={() =>
+                setIsConfigGeneratorsExpanded((expanded) => !expanded)
+              }
+              aria-expanded={isConfigGeneratorsExpanded}
+              className="flex w-full items-center justify-between rounded-lg px-3 py-3 text-left font-medium text-white hover:bg-slate-800"
+            >
+              Config Generators
+              <span className="text-slate-400">
+                {isConfigGeneratorsExpanded ? "−" : "+"}
+              </span>
+            </button>
+
+            {isConfigGeneratorsExpanded && (
+              <ul className="ml-3 mt-1 max-h-64 space-y-1 overflow-y-auto border-l border-slate-800 pl-3">
+                {configGeneratorGuides.map((guide) => (
+                  <li key={guide.id}>
+                    <Link
+                      href={guide.href}
+                      onClick={closeMenu}
+                      className="block rounded-lg px-3 py-2 text-sm text-slate-300 hover:bg-slate-800 hover:text-white"
+                    >
+                      {guide.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+
+          <li>
             <Link
               href="/contact"
               onClick={closeMenu}
@@ -166,7 +199,7 @@ export default function BurgerMenu() {
 
           <li>
             <a
-              href={PAYPAL_DONATE_URL}
+              href={KOFI_URL}
               target="_blank"
               rel="noopener noreferrer"
               onClick={closeMenu}

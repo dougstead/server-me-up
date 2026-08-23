@@ -4,8 +4,6 @@ import { notFound } from "next/navigation";
 import { games } from "@/lib/games";
 import { gameSetups } from "@/lib/game-setup";
 import { configTemplates } from "@/lib/config-templates";
-import { loadRawConfigTemplates } from "@/lib/game-config-loader";
-import ConfigGenerator from "@/components/ConfigGenerator";
 
 export async function generateStaticParams() {
     return games.map((game) => ({ gameId: game.id }));
@@ -220,17 +218,24 @@ export default async function GameSetupGuidePage(
                     </section>
 
                     {hasConfigGenerator && (
-                        <section>
+                        <section className="rounded-lg border border-slate-700 bg-slate-900 p-6">
                             <h2 className="text-2xl font-semibold">
                                 4. Generate a config file
                             </h2>
 
-                            <div className="mt-4">
-                                <ConfigGenerator
-                                    gameId={game.id}
-                                    rawTemplates={loadRawConfigTemplates(game.id)}
-                                />
-                            </div>
+                            <p className="mt-3 leading-7 text-slate-300">
+                                Use the {game.name} config generator to fill
+                                in server name, password, max players and
+                                more, and download a ready-to-use{" "}
+                                {configTemplates[game.id].configFileLabel}.
+                            </p>
+
+                            <Link
+                                href={`/config-generator/${game.id}`}
+                                className="mt-5 inline-block rounded-lg bg-sky-500 px-5 py-3 font-semibold text-white hover:bg-sky-400"
+                            >
+                                Open the {game.name} config generator →
+                            </Link>
                         </section>
                     )}
 
