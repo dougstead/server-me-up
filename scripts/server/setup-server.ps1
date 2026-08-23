@@ -10,7 +10,7 @@ Write-Host "Configuring SelfServr scheduled tasks..."
 
 $serverAction = New-ScheduledTaskAction `
     -Execute "cmd.exe" `
-    -Argument "/c `"$AppDirectory\start-servermeup.cmd`""
+    -Argument "/c `"$AppDirectory\start-selfservr.cmd`""
 
 $serverTrigger = New-ScheduledTaskTrigger -AtStartup
 

@@ -2,7 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 
-const CONTACT_EMAIL = "servermeup@gmail.com";
+const CONTACT_EMAIL = "selfservr@gmail.com";
 
 export default function ContactForm() {
   const [subject, setSubject] = useState("");
