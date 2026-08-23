@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { games } from "@/lib/games";
-import { configGeneratorGuides, guides } from "@/lib/guides";
+import { compatibilityGuides, configGeneratorGuides, guides } from "@/lib/guides";
 import { SITE_URL } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -36,9 +36,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }),
   );
 
+  // High priority -- these per-game landing pages are the primary SEO
+  // target for queries like "can I run <game> server".
+  const compatibilityRoutes: MetadataRoute.Sitemap = compatibilityGuides.map(
+    (guide) => ({
+      url: `${SITE_URL}${guide.href}`,
+      changeFrequency: "monthly",
+      priority: 0.85,
+    }),
+  );
+
   return [
     ...staticRoutes,
     ...guideRoutes,
+    ...compatibilityRoutes,
     ...gameGuideRoutes,
     ...configGeneratorRoutes,
   ];

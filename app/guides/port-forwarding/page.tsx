@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "How to Set Up Port Forwarding",
   description:
-    "A step-by-step guide to forwarding ports on your router so players outside your home network can connect to your dedicated game server.",
+    "A free step-by-step guide to forwarding ports on your router so players outside your home network can connect to your dedicated game server.",
   alternates: {
     canonical: "/guides/port-forwarding",
   },

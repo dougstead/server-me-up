@@ -21,7 +21,7 @@ export async function generateMetadata(
 
     return {
         title: `${game.name} Dedicated Server Setup`,
-        description: `How to download, configure and run a ${game.name} dedicated server: getting the server files, required ports, starting it up, and generating a config file.`,
+        description: `Free guide: how to download, configure and run a ${game.name} dedicated server -- getting the server files, required ports, starting it up, and generating a config file.`,
         alternates: {
             canonical: `/guides/games/${game.id}`,
         },
@@ -62,14 +62,14 @@ export default async function GameSetupGuidePage(
                 </p>
 
                 <div className="mt-8 rounded-lg border border-sky-900 bg-sky-950/30 p-4 text-sm leading-6 text-slate-300">
-                    Before you start, run{" "}
+                    Before you start, check{" "}
                     <Link
-                        href="/can-my-pc-run-it"
+                        href={`/can-my-pc-run-it/${game.id}`}
                         className="text-sky-400 hover:text-sky-300 hover:underline"
                     >
-                        Can My Machine Run It?
+                        Can My PC Run a {game.name} Server?
                     </Link>{" "}
-                    to check whether your hardware meets {game.name}&apos;s
+                    to see whether your hardware meets {game.name}&apos;s
                     requirements, and read the{" "}
                     <Link
                         href="/guides/port-forwarding"

@@ -357,7 +357,14 @@ function RequirementResult({
   );
 }
 
-export default function CanMyMachineRunIt() {
+export default function CanMyMachineRunIt({
+    defaultGameId,
+}: {
+    // Pre-selects a game (used by the per-game landing pages at
+    // /can-my-pc-run-it/[gameId]). Falls back to the first game when
+    // omitted or unrecognized, same as before.
+    defaultGameId?: string;
+} = {}) {
     const searchParams = useSearchParams();
 
     const [specs, setSpecs] = useState<MachineSpecs>(() =>
@@ -368,8 +375,9 @@ export default function CanMyMachineRunIt() {
     const [selectedCpu, setSelectedCpu] = useState<Cpu | null>(null);
     const [hardwareNote, setHardwareNote] = useState<string | null>(null);
 
-    const [selectedGame, setSelectedGame] =
-        useState<GameServerRequirements>(games[0])
+    const [selectedGame, setSelectedGame] = useState<GameServerRequirements>(
+        () => games.find((game) => game.id === defaultGameId) ?? games[0],
+    )
 
     // Runs once, on mount: if a `cpu` query param arrived (e.g. from the
     // downloadable hardware-scan utility), look it up against the CPU
@@ -468,6 +476,8 @@ export default function CanMyMachineRunIt() {
 
     return (
         <div>
+            <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start lg:gap-8">
+            <div>
             <div>
                 <label
                     htmlFor="game"
@@ -729,40 +739,10 @@ export default function CanMyMachineRunIt() {
                     />
                 </div>
             </div>
-            <div className="mt-10 max-w-xl rounded-lg border border-slate-700 bg-slate-900 p-6">
-                <h2 className="text-lg font-semibold">
-                    Compatibility
-                </h2>
-
-                <div className="mt-5 space-y-3">
-                    <RequirementResult
-                        label="CPU"
-                        evaluation={evaluation.cpu}
-                    />
-
-                    <RequirementResult
-                        label="RAM"
-                        evaluation={evaluation.ram}
-                    />
-
-                    <RequirementResult
-                        label="Storage"
-                        evaluation={evaluation.storage}
-                    />
-
-                    <RequirementResult
-                        label="Operating System"
-                        evaluation={evaluation.operatingSystem}
-                    />
-
-                    <RequirementResult
-                        label="Network"
-                        evaluation={evaluation.network}
-                    />
-                </div>
             </div>
 
-            <div className="mt-8 max-w-xl rounded-lg border border-slate-700 bg-slate-900 p-6">
+            <div className="mt-10 space-y-8 lg:mt-0">
+            <div className="rounded-lg border border-slate-700 bg-slate-900 p-6">
                 <h2 className="text-lg font-semibold">
                     Want a fully automatic scan?
                 </h2>
@@ -793,7 +773,7 @@ export default function CanMyMachineRunIt() {
             </div>
 
             {selectedGame.hosting?.length > 0 && (
-                <div className="mt-8 max-w-xl rounded-lg border border-slate-700 bg-slate-900 p-6">
+                <div className="rounded-lg border border-slate-700 bg-slate-900 p-6">
                     <h2 className="text-lg font-semibold">
                         Prefer a hosted server?
                     </h2>
@@ -843,8 +823,43 @@ export default function CanMyMachineRunIt() {
                     </div>
                 </div>
             )}
+            </div>
+            </div>
 
-            <div className="mt-10 max-w-xl border-t border-slate-800 pt-6 text-sm leading-6 text-slate-500">
+            <div className="mt-10 rounded-lg border border-slate-700 bg-slate-900 p-6">
+                <h2 className="text-lg font-semibold">
+                    Compatibility
+                </h2>
+
+                <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                    <RequirementResult
+                        label="CPU"
+                        evaluation={evaluation.cpu}
+                    />
+
+                    <RequirementResult
+                        label="RAM"
+                        evaluation={evaluation.ram}
+                    />
+
+                    <RequirementResult
+                        label="Storage"
+                        evaluation={evaluation.storage}
+                    />
+
+                    <RequirementResult
+                        label="Operating System"
+                        evaluation={evaluation.operatingSystem}
+                    />
+
+                    <RequirementResult
+                        label="Network"
+                        evaluation={evaluation.network}
+                    />
+                </div>
+            </div>
+
+            <div className="mt-10 border-t border-slate-800 pt-6 text-sm leading-6 text-slate-500">
                 <h2 className="text-sm font-semibold uppercase tracking-widest text-slate-400">
                     Where this data comes from
                 </h2>

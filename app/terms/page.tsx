@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Terms of Use",
@@ -47,12 +48,12 @@ export default function TermsOfUsePage() {
               -- is provided &quot;as is&quot;, free of charge, with no
               warranty of accuracy, completeness, or fitness for any
               particular purpose. The{" "}
-              <a
+              <Link
                 href="/can-my-pc-run-it"
                 className="text-sky-400 hover:text-sky-300 hover:underline"
               >
                 Can My Machine Run It?
-              </a>{" "}
+              </Link>{" "}
               tool is an automated, best-effort estimate, not a guarantee --
               see the disclaimer on that page for how its data is sourced.
               Don&apos;t rely on it as the sole basis for a purchase you
@@ -68,12 +69,12 @@ export default function TermsOfUsePage() {
               information and opens your browser -- it doesn&apos;t modify
               your system, install anything, or send data anywhere except to
               this site, as described in the{" "}
-              <a
+              <Link
                 href="/privacy"
                 className="text-sky-400 hover:text-sky-300 hover:underline"
               >
                 Privacy Policy
-              </a>
+              </Link>
               . It&apos;s unsigned, so Windows may show a SmartScreen
               warning; the script is plain text and you&apos;re encouraged
               to read it before running it. You run it at your own
@@ -133,12 +134,12 @@ export default function TermsOfUsePage() {
 
             <p className="mt-3 leading-7 text-slate-300">
               Reach out via the{" "}
-              <a
+              <Link
                 href="/contact"
                 className="text-sky-400 hover:text-sky-300 hover:underline"
               >
                 contact page
-              </a>
+              </Link>
               .
             </p>
           </section>

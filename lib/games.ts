@@ -763,7 +763,7 @@ export const games: GameServerRequirements[] = [
         minimumGb: 16,
         recommendedGb: 32,
         notes:
-          "8 GB can boot the server but Pocketpair warns of increased out-of-memory crash risk. More than 32 GB is recommended for larger servers.",
+          "8 GB can boot the server but Pocketpair warns of increased out-of-memory crash risk. More than 32 GB is recommended for larger servers. RAM use tracks base-building and Pal count more closely than player count -- a small server with sprawling bases can use more RAM than a larger one with modest builds, which is why there's no reliable per-player figure to give here.",
       },
       storage: {
         minimumGb: 15,

@@ -25,7 +25,7 @@ export async function generateMetadata(
 
     return {
         title: `${game.name} Config Generator`,
-        description: `Generate a ready-to-use ${template.configFileLabel} for your ${game.name} dedicated server -- server name, password, max players and more.`,
+        description: `Free tool to generate a ready-to-use ${template.configFileLabel} for your ${game.name} dedicated server -- server name, password, max players and more.`,
         alternates: {
             canonical: `/config-generator/${game.id}`,
         },
@@ -66,6 +66,13 @@ export default async function GameConfigGeneratorPage(
                         className="text-sky-400 hover:text-sky-300 hover:underline"
                     >
                         {game.name} setup guide
+                    </Link>
+                    . Not sure your hardware is up to it?{" "}
+                    <Link
+                        href={`/can-my-pc-run-it/${game.id}`}
+                        className="text-sky-400 hover:text-sky-300 hover:underline"
+                    >
+                        Check compatibility first
                     </Link>
                     .
                 </p>

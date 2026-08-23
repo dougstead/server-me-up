@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import CanMyMachineRunIt from "@/components/CanMyMachineRunIt";
+import { games } from "@/lib/games";
 
 export default function Home() {
   return (
@@ -48,6 +49,25 @@ export default function Home() {
               <CanMyMachineRunIt />
             </Suspense>
           </div>
+        </div>
+
+        <div className="mt-12">
+          <h2 className="text-lg font-semibold text-slate-200">
+            Or jump straight to a game
+          </h2>
+
+          <ul className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
+            {games.map((game) => (
+              <li key={game.id}>
+                <Link
+                  href={`/can-my-pc-run-it/${game.id}`}
+                  className="block rounded-lg border border-slate-800 bg-slate-900/40 px-4 py-3 text-sm text-slate-300 hover:border-sky-500 hover:text-white"
+                >
+                  {game.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </main>

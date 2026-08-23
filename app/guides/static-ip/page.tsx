@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Setting a Static Local IP Address",
   description:
-    "How to give your server a fixed local IP address with a DHCP reservation, so your port forwarding rules keep working after a router restart.",
+    "Free guide: how to give your server a fixed local IP address with a DHCP reservation, so your port forwarding rules keep working after a router restart.",
   alternates: {
     canonical: "/guides/static-ip",
   },

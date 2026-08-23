@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
@@ -30,12 +31,12 @@ export default function PrivacyPolicyPage() {
               Server Me Up is an independent, personally-run hobby project --
               not a registered company. It&apos;s run by one person, contactable
               via the{" "}
-              <a
+              <Link
                 href="/contact"
                 className="text-sky-400 hover:text-sky-300 hover:underline"
               >
                 contact page
-              </a>
+              </Link>
               .
             </p>
           </section>
@@ -127,12 +128,12 @@ export default function PrivacyPolicyPage() {
 
             <p className="mt-3 leading-7 text-slate-300">
               Reach out via the{" "}
-              <a
+              <Link
                 href="/contact"
                 className="text-sky-400 hover:text-sky-300 hover:underline"
               >
                 contact page
-              </a>{" "}
+              </Link>{" "}
               with anything about how this site handles data.
             </p>
           </section>
