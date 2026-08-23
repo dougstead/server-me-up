@@ -1,7 +1,7 @@
 $ErrorActionPreference = "Stop"
 
 $AppDirectory = "C:\Apps\server-me-up"
-$TaskName = "SelfServr"
+$TaskName = "ServerMeUp"
 
 function Assert-LastCommandSucceeded {
     param(
