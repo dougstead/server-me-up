@@ -120,6 +120,10 @@ export const games: GameServerRequirements[] = [
         providerId: "scalacube",
         affiliateUrl: "https://scalacube.com/p/_hosting_server_minecraft/6212169",
       },
+      {
+        providerId: "gtxgaming",
+        affiliateUrl: "https://www.gtxgaming.co.uk/clientarea/aff.php?aff=4348",
+      },
     ],
   },
 
@@ -176,6 +180,10 @@ export const games: GameServerRequirements[] = [
       {
         providerId: "scalacube",
         affiliateUrl: "https://scalacube.com/p/_hosting_server_minecraft-pe/6212169",
+      },
+      {
+        providerId: "gtxgaming",
+        affiliateUrl: "https://www.gtxgaming.co.uk/clientarea/aff.php?aff=4348",
       },
     ],
   },
@@ -245,6 +253,10 @@ export const games: GameServerRequirements[] = [
         providerId: "scalacube",
         affiliateUrl: "https://scalacube.com/p/_hosting_server_ark/6212169",
       },
+      {
+        providerId: "gtxgaming",
+        affiliateUrl: "https://www.gtxgaming.co.uk/clientarea/aff.php?aff=4348",
+      },
     ],
   },
 
@@ -297,6 +309,10 @@ export const games: GameServerRequirements[] = [
         providerId: "scalacube",
         affiliateUrl: "https://scalacube.com/p/_hosting_server_rust/6212169",
       },
+      {
+        providerId: "gtxgaming",
+        affiliateUrl: "https://www.gtxgaming.co.uk/clientarea/aff.php?aff=4348",
+      },
     ],
   },
 
@@ -347,6 +363,10 @@ export const games: GameServerRequirements[] = [
       {
         providerId: "scalacube",
         affiliateUrl: "https://scalacube.com/p/_hosting_server_hytale/6212169",
+      },
+      {
+        providerId: "gtxgaming",
+        affiliateUrl: "https://www.gtxgaming.co.uk/clientarea/aff.php?aff=4348",
       },
     ],
   },
@@ -399,6 +419,10 @@ export const games: GameServerRequirements[] = [
         providerId: "scalacube",
         affiliateUrl: "https://scalacube.com/p/_hosting_server_starbound/6212169",
       },
+      {
+        providerId: "gtxgaming",
+        affiliateUrl: "https://www.gtxgaming.co.uk/clientarea/aff.php?aff=4348",
+      },
     ],
   },
 
@@ -450,6 +474,10 @@ export const games: GameServerRequirements[] = [
       {
         providerId: "scalacube",
         affiliateUrl: "https://scalacube.com/p/_hosting_server_terraria/6212169",
+      },
+      {
+        providerId: "gtxgaming",
+        affiliateUrl: "https://www.gtxgaming.co.uk/clientarea/aff.php?aff=4348",
       },
     ],
   },
@@ -508,6 +536,10 @@ export const games: GameServerRequirements[] = [
       {
         providerId: "scalacube",
         affiliateUrl: "https://scalacube.com/p/_hosting_server_valheim/6212169",
+      },
+      {
+        providerId: "gtxgaming",
+        affiliateUrl: "https://www.gtxgaming.co.uk/clientarea/aff.php?aff=4348",
       },
     ],
   },
@@ -585,6 +617,10 @@ export const games: GameServerRequirements[] = [
         providerId: "scalacube",
         affiliateUrl: "https://scalacube.com/p/_hosting_server_arma-3/6212169",
       },
+      {
+        providerId: "gtxgaming",
+        affiliateUrl: "https://www.gtxgaming.co.uk/clientarea/aff.php?aff=4348",
+      },
     ],
   },
 
@@ -634,6 +670,10 @@ export const games: GameServerRequirements[] = [
       {
         providerId: "scalacube",
         affiliateUrl: "https://scalacube.com/p/_hosting_server_team-fortress-2/6212169",
+      },
+      {
+        providerId: "gtxgaming",
+        affiliateUrl: "https://www.gtxgaming.co.uk/clientarea/aff.php?aff=4348",
       },
     ],
   },
@@ -691,6 +731,10 @@ export const games: GameServerRequirements[] = [
         providerId: "scalacube",
         affiliateUrl: "https://scalacube.com/p/_hosting_server_mount-blade-2/6212169",
       },
+      {
+        providerId: "gtxgaming",
+        affiliateUrl: "https://www.gtxgaming.co.uk/clientarea/aff.php?aff=4348",
+      },
     ],
   },
 
@@ -742,6 +786,10 @@ export const games: GameServerRequirements[] = [
         providerId: "scalacube",
         affiliateUrl: "https://scalacube.com/p/_hosting_server_garrys-mod/6212169",
       },
+      {
+        providerId: "gtxgaming",
+        affiliateUrl: "https://www.gtxgaming.co.uk/clientarea/aff.php?aff=4348",
+      },
     ],
   },
 
@@ -789,6 +837,10 @@ export const games: GameServerRequirements[] = [
       {
         providerId: "scalacube",
         affiliateUrl: "https://scalacube.com/p/_hosting_server_palworld/6212169",
+      },
+      {
+        providerId: "gtxgaming",
+        affiliateUrl: "https://www.gtxgaming.co.uk/clientarea/aff.php?aff=4348",
       },
     ],
   },
@@ -845,6 +897,10 @@ export const games: GameServerRequirements[] = [
       {
         providerId: "scalacube",
         affiliateUrl: "https://scalacube.com/p/_hosting_server_project-zomboid/6212169",
+      },
+      {
+        providerId: "gtxgaming",
+        affiliateUrl: "https://www.gtxgaming.co.uk/clientarea/aff.php?aff=4348",
       },
     ],
   },
@@ -908,6 +964,10 @@ export const games: GameServerRequirements[] = [
         providerId: "scalacube",
         affiliateUrl: "https://scalacube.com/p/_hosting_server_eco/6212169",
       },
+      {
+        providerId: "gtxgaming",
+        affiliateUrl: "https://www.gtxgaming.co.uk/clientarea/aff.php?aff=4348",
+      },
     ],
   },
 
@@ -958,6 +1018,10 @@ export const games: GameServerRequirements[] = [
       {
         providerId: "scalacube",
         affiliateUrl: "https://scalacube.com/p/_hosting_server_dragonwilds/6212169",
+      },
+      {
+        providerId: "gtxgaming",
+        affiliateUrl: "https://www.gtxgaming.co.uk/clientarea/aff.php?aff=4348",
       },
     ],
   },

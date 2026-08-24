@@ -25,7 +25,7 @@ echo ================================
 echo.
 echo Reading your CPU, RAM, storage type and OS from Windows...
 echo Nothing here is uploaded anywhere - these values are only used to
-echo pre-fill the form at selfservr.co.uk, in your own browser.
+echo pre-fill the form at selfservr.com, in your own browser.
 echo.
 powershell -NoProfile -ExecutionPolicy Bypass -Command "Invoke-Expression (Get-Content -LiteralPath '%~f0' -Raw)"
 echo.
