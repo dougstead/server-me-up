@@ -7,6 +7,9 @@ import { configTemplates } from "@/lib/config-templates";
 import CodeBlock from "@/components/CodeBlock";
 import HostingLinksModal from "@/components/HostingLinksModal";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import JsonLd from "@/components/JsonLd";
+import { pageMetadata } from "@/lib/metadata";
+import { faqSchema, howToSchema } from "@/lib/structured-data";
 
 export async function generateStaticParams() {
     return games.map((game) => ({ gameId: game.id }));
@@ -35,13 +38,11 @@ export async function generateMetadata(
         return {};
     }
 
-    return {
+    return pageMetadata({
         title: `${game.name} Dedicated Server Setup`,
         description: `Free guide: how to download, configure and run a ${game.name} dedicated server -- getting the server files, required ports, starting it up, and generating a config file.`,
-        alternates: {
-            canonical: `/guides/games/${game.id}`,
-        },
-    };
+        path: `/guides/games/${game.id}`,
+    });
 }
 
 export default async function GameSetupGuidePage(
@@ -64,10 +65,98 @@ export default async function GameSetupGuidePage(
     );
     const hasUpdateScript = setup.method.type === "steamcmd";
     const hasScriptsStep = hasStartScript || hasUpdateScript;
+    const requiredPortText = requiredPorts
+        .filter((port) => port.required)
+        .map((port) => `${port.protocol} ${port.port}`)
+        .join(", ");
+
+    // Direct-answer Q&A for the same facts already rendered as numbered
+    // steps above -- restated in question form so both readers skimming
+    // and AI systems extracting an answer can find "what port does X use"
+    // etc. without having to parse the whole walkthrough. Every answer here
+    // is derived from the same lib/games.ts / lib/game-setup.ts data the
+    // rest of the page uses, not a new claim.
+    const faqs = [
+        {
+            question: `How do I install a ${game.name} dedicated server?`,
+            answer:
+                setup.method.type === "steamcmd"
+                    ? `Download it with SteamCMD using Steam app ID ${setup.method.appId}, then run it from the install directory. See "Get the server files" and "Start the server" above for the exact commands.`
+                    : `Download it directly from ${setup.method.urlLabel}, then run it from the install directory. See "Get the server files" and "Start the server" above for the exact commands.`,
+        },
+        {
+            question: `What port does a ${game.name} server use?`,
+            answer:
+                requiredPortText.length > 0
+                    ? `${requiredPortText} by default, forwarded to the server machine's local IP address. See the port forwarding guide for how.`
+                    : `We don't currently have a confirmed required port for ${game.name}.`,
+        },
+        ...(hasConfigGenerator
+            ? [
+                  {
+                      question: `How do I configure a ${game.name} server?`,
+                      answer: `Use the ${game.name} config generator to fill in server name, password, max players and more, and download a ready-to-use ${configTemplates[game.id].configFileLabel}.`,
+                  },
+              ]
+            : []),
+        {
+            question: `How do I keep a ${game.name} server running?`,
+            answer:
+                "Set it up as a Windows Task Scheduler task or a Linux systemd service so it survives a reboot or crash without you starting it by hand -- see the keeping it running 24/7 guide.",
+        },
+    ];
+
+    const howToSteps = [
+        {
+            name: "Get the server files",
+            text:
+                setup.method.type === "steamcmd"
+                    ? `Download the server via SteamCMD using Steam app ID ${setup.method.appId}.`
+                    : `Download the server directly from ${setup.method.urlLabel}.`,
+        },
+        ...(requiredPortText.length > 0
+            ? [
+                  {
+                      name: "Forward the required ports",
+                      text: `Forward ${requiredPortText} to the server machine's local IP on your router, and allow them through its firewall.`,
+                  },
+              ]
+            : []),
+        {
+            name: "Start the server",
+            text: setup.startNotes,
+        },
+        ...(hasConfigGenerator
+            ? [
+                  {
+                      name: "Generate a config file",
+                      text: `Fill in server name, password, max players and more, then download a ready-to-use ${configTemplates[game.id].configFileLabel}.`,
+                      url: `https://selfservr.com/config-generator/${game.id}`,
+                  },
+              ]
+            : []),
+    ];
 
     return (
         <main className="min-h-screen bg-slate-950 text-white">
             <div className="mx-auto max-w-3xl px-6 py-16">
+                <JsonLd
+                    data={howToSchema({
+                        name: `${game.name} Dedicated Server Setup`,
+                        description: `How to download, configure and run a ${game.name} dedicated server.`,
+                        steps: howToSteps,
+                    })}
+                />
+
+                <JsonLd
+                    data={faqSchema(
+                        faqs.map((faq) => ({
+                            question: faq.question,
+                            answer: faq.answer,
+                        })),
+                    )}
+                />
+
                 <Breadcrumbs
                     items={[
                         { label: "Guides", href: "/guides" },
@@ -448,6 +537,45 @@ export default async function GameSetupGuidePage(
                             </Link>{" "}
                             so it survives a reboot or crash without you
                             needing to start it by hand.
+                        </p>
+                    </section>
+
+                    <section>
+                        <h2 className="text-2xl font-semibold">
+                            Frequently asked questions
+                        </h2>
+
+                        <div className="mt-5 space-y-6">
+                            {faqs.map((faq) => (
+                                <div key={faq.question}>
+                                    <h3 className="font-semibold text-white">
+                                        {faq.question}
+                                    </h3>
+                                    <p className="mt-2 leading-7 text-slate-300">
+                                        {faq.answer}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+
+                    <section className="rounded-lg border border-slate-800 bg-slate-900/60 p-6">
+                        <h2 className="text-lg font-semibold">
+                            Players still can&apos;t connect?
+                        </h2>
+
+                        <p className="mt-2 text-sm leading-6 text-slate-400">
+                            If the server starts fine but friends can&apos;t
+                            reach it, see the{" "}
+                            <Link
+                                href="/troubleshooting"
+                                className="text-sky-400 hover:text-sky-300 hover:underline"
+                            >
+                                connection troubleshooting guide
+                            </Link>{" "}
+                            -- it covers CGNAT, firewall issues, port
+                            forwarding mistakes and more, and includes an
+                            interactive diagnostic.
                         </p>
                     </section>
                 </div>

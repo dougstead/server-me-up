@@ -1,18 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Terms of Use",
   description: "The terms for using SelfServr's tools, guides and downloads.",
-  alternates: {
-    canonical: "/terms",
-  },
-};
+  path: "/terms",
+});
 
 export default function TermsOfUsePage() {
   return (
     <main className="min-h-screen bg-slate-950 text-white">
       <div className="mx-auto max-w-3xl px-6 py-16">
+        <Breadcrumbs items={[{ label: "Terms of Use" }]} />
+
         <p className="text-sm font-semibold uppercase tracking-widest text-sky-400">
           SelfServr
         </p>

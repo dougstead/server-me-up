@@ -1,20 +1,41 @@
 import type { Metadata } from "next";
 import CodeBlock from "@/components/CodeBlock";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import JsonLd from "@/components/JsonLd";
+import { pageMetadata } from "@/lib/metadata";
+import { howToSchema } from "@/lib/structured-data";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Keeping Your Server Running 24/7",
   description:
     "Free guide: how to keep your dedicated game server running around the clock using Windows Task Scheduler or a Linux systemd service, with automatic restarts on crash.",
-  alternates: {
-    canonical: "/guides/keep-server-running",
+  path: "/guides/keep-server-running",
+});
+
+const HOW_TO_STEPS = [
+  {
+    name: "Windows: create a Task Scheduler task",
+    text: 'Open Task Scheduler, choose "Create Task", enable "Run whether user is logged on or not", add an "At startup" trigger, and an action that starts your server\'s start script with "Start in" set to its install folder.',
   },
-};
+  {
+    name: "Linux: create a systemd service",
+    text: "Create a unit file at /etc/systemd/system/myserver.service pointing ExecStart at your start script, then run systemctl daemon-reload and systemctl enable --now myserver.service.",
+  },
+];
 
 export default function KeepServerRunningGuidePage() {
   return (
     <main className="min-h-screen bg-slate-950 text-white">
       <div className="mx-auto max-w-3xl px-6 py-16">
+        <JsonLd
+          data={howToSchema({
+            name: "How to Keep a Game Server Running 24/7",
+            description:
+              "Keep a dedicated game server running around the clock with Windows Task Scheduler or a Linux systemd service, including automatic restarts on crash.",
+            steps: HOW_TO_STEPS,
+          })}
+        />
+
         <Breadcrumbs
           items={[
             { label: "Guides", href: "/guides" },

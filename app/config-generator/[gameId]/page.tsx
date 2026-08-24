@@ -6,6 +6,7 @@ import { configTemplates } from "@/lib/config-templates";
 import { loadRawConfigTemplates } from "@/lib/game-config-loader";
 import ConfigGenerator from "@/components/ConfigGenerator";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import { pageMetadata } from "@/lib/metadata";
 
 export async function generateStaticParams() {
     return games
@@ -24,13 +25,11 @@ export async function generateMetadata(
         return {};
     }
 
-    return {
+    return pageMetadata({
         title: `${game.name} Config Generator`,
         description: `Free tool to generate a ready-to-use ${template.configFileLabel} for your ${game.name} dedicated server -- server name, password, max players and more.`,
-        alternates: {
-            canonical: `/config-generator/${game.id}`,
-        },
-    };
+        path: `/config-generator/${game.id}`,
+    });
 }
 
 export default async function GameConfigGeneratorPage(
@@ -90,6 +89,40 @@ export default async function GameConfigGeneratorPage(
                         gameId={game.id}
                         rawTemplates={loadRawConfigTemplates(game.id)}
                     />
+                </div>
+
+                <div className="mt-8 rounded-lg border border-slate-800 bg-slate-900/40 p-4 text-sm leading-6 text-slate-400">
+                    <span className="font-semibold text-slate-300">Source: </span>
+                    {template.sourceUrl ? (
+                        <a
+                            href={template.sourceUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sky-400 hover:text-sky-300 hover:underline"
+                        >
+                            {template.sourceNote}
+                        </a>
+                    ) : (
+                        template.sourceNote
+                    )}
+                </div>
+
+                <div className="mt-6 rounded-lg border border-slate-800 bg-slate-900/60 p-6">
+                    <h2 className="text-lg font-semibold">
+                        Server running but nobody can join?
+                    </h2>
+
+                    <p className="mt-2 text-sm leading-6 text-slate-400">
+                        A wrong or missing setting in this file isn&apos;t
+                        the only reason players can&apos;t connect -- see the{" "}
+                        <Link
+                            href="/troubleshooting"
+                            className="text-sky-400 hover:text-sky-300 hover:underline"
+                        >
+                            connection troubleshooting guide
+                        </Link>{" "}
+                        for port forwarding, firewall and CGNAT issues.
+                    </p>
                 </div>
             </div>
         </main>

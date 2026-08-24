@@ -1,15 +1,14 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Dynamic DNS for a Changing IP Address",
   description:
     "Free guide: how to set up Dynamic DNS so players can always reach your game server, even when your ISP changes your home connection's public IP address.",
-  alternates: {
-    canonical: "/guides/dynamic-dns",
-  },
-};
+  path: "/guides/dynamic-dns",
+});
 
 export default function DynamicDnsGuidePage() {
   return (

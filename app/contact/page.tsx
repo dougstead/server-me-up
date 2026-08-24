@@ -1,19 +1,21 @@
 import type { Metadata } from "next";
 import ContactForm from "@/components/ContactForm";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Contact",
   description:
     "Get in touch with SelfServr -- questions, bug reports, or game suggestions.",
-  alternates: {
-    canonical: "/contact",
-  },
-};
+  path: "/contact",
+});
 
 export default function ContactPage() {
   return (
     <main className="min-h-screen bg-slate-950 text-white">
       <div className="mx-auto max-w-3xl px-6 py-16">
+        <Breadcrumbs items={[{ label: "Contact" }]} />
+
         <p className="text-sm font-semibold uppercase tracking-widest text-sky-400">
           SelfServr
         </p>

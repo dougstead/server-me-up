@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { SITE_URL } from "@/lib/site";
+import { breadcrumbSchema } from "@/lib/structured-data";
+import JsonLd from "@/components/JsonLd";
 
 export type BreadcrumbItem = {
     label: string;
@@ -19,22 +21,15 @@ export type BreadcrumbItem = {
 export default function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
     const allItems: BreadcrumbItem[] = [{ label: "Home", href: "/" }, ...items];
 
-    const breadcrumbJsonLd = {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        itemListElement: allItems.map((item, index) => ({
-            "@type": "ListItem",
-            position: index + 1,
-            name: item.label,
-            ...(item.href ? { item: `${SITE_URL}${item.href}` } : {}),
-        })),
-    };
-
     return (
         <>
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+            <JsonLd
+                data={breadcrumbSchema(
+                    allItems.map((item) => ({
+                        name: item.label,
+                        ...(item.href ? { url: `${SITE_URL}${item.href}` } : {}),
+                    })),
+                )}
             />
 
             <nav aria-label="Breadcrumb" className="mb-6 text-sm">

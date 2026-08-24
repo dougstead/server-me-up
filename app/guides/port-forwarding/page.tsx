@@ -1,20 +1,58 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 import CodeBlock from "@/components/CodeBlock";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import JsonLd from "@/components/JsonLd";
+import { pageMetadata } from "@/lib/metadata";
+import { howToSchema } from "@/lib/structured-data";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "How to Set Up Port Forwarding",
   description:
     "A free step-by-step guide to forwarding ports on your router so players outside your home network can connect to your dedicated game server.",
-  alternates: {
-    canonical: "/guides/port-forwarding",
+  path: "/guides/port-forwarding",
+});
+
+const HOW_TO_STEPS = [
+  {
+    name: "Find your server's local IP address",
+    text: "Run ipconfig (Windows) or ip addr (Linux) on the server machine and note its IPv4 address on the network you're using.",
   },
-};
+  {
+    name: "Open your router's admin page",
+    text: "Browse to your router's local address (commonly 192.168.0.1, 192.168.1.1 or 192.168.1.254) and sign in with its admin credentials.",
+  },
+  {
+    name: "Find the port forwarding settings",
+    text: "Look for a section named Port Forwarding, Virtual Server, NAT or Port Mapping -- naming varies by router manufacturer.",
+  },
+  {
+    name: "Create the forwarding rule",
+    text: "Enter the server's internal IP address, the internal and external port, and the correct protocol (TCP or UDP) for your game.",
+  },
+  {
+    name: "Allow the server through the firewall",
+    text: "Allow the dedicated server application (or the specific port) through the server machine's own firewall -- Windows Firewall, ufw or firewalld.",
+  },
+  {
+    name: "Keep the server's local IP stable",
+    text: "Set a DHCP reservation on the router so the server always gets the same local IP address, otherwise the forwarding rule can silently break.",
+  },
+];
 
 export default function PortForwardingGuidePage() {
   return (
     <main className="min-h-screen bg-slate-950 text-white">
       <div className="mx-auto max-w-3xl px-6 py-16">
+        <JsonLd
+          data={howToSchema({
+            name: "How to Set Up Port Forwarding",
+            description:
+              "Forward ports on your router so players outside your home network can connect to your dedicated game server.",
+            steps: HOW_TO_STEPS,
+          })}
+        />
+
         <Breadcrumbs
           items={[
             { label: "Guides", href: "/guides" },
@@ -230,6 +268,18 @@ sudo firewall-cmd --reload`}
             <p className="mt-3 leading-7 text-slate-300">
               You may need to ask your internet provider for a public IPv4
               address or use an alternative networking solution.
+            </p>
+
+            <p className="mt-3 leading-7 text-slate-300">
+              See the{" "}
+              <Link
+                href="/troubleshooting"
+                className="text-sky-400 hover:text-sky-300 hover:underline"
+              >
+                connection troubleshooting guide
+              </Link>{" "}
+              for a full walkthrough of CGNAT and other common connection
+              problems.
             </p>
           </section>
         </div>

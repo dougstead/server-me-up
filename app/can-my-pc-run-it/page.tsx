@@ -3,15 +3,14 @@ import type { Metadata } from "next";
 import CanMyMachineRunIt from "@/components/CanMyMachineRunIt";
 import { getAllBenchmarkInsights } from "@/lib/benchmark-insights";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
     title: "Can My Machine Run It?",
     description:
         "Free tool to check whether your PC or server meets the CPU, RAM, storage and network requirements to host a dedicated game server for Minecraft, Rust, ARK, Valheim, Palworld and more.",
-    alternates: {
-        canonical: "/can-my-pc-run-it",
-    },
-};
+    path: "/can-my-pc-run-it",
+});
 
 export default function CanMyPcRunItPage() {
     const benchmarkInsightsByGame = getAllBenchmarkInsights();

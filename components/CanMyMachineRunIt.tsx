@@ -73,6 +73,49 @@ type ServerEvaluation = {
   network: RequirementEvaluation;
 };
 
+// A one-line aggregate verdict above the field-by-field results. This is
+// only ever a summary of the five checks below it -- it deliberately
+// doesn't try to be a more precise or confident claim than the underlying
+// per-field evaluations already are (e.g. it never asserts a specific
+// player-capacity number, since none of the underlying data supports one).
+function summarizeEvaluation(evaluation: ServerEvaluation): {
+  headline: string;
+  detail: string;
+  tone: "good" | "warning" | "fail";
+} {
+  const statuses = Object.values(evaluation).map((item) => item.status);
+
+  if (statuses.includes("fail")) {
+    return {
+      headline: "Likely won't meet requirements",
+      detail: "At least one requirement below is not met.",
+      tone: "fail",
+    };
+  }
+
+  if (statuses.includes("warning")) {
+    return {
+      headline: "Should run, with some caveats",
+      detail: "Meets published minimums, but not every recommendation below.",
+      tone: "warning",
+    };
+  }
+
+  if (statuses.every((status) => status === "good")) {
+    return {
+      headline: "Looks like a good fit",
+      detail: "Meets every published requirement checked below.",
+      tone: "good",
+    };
+  }
+
+  return {
+    headline: "Partially checked",
+    detail: "Some fields below couldn't be compared -- see \"Unknown\" results for why.",
+    tone: "warning",
+  };
+}
+
 function formatGb(mb: number): string {
   return `${(mb / 1024).toFixed(1)} GB`;
 }
@@ -552,6 +595,15 @@ export default function CanMyMachineRunIt({
                             </Link>
                         </>
                     )}
+
+                    {" "}
+                    <span className="text-slate-600">·</span>{" "}
+                    <Link
+                        href="/troubleshooting"
+                        className="text-sky-400 hover:text-sky-300 hover:underline"
+                    >
+                        Troubleshooting →
+                    </Link>
                 </p>
             </div>
 
@@ -781,7 +833,7 @@ export default function CanMyMachineRunIt({
                 </p>
 
                 <a
-                    href={`/downloads/server-me-up-hardware-scan.bat?game=${selectedGame.id}`}
+                    href={`/downloads/selfservr-hardware-scan.bat?game=${selectedGame.id}`}
                     download
                     className="mt-5 inline-block rounded-lg bg-sky-500 px-5 py-3 font-semibold text-white hover:bg-sky-400"
                 >
@@ -855,6 +907,24 @@ export default function CanMyMachineRunIt({
                 <h2 className="text-lg font-semibold">
                     Compatibility
                 </h2>
+
+                {(() => {
+                    const summary = summarizeEvaluation(evaluation);
+                    const toneClasses: Record<typeof summary.tone, string> = {
+                        good: "border-emerald-800 bg-emerald-950/20 text-emerald-300",
+                        warning: "border-amber-800 bg-amber-950/20 text-amber-300",
+                        fail: "border-red-900 bg-red-950/20 text-red-300",
+                    };
+
+                    return (
+                        <div
+                            className={`mt-4 rounded-lg border p-4 ${toneClasses[summary.tone]}`}
+                        >
+                            <p className="font-semibold">{summary.headline}</p>
+                            <p className="mt-1 text-sm text-slate-300">{summary.detail}</p>
+                        </div>
+                    );
+                })()}
 
                 <div className="mt-5 grid gap-3 sm:grid-cols-2">
                     <RequirementResult

@@ -211,6 +211,26 @@ export default function BurgerMenu() {
 
           <li>
             <Link
+              href="/troubleshooting"
+              onClick={closeMenu}
+              className="block rounded-lg px-3 py-3 font-medium text-white hover:bg-slate-800"
+            >
+              Troubleshooting
+            </Link>
+          </li>
+
+          <li>
+            <Link
+              href="/about"
+              onClick={closeMenu}
+              className="block rounded-lg px-3 py-3 font-medium text-white hover:bg-slate-800"
+            >
+              About
+            </Link>
+          </li>
+
+          <li>
+            <Link
               href="/contact"
               onClick={closeMenu}
               className="block rounded-lg px-3 py-3 font-medium text-white hover:bg-slate-800"

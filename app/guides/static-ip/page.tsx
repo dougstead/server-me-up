@@ -2,20 +2,41 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import CodeBlock from "@/components/CodeBlock";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import JsonLd from "@/components/JsonLd";
+import { pageMetadata } from "@/lib/metadata";
+import { howToSchema } from "@/lib/structured-data";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Setting a Static Local IP Address",
   description:
     "Free guide: how to give your server a fixed local IP address with a DHCP reservation, so your port forwarding rules keep working after a router restart.",
-  alternates: {
-    canonical: "/guides/static-ip",
+  path: "/guides/static-ip",
+});
+
+const HOW_TO_STEPS = [
+  {
+    name: "Find your server's MAC address",
+    text: "Run ipconfig /all (Windows) or ip link (Linux) on the server machine and note its network adapter's physical/MAC address.",
   },
-};
+  {
+    name: "Set a DHCP reservation on your router",
+    text: "In the router's admin page, find DHCP Reservation, Address Reservation, Static DHCP or IP & MAC Binding, then bind the MAC address from step 1 to a chosen IP.",
+  },
+];
 
 export default function StaticIpGuidePage() {
   return (
     <main className="min-h-screen bg-slate-950 text-white">
       <div className="mx-auto max-w-3xl px-6 py-16">
+        <JsonLd
+          data={howToSchema({
+            name: "How to Set a Static Local IP Address",
+            description:
+              "Give your server a fixed local IP address with a router DHCP reservation, so port forwarding rules keep working after a router restart.",
+            steps: HOW_TO_STEPS,
+          })}
+        />
+
         <Breadcrumbs
           items={[
             { label: "Guides", href: "/guides" },

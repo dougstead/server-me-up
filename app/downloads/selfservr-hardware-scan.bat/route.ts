@@ -112,7 +112,7 @@ Start-Process $url
         headers: {
             "Content-Type": "application/octet-stream",
             "Content-Disposition":
-                'attachment; filename="server-me-up-hardware-scan.bat"',
+                'attachment; filename="selfservr-hardware-scan.bat"',
             "Cache-Control": "no-store",
         },
     });

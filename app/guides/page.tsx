@@ -2,15 +2,14 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { guides, gameGuides } from "@/lib/guides";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Guides",
   description:
     "Every free guide on SelfServr: general networking guides for port forwarding, static IPs and Dynamic DNS, plus a dedicated server setup guide for each supported game.",
-  alternates: {
-    canonical: "/guides",
-  },
-};
+  path: "/guides",
+});
 
 export default function GuidesIndexPage() {
   return (
@@ -46,6 +45,22 @@ export default function GuidesIndexPage() {
                 </li>
               ))}
             </ul>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-semibold">Troubleshooting</h2>
+
+            <p className="mt-2 text-sm leading-6 text-slate-400">
+              Server running but players still can&apos;t connect? Start
+              here.
+            </p>
+
+            <Link
+              href="/troubleshooting"
+              className="mt-4 block max-w-sm rounded-lg border border-slate-800 bg-slate-900/40 px-4 py-3 text-slate-200 hover:border-sky-500 hover:text-white"
+            >
+              Server connection troubleshooting
+            </Link>
           </section>
 
           <section>

@@ -2,15 +2,14 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { configGeneratorGuides } from "@/lib/guides";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Config Generators",
   description:
     "Free config generators for dedicated game servers -- fill in a form and download a ready-to-use config file for every game we support one for.",
-  alternates: {
-    canonical: "/config-generator",
-  },
-};
+  path: "/config-generator",
+});
 
 export default function ConfigGeneratorIndexPage() {
   return (

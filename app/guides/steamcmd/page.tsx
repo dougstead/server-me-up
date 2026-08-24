@@ -3,20 +3,42 @@ import type { Metadata } from "next";
 import { gameGuides } from "@/lib/guides";
 import CodeBlock from "@/components/CodeBlock";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import JsonLd from "@/components/JsonLd";
+import { pageMetadata } from "@/lib/metadata";
+import { howToSchema } from "@/lib/structured-data";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Installing SteamCMD",
   description:
     "Free guide: how to install Valve's SteamCMD tool on Windows or Linux and use it to download dedicated servers for Rust, ARK, Valheim, Team Fortress 2 and more.",
-  alternates: {
-    canonical: "/guides/steamcmd",
+  path: "/guides/steamcmd",
+});
+
+const HOW_TO_STEPS = [
+  {
+    name: "Install SteamCMD",
+    text: "Windows: download steamcmd.zip from Valve's official page and extract it into its own folder, then run steamcmd.exe once. Linux: install the steamcmd package via your distribution's package manager (Debian/Ubuntu need the multiverse repository and i386 architecture enabled first).",
+    url: "https://developer.valvesoftware.com/wiki/SteamCMD",
   },
-};
+  {
+    name: "Download a dedicated server",
+    text: 'From the Steam> prompt, run: force_install_dir "<path>", login anonymous, app_update <app id> validate, quit -- using the Steam app ID for the specific game\'s dedicated server.',
+  },
+];
 
 export default function SteamCmdGuidePage() {
   return (
     <main className="min-h-screen bg-slate-950 text-white">
       <div className="mx-auto max-w-3xl px-6 py-16">
+        <JsonLd
+          data={howToSchema({
+            name: "How to Install SteamCMD",
+            description:
+              "Install Valve's SteamCMD tool on Windows or Linux and use it to download a Steam-distributed dedicated server.",
+            steps: HOW_TO_STEPS,
+          })}
+        />
+
         <Breadcrumbs
           items={[
             { label: "Guides", href: "/guides" },

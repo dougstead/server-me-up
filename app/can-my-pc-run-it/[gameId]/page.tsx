@@ -7,6 +7,9 @@ import { configTemplates } from "@/lib/config-templates";
 import { getAllBenchmarkInsights } from "@/lib/benchmark-insights";
 import CanMyMachineRunIt from "@/components/CanMyMachineRunIt";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import JsonLd from "@/components/JsonLd";
+import { faqSchema } from "@/lib/structured-data";
+import { pageMetadata } from "@/lib/metadata";
 
 export async function generateStaticParams() {
     return games.map((game) => ({ gameId: game.id }));
@@ -22,13 +25,11 @@ export async function generateMetadata(
         return {};
     }
 
-    return {
+    return pageMetadata({
         title: `Can My PC Run a ${game.name} Server?`,
         description: `Free tool: check whether your PC or laptop meets the CPU, RAM, storage and network requirements to host a ${game.name} dedicated server -- enter your specs for an instant answer.`,
-        alternates: {
-            canonical: `/can-my-pc-run-it/${game.id}`,
-        },
-    };
+        path: `/can-my-pc-run-it/${game.id}`,
+    });
 }
 
 export default async function CanMyPcRunGamePage(
@@ -90,24 +91,12 @@ export default async function CanMyPcRunGamePage(
         },
     ];
 
-    const faqJsonLd = {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        mainEntity: faqs.map((faq) => ({
-            "@type": "Question",
-            name: faq.question,
-            acceptedAnswer: {
-                "@type": "Answer",
-                text: faq.answer,
-            },
-        })),
-    };
-
     return (
         <main className="min-h-screen bg-slate-950 text-white">
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+            <JsonLd
+                data={faqSchema(
+                    faqs.map((faq) => ({ question: faq.question, answer: faq.answer })),
+                )}
             />
 
             <div className="mx-auto max-w-5xl px-6 py-16">
@@ -264,6 +253,13 @@ export default async function CanMyPcRunGamePage(
                                 Config generator →
                             </Link>
                         )}
+
+                        <Link
+                            href="/troubleshooting"
+                            className="rounded-lg border border-slate-700 px-5 py-3 font-semibold text-white hover:border-sky-500"
+                        >
+                            Troubleshooting guide →
+                        </Link>
                     </div>
                 </section>
             </div>

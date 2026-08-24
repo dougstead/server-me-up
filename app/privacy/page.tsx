@@ -1,18 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Privacy Policy",
   description: "What SelfServr does and doesn't do with your data.",
-  alternates: {
-    canonical: "/privacy",
-  },
-};
+  path: "/privacy",
+});
 
 export default function PrivacyPolicyPage() {
   return (
     <main className="min-h-screen bg-slate-950 text-white">
       <div className="mx-auto max-w-3xl px-6 py-16">
+        <Breadcrumbs items={[{ label: "Privacy Policy" }]} />
+
         <p className="text-sm font-semibold uppercase tracking-widest text-sky-400">
           SelfServr
         </p>

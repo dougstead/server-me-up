@@ -77,6 +77,38 @@ export default function Home() {
             ))}
           </ul>
         </div>
+
+        <div className="mt-16 grid gap-4 sm:grid-cols-3">
+          <Link
+            href="/guides"
+            className="rounded-lg border border-slate-800 bg-slate-900/40 p-5 hover:border-sky-500"
+          >
+            <h2 className="font-semibold text-white">Setup guides</h2>
+            <p className="mt-1 text-sm text-slate-400">
+              Server files, ports and startup, per game.
+            </p>
+          </Link>
+
+          <Link
+            href="/config-generator"
+            className="rounded-lg border border-slate-800 bg-slate-900/40 p-5 hover:border-sky-500"
+          >
+            <h2 className="font-semibold text-white">Config generators</h2>
+            <p className="mt-1 text-sm text-slate-400">
+              Fill in a form, download a ready-to-use config file.
+            </p>
+          </Link>
+
+          <Link
+            href="/troubleshooting"
+            className="rounded-lg border border-slate-800 bg-slate-900/40 p-5 hover:border-sky-500"
+          >
+            <h2 className="font-semibold text-white">Troubleshooting</h2>
+            <p className="mt-1 text-sm text-slate-400">
+              Server running but nobody can connect? Start here.
+            </p>
+          </Link>
+        </div>
       </div>
     </main>
   );

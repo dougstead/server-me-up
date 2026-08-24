@@ -9,6 +9,9 @@ export default function SiteFooter() {
         </span>
 
         <nav className="flex flex-wrap gap-x-6 gap-y-2">
+          <Link href="/about" className="hover:text-slate-300">
+            About
+          </Link>
           <Link href="/contact" className="hover:text-slate-300">
             Contact
           </Link>
