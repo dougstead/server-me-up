@@ -3,6 +3,16 @@ $ErrorActionPreference = "Stop"
 $AppDirectory = "C:\Apps\server-me-up"
 $TaskName = "Server Me Up"
 
+# SelfServr's port is fixed at 3000, not left to whatever Next.js would
+# otherwise default to -- this host also runs a second site, so both this
+# script's own port-cleanup/verification steps and package.json's "start"
+# script ("next start -p 3000") pin the same number explicitly rather than
+# relying on Next's default (which the two sites would otherwise race for
+# depending on boot/service-start order). If that second site is ever moved
+# onto this same box's port range, give it its own fixed port too rather
+# than letting either app fall back to "whatever's free".
+$Port = 3000
+
 function Assert-LastCommandSucceeded {
     param(
         [string]$Step
@@ -32,7 +42,7 @@ Stop-ScheduledTask `
 # a previous interrupted deploy, and that's exactly what can hold
 # node_modules\@esbuild\win32-x64\esbuild.exe locked and make `npm ci`
 # fail with EPERM -- so also sweep for anything still running out of the
-# app directory, not just whatever's bound to port 3000.
+# app directory, not just whatever's bound to $Port.
 function Stop-StaleAppProcesses {
     $staleProcesses = Get-CimInstance Win32_Process -ErrorAction SilentlyContinue |
         Where-Object {
@@ -52,14 +62,14 @@ function Stop-StaleAppProcesses {
     return @($staleProcesses).Count
 }
 
-# Make absolutely sure nothing is still listening on port 3000.
+# Make absolutely sure nothing is still listening on our port.
 $connections = Get-NetTCPConnection `
-    -LocalPort 3000 `
+    -LocalPort $Port `
     -State Listen `
     -ErrorAction SilentlyContinue
 
 foreach ($connection in $connections) {
-    Write-Host "Stopping process $($connection.OwningProcess) on port 3000..."
+    Write-Host "Stopping process $($connection.OwningProcess) on port $Port..."
 
     Stop-Process `
         -Id $connection.OwningProcess `
@@ -127,10 +137,13 @@ try {
 
     Start-Sleep -Seconds 3
 
-    # Verify that Next.js really came back.
+    # Verify that Next.js really came back, on the port we expect --
+    # if the scheduled task's own action doesn't pin -p $Port itself and
+    # Next fell back to a different port, this catches that as a failure
+    # rather than silently deploying a server nobody can reach on $Port.
     try {
         $response = Invoke-WebRequest `
-            -Uri "http://localhost:3000" `
+            -Uri "http://localhost:$Port" `
             -UseBasicParsing `
             -TimeoutSec 10
 
@@ -139,7 +152,7 @@ try {
         }
     }
     catch {
-        throw "Server did not start successfully: $($_.Exception.Message)"
+        throw "Server did not start successfully on port ${Port}: $($_.Exception.Message)"
     }
 
     Write-Host "Deployment complete." -ForegroundColor Green

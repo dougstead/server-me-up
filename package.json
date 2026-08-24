@@ -5,8 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3000",
     "lint": "eslint",
+    "deploy": "powershell.exe -ExecutionPolicy Bypass -File ./scripts/deploy.ps1",
     "update:cpus": "tsx scripts/import-cpus.ts",
     "update:configs": "tsx scripts/update-game-configs.ts",
     "benchmark": "tsx tools/benchmark-agent/index.ts"
