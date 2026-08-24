@@ -1,0 +1,9 @@
+{
+  "server": {
+    "name": "{{server_name}}",
+    "password": "{{password}}",
+    "rconpassword": "{{rcon_password}}",
+    "world": "{{world_name}}",
+    "networktype": "steam"
+  }
+}

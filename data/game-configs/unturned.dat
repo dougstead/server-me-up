@@ -1,0 +1,5 @@
+Name {{server_name}}
+Password {{password}}
+MaxPlayers {{max_players}}
+Map {{map}}
+Perspective {{perspective}}

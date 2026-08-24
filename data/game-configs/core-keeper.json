@@ -1,0 +1,7 @@
+{
+  "worldName": "{{world_name}}",
+  "maxNumberPlayers": {{max_players}},
+  "world": {{world_slot}},
+  "worldMode": {{world_mode}},
+  "worldSeed": {{world_seed}}
+}

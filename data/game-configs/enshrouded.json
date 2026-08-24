@@ -1,0 +1,39 @@
+{
+  "name": "{{server_name}}",
+  "saveDirectory": "./savegame",
+  "logDirectory": "./logs",
+  "ip": "0.0.0.0",
+  "queryPort": {{query_port}},
+  "slotCount": {{slot_count}},
+  "gameSettingsPreset": "{{game_settings_preset}}",
+  "gameSettings": {},
+  "userGroups": [
+    {
+      "name": "Admin",
+      "password": "{{admin_password}}",
+      "canKickBan": true,
+      "canAccessInventories": true,
+      "canEditBase": true,
+      "canExtendBase": true,
+      "reservedSlots": 0
+    },
+    {
+      "name": "Friend",
+      "password": "{{friend_password}}",
+      "canKickBan": false,
+      "canAccessInventories": true,
+      "canEditBase": true,
+      "canExtendBase": true,
+      "reservedSlots": 0
+    },
+    {
+      "name": "Guest",
+      "password": "{{guest_password}}",
+      "canKickBan": false,
+      "canAccessInventories": false,
+      "canEditBase": false,
+      "canExtendBase": false,
+      "reservedSlots": 0
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<serversettings name="{{server_name}}" password="{{password}}" maxplayers="{{max_players}}" public="{{public_visible}}" gamemode="{{game_mode}}" />

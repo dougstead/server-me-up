@@ -1,0 +1,11 @@
+{
+  "ServerName": "{{server_name}}",
+  "ServerPassword": "{{server_password}}",
+  "ServerPlayers": {{max_players}},
+  "ServerIP": "0.0.0.0",
+  "serverSteamPort": 8766,
+  "serverGamePort": 27015,
+  "serverQueryPort": 27016,
+  "Slot": 1,
+  "Difficulty": "{{difficulty}}"
+}

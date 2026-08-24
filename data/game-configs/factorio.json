@@ -1,0 +1,17 @@
+{
+  "name": "{{server_name}}",
+  "description": "{{description}}",
+  "tags": [],
+  "max_players": {{max_players}},
+  "visibility": {
+    "public": {{public_visible}},
+    "lan": true
+  },
+  "game_password": "{{game_password}}",
+  "require_user_verification": true,
+  "autosave_interval": {{autosave_interval}},
+  "autosave_slots": 5,
+  "afk_autokick_interval": 0,
+  "allow_commands": "admins-only",
+  "only_admins_can_pause_the_game": true
+}

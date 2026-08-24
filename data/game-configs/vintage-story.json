@@ -1,0 +1,7 @@
+{
+  "ServerName": "{{server_name}}",
+  "WelcomeMessage": "{{welcome_message}}",
+  "Password": "{{password}}",
+  "MaxClients": {{max_clients}},
+  "AllowPvp": {{allow_pvp}}
+}

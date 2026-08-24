@@ -507,6 +507,820 @@ const templates: GameConfigTemplate[] = [
     ],
     fileName: () => "DedicatedServer.ini",
   },
+
+  {
+    gameId: "7-days-to-die",
+    configFileLabel: "serverconfig.xml",
+    description:
+      "The main dedicated-server config, next to the server executable. Loaded automatically on startup.",
+    sourceNote:
+      "7 Days to Die Wiki server configuration reference (community-documented; The Fun Pimps don't publish a formal spec).",
+    sourceUrl: "https://7daystodie.wiki.gg/wiki/Server:_serverconfig.xml",
+    dataFile: "7-days-to-die.xml",
+    fields: [
+      { id: "server_name", label: "Server Name", type: "text", defaultValue: "My 7 Days to Die Server" },
+      { id: "server_password", label: "Server Password", type: "text", defaultValue: "" },
+      {
+        id: "server_visibility",
+        label: "Server Visibility",
+        type: "select",
+        defaultValue: "2",
+        options: [
+          { value: "2", label: "Public" },
+          { value: "1", label: "Friends Only" },
+          { value: "0", label: "Not Listed" },
+        ],
+      },
+      { id: "server_port", label: "Server Port", type: "number", defaultValue: 26900 },
+      { id: "max_players", label: "Max Players", type: "number", defaultValue: 8 },
+      {
+        id: "game_difficulty",
+        label: "Game Difficulty",
+        type: "select",
+        defaultValue: "2",
+        options: [
+          { value: "0", label: "Easiest" },
+          { value: "1", label: "Easy" },
+          { value: "2", label: "Medium" },
+          { value: "3", label: "Hard" },
+          { value: "4", label: "Very Hard" },
+          { value: "5", label: "Insane" },
+        ],
+      },
+      { id: "telnet_password", label: "Telnet Admin Password", type: "text", defaultValue: "" },
+    ],
+    fileName: () => "serverconfig.xml",
+  },
+
+  {
+    gameId: "ark-survival-ascended",
+    configFileLabel: "GameUserSettings.ini",
+    description:
+      "The [ServerSettings] and [SessionSettings] entries most servers set first. The player cap isn't set in this file -- Survival Ascended reads it from the -WinLiveMaxPlayers launch parameter instead.",
+    sourceNote:
+      "ARK Official Community Wiki server configuration reference, covering Survival Ascended's GameUserSettings.ini (Studio Wildcard doesn't publish a formal spec).",
+    sourceUrl: "https://ark.wiki.gg/wiki/Server_configuration",
+    dataFile: "ark-survival-ascended.ini",
+    fields: [
+      { id: "session_name", label: "Session Name", type: "text", defaultValue: "My ARK Server" },
+      { id: "server_password", label: "Server Password", type: "text", defaultValue: "" },
+      { id: "admin_password", label: "Admin Password", type: "text", defaultValue: "" },
+      { id: "server_pve", label: "PvE (Disable PvP)", type: "boolean", defaultValue: false, booleanWords: ["True", "False"] },
+      { id: "xp_multiplier", label: "XP Multiplier", type: "number", defaultValue: 1 },
+    ],
+    fileName: () => "GameUserSettings.ini",
+  },
+
+  {
+    gameId: "conan-exiles",
+    configFileLabel: "ServerSettings.ini",
+    description:
+      "The behaviour toggles Conan Exiles Dedicated Server generates by default under [ServerSettings]. The server name and PvE/PvP mode aren't set here -- they come from launch parameters and which server module you run.",
+    sourceNote:
+      "Reflects the ServerSettings.ini structure the Conan Exiles Dedicated Server itself generates; cross-checked against a real shipped copy of the file.",
+    sourceUrl: "https://forums.funcom.com/c/conan-exiles/dedicated-servers",
+    dataFile: "conan-exiles.ini",
+    fields: [
+      { id: "server_password", label: "Server Password", type: "text", defaultValue: "" },
+      { id: "motd", label: "Message of the Day", type: "text", defaultValue: "" },
+      { id: "creative_mode", label: "Creative Mode", type: "boolean", defaultValue: false, booleanWords: ["True", "False"] },
+      { id: "battleye_enabled", label: "BattlEye Anti-Cheat", type: "boolean", defaultValue: false, booleanWords: ["True", "False"] },
+      { id: "kick_afk_time", label: "Kick AFK Time (Seconds)", type: "number", defaultValue: 2700 },
+      { id: "max_allowed_ping", label: "Max Allowed Ping (0 = Unlimited)", type: "number", defaultValue: 0 },
+    ],
+    fileName: () => "ServerSettings.ini",
+  },
+
+  {
+    gameId: "core-keeper",
+    configFileLabel: "ServerConfig.json",
+    description:
+      "Core Keeper's main dedicated-server settings file. Password, IP and port aren't set here -- they're passed as -password, -ip and -port launch flags instead.",
+    sourceNote:
+      "Community-documented (Pugstorm doesn't publish a formal reference); confirmed against the real shipped ServerConfig.json structure.",
+    sourceUrl: "https://core-keeper.fandom.com/wiki/Server_Config",
+    dataFile: "core-keeper.json",
+    fields: [
+      { id: "world_name", label: "World Name", type: "text", defaultValue: "Core Keeper Server", quoting: "json" },
+      { id: "max_players", label: "Max Players", type: "number", defaultValue: 8 },
+      { id: "world_slot", label: "World Slot (0-29)", type: "number", defaultValue: 0 },
+      {
+        id: "world_mode",
+        label: "World Mode",
+        type: "select",
+        defaultValue: "0",
+        options: [
+          { value: "0", label: "Normal" },
+          { value: "1", label: "Hard" },
+          { value: "2", label: "Creative" },
+          { value: "4", label: "Casual" },
+        ],
+      },
+      { id: "world_seed", label: "World Seed (0 = Random)", type: "number", defaultValue: 0 },
+    ],
+    fileName: () => "ServerConfig.json",
+  },
+
+  {
+    gameId: "counter-strike-2",
+    configFileLabel: "server.cfg",
+    description:
+      "Executed automatically on startup from game/csgo/cfg/server.cfg. The player-slot count is a normal convar here, unlike some older Source games.",
+    sourceNote: "Valve's own official Counter-Strike 2 Dedicated Servers documentation.",
+    sourceUrl: "https://developer.valvesoftware.com/wiki/Counter-Strike_2/Dedicated_Servers",
+    dataFile: "counter-strike-2.cfg",
+    fields: [
+      { id: "hostname", label: "Server Name", type: "text", defaultValue: "My CS2 Server", quoting: "double" },
+      { id: "sv_password", label: "Join Password", type: "text", defaultValue: "", quoting: "double" },
+      { id: "rcon_password", label: "RCON Password", type: "text", defaultValue: "", quoting: "double" },
+      { id: "mp_maxplayers", label: "Max Players", type: "number", defaultValue: 10 },
+    ],
+    fileName: () => "server.cfg",
+  },
+
+  {
+    gameId: "dayz-standalone",
+    configFileLabel: "serverDZ.cfg",
+    description: "The main general-config file, referenced on startup with -config=serverDZ.cfg.",
+    sourceNote: "Bohemia Interactive's own official community wiki (community.bistudio.com), hosted on Bohemia's own domain.",
+    sourceUrl: "https://community.bistudio.com/wiki/DayZ:Server_Configuration",
+    dataFile: "dayz-standalone.cfg",
+    fields: [
+      { id: "hostname", label: "Server Name", type: "text", defaultValue: "My DayZ Server" },
+      { id: "password", label: "Join Password", type: "text", defaultValue: "" },
+      { id: "password_admin", label: "Admin Password (#login)", type: "text", defaultValue: "" },
+      { id: "max_players", label: "Max Players", type: "number", defaultValue: 60 },
+      { id: "verify_signatures", label: "Verify Mod Signatures (0-2)", type: "number", defaultValue: 2 },
+      { id: "disable_3rd_person", label: "Disable Third Person View", type: "boolean", defaultValue: false, booleanWords: ["1", "0"] },
+    ],
+    fileName: () => "serverDZ.cfg",
+  },
+
+  {
+    gameId: "dont-starve-together",
+    configFileLabel: "cluster.ini",
+    description:
+      "The main cluster identity and gameplay file, in <Your Klei Folder>/MyDediServer/cluster.ini. A DST cluster also needs a cluster_token.txt (from your Klei account) that this generator doesn't produce.",
+    sourceNote:
+      "Klei's own official Dedicated Server Command Line Options Guide, cross-checked against real shipped cluster.ini files (Klei doesn't publish every cluster.ini key in one single reference).",
+    sourceUrl: "https://support.klei.com/hc/en-us/articles/360029556192-Dedicated-Server-Command-Line-Options-Guide",
+    dataFile: "dont-starve-together.ini",
+    fields: [
+      { id: "cluster_name", label: "Server Name", type: "text", defaultValue: "My DST Server" },
+      { id: "cluster_description", label: "Server Description", type: "text", defaultValue: "" },
+      { id: "cluster_password", label: "Server Password", type: "text", defaultValue: "" },
+      {
+        id: "cluster_intention",
+        label: "Server Intention",
+        type: "select",
+        defaultValue: "cooperative",
+        options: [
+          { value: "cooperative", label: "Cooperative" },
+          { value: "social", label: "Social" },
+          { value: "competitive", label: "Competitive" },
+          { value: "madness", label: "Madness" },
+        ],
+      },
+      {
+        id: "game_mode",
+        label: "Game Mode",
+        type: "select",
+        defaultValue: "survival",
+        options: [
+          { value: "survival", label: "Survival" },
+          { value: "endless", label: "Endless" },
+          { value: "wilderness", label: "Wilderness (No Resurrection)" },
+        ],
+      },
+      { id: "max_players", label: "Max Players", type: "number", defaultValue: 6 },
+      { id: "pvp", label: "Allow PvP", type: "boolean", defaultValue: false },
+      { id: "pause_when_empty", label: "Pause When Empty", type: "boolean", defaultValue: true },
+    ],
+    fileName: () => "cluster.ini",
+  },
+
+  {
+    gameId: "enshrouded",
+    configFileLabel: "enshrouded_server.json",
+    description:
+      "The main dedicated-server config, next to the server executable. gameSettings is only read when gameSettingsPreset is \"Custom\" -- any other preset value overrides it with a bundled difficulty preset.",
+    sourceNote: "Keen Games' own official server documentation, hosted on Keen Games' own support domain.",
+    sourceUrl: "https://enshrouded.zendesk.com/hc/en-us/articles/20453241249821-Server-Gameplay-Settings",
+    dataFile: "enshrouded.json",
+    fields: [
+      { id: "server_name", label: "Server Name", type: "text", defaultValue: "Enshrouded Server", quoting: "json" },
+      { id: "query_port", label: "Query Port", type: "number", defaultValue: 15637 },
+      { id: "slot_count", label: "Max Players (Up To 16)", type: "number", defaultValue: 16 },
+      {
+        id: "game_settings_preset",
+        label: "Difficulty Preset",
+        type: "select",
+        defaultValue: "Default",
+        options: [
+          { value: "Default", label: "Default" },
+          { value: "Relaxed", label: "Relaxed" },
+          { value: "Hard", label: "Hard" },
+          { value: "Survival", label: "Survival" },
+          { value: "Custom", label: "Custom" },
+        ],
+      },
+      { id: "admin_password", label: "Admin Group Password", type: "text", defaultValue: "", quoting: "json" },
+      { id: "friend_password", label: "Friend Group Password", type: "text", defaultValue: "", quoting: "json" },
+      { id: "guest_password", label: "Guest Group Password", type: "text", defaultValue: "", quoting: "json" },
+    ],
+    fileName: () => "enshrouded_server.json",
+  },
+
+  {
+    gameId: "satisfactory",
+    configFileLabel: "Engine.ini",
+    description:
+      "Satisfactory's server identity (name) and admin/client passwords aren't set via a config file -- they're claimed through the in-game Server Manager the first time you connect to a fresh server. This covers the two settings that are file-based: network tick rate and the autosave rotation count.",
+    sourceNote:
+      "Community-documented (Coffee Stain doesn't publish a config-file reference for this tweak, since it's normally done through the Server Manager); cross-checked against real shipped Engine.ini edits.",
+    dataFile: "satisfactory.ini",
+    fields: [
+      { id: "tick_rate", label: "Server Tick Rate", type: "number", defaultValue: 30 },
+      { id: "autosave_count", label: "Rotating Autosave Count", type: "number", defaultValue: 5 },
+    ],
+    fileName: () => "Engine.ini",
+  },
+
+  {
+    gameId: "v-rising",
+    configFileLabel: "ServerHostSettings.json",
+    description:
+      "The server identity and network file, in the persistent-data path's Settings folder. Gameplay rules (PvP/PvE, multipliers) live in the separate ServerGameSettings.json, not covered here.",
+    sourceNote: "Stunlock Studios' own official V Rising Dedicated Server Instructions, published on Stunlock's own GitHub.",
+    sourceUrl: "https://github.com/StunlockStudios/vrising-dedicated-server-instructions",
+    dataFile: "v-rising.json",
+    fields: [
+      { id: "server_name", label: "Server Name", type: "text", defaultValue: "My V Rising Server", quoting: "json" },
+      { id: "description", label: "Server Description", type: "text", defaultValue: "", quoting: "json" },
+      { id: "password", label: "Password", type: "text", defaultValue: "", quoting: "json" },
+      { id: "max_connected_users", label: "Max Players", type: "number", defaultValue: 40 },
+      { id: "list_on_master_server", label: "List Publicly", type: "boolean", defaultValue: true },
+    ],
+    fileName: () => "ServerHostSettings.json",
+  },
+
+  {
+    gameId: "factorio",
+    configFileLabel: "server-settings.json",
+    description: "Passed to the server binary with --server-settings server-settings.json.",
+    sourceNote: "Wube's own official example file, published on Wube's own GitHub (factorio-data).",
+    sourceUrl: "https://github.com/wube/factorio-data/blob/master/server-settings.example.json",
+    dataFile: "factorio.json",
+    fields: [
+      { id: "server_name", label: "Server Name", type: "text", defaultValue: "My Factorio Server", quoting: "json" },
+      { id: "description", label: "Description", type: "text", defaultValue: "", quoting: "json" },
+      { id: "max_players", label: "Max Players (0 = Unlimited)", type: "number", defaultValue: 0 },
+      { id: "public_visible", label: "List on Factorio Matchmaking", type: "boolean", defaultValue: true },
+      { id: "game_password", label: "Server Password", type: "text", defaultValue: "", quoting: "json" },
+      { id: "autosave_interval", label: "Autosave Interval (Minutes)", type: "number", defaultValue: 5 },
+    ],
+    fileName: () => "server-settings.json",
+  },
+
+  {
+    gameId: "squad",
+    configFileLabel: "Server.cfg",
+    description: "The main server-identity file, in SquadGame/ServerConfig/Server.cfg.",
+    sourceNote: "Official Squad Wiki server configuration reference (community-maintained on Fandom; Offworld Industries doesn't publish a formal spec of this file).",
+    sourceUrl: "https://squad.fandom.com/wiki/Server_Configuration",
+    dataFile: "squad.cfg",
+    fields: [
+      { id: "server_name", label: "Server Name", type: "text", defaultValue: "My Squad Server" },
+      { id: "max_players", label: "Max Players", type: "number", defaultValue: 100 },
+      { id: "num_reserved_slots", label: "Reserved Admin Slots", type: "number", defaultValue: 0 },
+      { id: "should_advertise", label: "List Publicly", type: "boolean", defaultValue: true, booleanWords: ["True", "False"] },
+    ],
+    fileName: () => "Server.cfg",
+  },
+
+  {
+    gameId: "barotrauma",
+    configFileLabel: "serversettings.xml",
+    description:
+      "The main dedicated-server settings file, in the Barotrauma root folder. Always stop the server before editing -- it overwrites this file on shutdown, discarding edits made while it was running.",
+    sourceNote:
+      "Cross-checked against multiple hosting providers' generated copies of this file rather than a single fetchable page; attribute casing has lower confidence than this generator's other games, so double-check against your own server's generated copy before relying on it.",
+    sourceUrl: "https://barotraumagame.com/wiki/Serversettings.xml",
+    dataFile: "barotrauma.xml",
+    fields: [
+      { id: "server_name", label: "Server Name", type: "text", defaultValue: "My Barotrauma Server" },
+      { id: "password", label: "Password", type: "text", defaultValue: "" },
+      { id: "max_players", label: "Max Players", type: "number", defaultValue: 16 },
+      { id: "public_visible", label: "List Publicly", type: "boolean", defaultValue: true },
+      {
+        id: "game_mode",
+        label: "Game Mode",
+        type: "select",
+        defaultValue: "mission",
+        options: [
+          { value: "mission", label: "Mission" },
+          { value: "campaign", label: "Campaign" },
+          { value: "sandbox", label: "Sandbox" },
+          { value: "pvp", label: "PvP" },
+        ],
+      },
+    ],
+    fileName: () => "serversettings.xml",
+  },
+
+  {
+    gameId: "insurgency-sandstorm",
+    configFileLabel: "Game.ini",
+    description:
+      "Covers the server-identity fields most hosts set first. Game.ini also carries dozens of round-timing and bot-difficulty settings not covered here -- see the setup guide for the rest.",
+    sourceNote:
+      "Community-documented (New World Interactive doesn't publish a single reference file); cross-checked against real shipped Game.ini examples.",
+    dataFile: "insurgency-sandstorm.ini",
+    fields: [
+      { id: "server_hostname", label: "Server Name", type: "text", defaultValue: "My Sandstorm Server" },
+      { id: "rcon_password", label: "RCON Password", type: "text", defaultValue: "" },
+    ],
+    fileName: () => "Game.ini",
+  },
+
+  {
+    gameId: "killing-floor-2",
+    configFileLabel: "PCServer-KFGame.ini",
+    description: "The main server-identity and access-control file, in KFGame/Config.",
+    sourceNote: "Tripwire Interactive's own official Dedicated Server documentation, hosted on Tripwire's own domain.",
+    sourceUrl: "https://wiki.tripwireinteractive.com/index.php?title=Dedicated_Server_(Killing_Floor_2)",
+    dataFile: "killing-floor-2.ini",
+    fields: [
+      { id: "server_name", label: "Server Name", type: "text", defaultValue: "Killing Floor 2 Server" },
+      { id: "short_name", label: "Short Name", type: "text", defaultValue: "KFServer" },
+      { id: "admin_password", label: "Admin Password", type: "text", defaultValue: "" },
+      { id: "game_password", label: "Join Password", type: "text", defaultValue: "" },
+    ],
+    fileName: () => "PCServer-KFGame.ini",
+  },
+
+  {
+    gameId: "left-4-dead-2",
+    configFileLabel: "server.cfg",
+    description: "Executed automatically on startup with +exec server.cfg.",
+    sourceNote: "Valve's own official Left 4 Dead 2 console commands and variables reference.",
+    sourceUrl: "https://developer.valvesoftware.com/wiki/List_of_Left_4_Dead_2_console_commands_and_variables",
+    dataFile: "left-4-dead-2.cfg",
+    fields: [
+      { id: "hostname", label: "Server Name", type: "text", defaultValue: "My L4D2 Server", quoting: "double" },
+      { id: "sv_password", label: "Join Password", type: "text", defaultValue: "", quoting: "double" },
+      { id: "rcon_password", label: "RCON Password", type: "text", defaultValue: "", quoting: "double" },
+    ],
+    fileName: () => "server.cfg",
+  },
+
+  {
+    gameId: "space-engineers",
+    configFileLabel: "SpaceEngineers-Dedicated.cfg",
+    description: "The main dedicated-server config, alongside the world save folder it points to via LoadWorld.",
+    sourceNote:
+      "Community-documented (Keen Software House doesn't publish a formal reference); cross-checked against a real shipped SpaceEngineers-Dedicated.cfg.",
+    dataFile: "space-engineers.cfg",
+    fields: [
+      { id: "server_name", label: "Server Name", type: "text", defaultValue: "My Space Engineers Server" },
+      { id: "world_name", label: "World Name", type: "text", defaultValue: "New World" },
+      {
+        id: "game_mode",
+        label: "Game Mode",
+        type: "select",
+        defaultValue: "Survival",
+        options: [
+          { value: "Survival", label: "Survival" },
+          { value: "Creative", label: "Creative" },
+        ],
+      },
+      { id: "max_players", label: "Max Players", type: "number", defaultValue: 16 },
+      {
+        id: "online_mode",
+        label: "Visibility",
+        type: "select",
+        defaultValue: "PUBLIC",
+        options: [
+          { value: "PUBLIC", label: "Public" },
+          { value: "PRIVATE", label: "Private" },
+          { value: "FRIENDS", label: "Friends Only" },
+        ],
+      },
+    ],
+    fileName: () => "SpaceEngineers-Dedicated.cfg",
+  },
+
+  {
+    gameId: "unturned",
+    configFileLabel: "Commands.dat",
+    description: "A list of server console commands, one per line, run automatically on startup.",
+    sourceNote: "Cross-checked against Smartly Dressed Games' own server-hosting documentation.",
+    sourceUrl: "https://docs.smartlydressedgames.com/en/stable/servers/server-hosting.html",
+    dataFile: "unturned.dat",
+    fields: [
+      { id: "server_name", label: "Server Name", type: "text", defaultValue: "My Unturned Server" },
+      { id: "password", label: "Password", type: "text", defaultValue: "" },
+      { id: "max_players", label: "Max Players", type: "number", defaultValue: 24 },
+      { id: "map", label: "Map", type: "text", defaultValue: "PEI" },
+      {
+        id: "perspective",
+        label: "Camera Perspective",
+        type: "select",
+        defaultValue: "Both",
+        options: [
+          { value: "Both", label: "Both (Player Choice)" },
+          { value: "First", label: "First Person Only" },
+          { value: "Third", label: "Third Person Only" },
+        ],
+      },
+    ],
+    fileName: () => "Commands.dat",
+  },
+
+  {
+    gameId: "the-forest",
+    configFileLabel: "dedicatedserver.cfg",
+    description:
+      "The main JSON server config, next to the dedicated server executable. Not to be confused with Sons of the Forest's separate config format.",
+    sourceNote:
+      "Community-documented (Endnight Games doesn't publish a formal reference for this file); exact key names weren't independently confirmed against a fresh install, so double-check against your own server's generated copy before relying on it.",
+    dataFile: "the-forest.json",
+    fields: [
+      { id: "server_name", label: "Server Name", type: "text", defaultValue: "My Forest Server", quoting: "json" },
+      { id: "server_password", label: "Server Password", type: "text", defaultValue: "", quoting: "json" },
+      { id: "max_players", label: "Max Players", type: "number", defaultValue: 4 },
+      {
+        id: "difficulty",
+        label: "Difficulty",
+        type: "select",
+        defaultValue: "Normal",
+        options: [
+          { value: "Peaceful", label: "Peaceful" },
+          { value: "Normal", label: "Normal" },
+          { value: "Hard", label: "Hard" },
+        ],
+        quoting: "json",
+      },
+    ],
+    fileName: () => "dedicatedserver.cfg",
+  },
+
+  {
+    gameId: "scum",
+    configFileLabel: "ServerSettings.ini",
+    description:
+      "SCUM has 400+ settings across 6 sections; this covers the [General] server-identity block most people set first.",
+    sourceNote:
+      "Community-documented (Gamepires doesn't publish a formal reference); cross-checked against real shipped ServerSettings.ini examples.",
+    dataFile: "scum.ini",
+    fields: [
+      { id: "server_name", label: "Server Name", type: "text", defaultValue: "My SCUM Server" },
+      { id: "server_description", label: "Server Description", type: "text", defaultValue: "" },
+      { id: "server_password", label: "Server Password", type: "text", defaultValue: "" },
+      { id: "max_players", label: "Max Players", type: "number", defaultValue: 64 },
+      {
+        id: "playstyle",
+        label: "Playstyle",
+        type: "select",
+        defaultValue: "PVP",
+        options: [
+          { value: "PVP", label: "PvP" },
+          { value: "PVE", label: "PvE" },
+        ],
+      },
+      { id: "welcome_message", label: "Welcome Message", type: "text", defaultValue: "" },
+    ],
+    fileName: () => "ServerSettings.ini",
+  },
+
+  {
+    gameId: "risk-of-rain-2",
+    configFileLabel: "server.cfg",
+    description: "Placed in Risk of Rain 2_Data/Config/server.cfg and loaded automatically on startup.",
+    sourceNote:
+      "Community-documented (Hopoo Games/Gearbox don't publish a formal reference); cross-checked against real shipped server.cfg examples.",
+    dataFile: "risk-of-rain-2.cfg",
+    fields: [
+      { id: "hostname", label: "Server Name", type: "text", defaultValue: "My Risk of Rain 2 Dedicated Server", quoting: "double" },
+      { id: "password", label: "Join Password", type: "text", defaultValue: "", quoting: "double" },
+      { id: "max_players", label: "Max Players", type: "number", defaultValue: 4 },
+      { id: "public_visible", label: "List Publicly", type: "boolean", defaultValue: true, booleanWords: ["1", "0"] },
+    ],
+    fileName: () => "server.cfg",
+  },
+
+  {
+    gameId: "mordhau",
+    configFileLabel: "Game.ini",
+    description: "The [/Script/Mordhau.MordhauGameSession] entries most servers set first.",
+    sourceNote: "Community-documented (Triternion doesn't publish a formal reference); cross-checked against real shipped Game.ini examples.",
+    dataFile: "mordhau.ini",
+    fields: [
+      { id: "server_name", label: "Server Name", type: "text", defaultValue: "My Mordhau Server" },
+      { id: "server_password", label: "Server Password", type: "text", defaultValue: "" },
+      { id: "max_players", label: "Max Players", type: "number", defaultValue: 24 },
+    ],
+    fileName: () => "Game.ini",
+  },
+
+  {
+    gameId: "astroneer",
+    configFileLabel: "AstroServerSettings.ini",
+    description: "The main dedicated-server settings file, alongside Engine.ini in the server's saved config folder.",
+    sourceNote: "System Era Softworks' own official Astroneer dedicated-server documentation, hosted on Astroneer's own domain.",
+    sourceUrl: "https://astroneer.space/dedicatedserver/",
+    dataFile: "astroneer.ini",
+    fields: [
+      { id: "server_name", label: "Server Name", type: "text", defaultValue: "My Astroneer Server" },
+      { id: "server_password", label: "Server Password", type: "text", defaultValue: "" },
+      { id: "max_framerate", label: "Max Server Framerate", type: "number", defaultValue: 30 },
+      { id: "public_ip", label: "Public IP", type: "text", defaultValue: "" },
+      { id: "owner_name", label: "Owner Steam Username (Grants Admin)", type: "text", defaultValue: "" },
+    ],
+    fileName: () => "AstroServerSettings.ini",
+  },
+
+  {
+    gameId: "icarus",
+    configFileLabel: "ServerSettings.ini",
+    description: "Generated on first launch alongside the server executable.",
+    sourceNote: "RocketWerkz's own official Icarus Dedicated Server repository.",
+    sourceUrl: "https://github.com/RocketWerkz/IcarusDedicatedServer",
+    dataFile: "icarus.ini",
+    fields: [
+      { id: "session_name", label: "Session Name", type: "text", defaultValue: "My Icarus Server" },
+      { id: "join_password", label: "Join Password", type: "text", defaultValue: "" },
+      { id: "admin_password", label: "Admin Password", type: "text", defaultValue: "" },
+      { id: "max_players", label: "Max Players", type: "number", defaultValue: 8 },
+    ],
+    fileName: () => "ServerSettings.ini",
+  },
+
+  {
+    gameId: "sons-of-the-forest",
+    configFileLabel: "dedicatedserver.cfg.json",
+    description: "The single JSON config file, placed in the server's configurations folder as dedicatedserver.cfg.",
+    sourceNote: "Community-documented (Endnight Games doesn't publish a formal reference); cross-checked against real shipped dedicatedserver.cfg.json examples.",
+    dataFile: "sons-of-the-forest.json",
+    fields: [
+      { id: "server_name", label: "Server Name", type: "text", defaultValue: "My Sons of the Forest Server", quoting: "json" },
+      { id: "max_players", label: "Max Players", type: "number", defaultValue: 8 },
+      { id: "password", label: "Password", type: "text", defaultValue: "", quoting: "json" },
+      {
+        id: "game_mode",
+        label: "Game Mode",
+        type: "select",
+        defaultValue: "Normal",
+        options: [
+          { value: "Normal", label: "Normal" },
+          { value: "Hard", label: "Hard" },
+          { value: "Peaceful", label: "Peaceful" },
+          { value: "Custom", label: "Custom" },
+        ],
+        quoting: "json",
+      },
+    ],
+    fileName: () => "dedicatedserver.cfg.json",
+  },
+
+  {
+    gameId: "the-isle",
+    configFileLabel: "Game.ini",
+    description:
+      "The [/Script/TheIsle.TIGameSession] entries most Evrima servers set first. The server-password feature has had reliability issues on some hosts in recent Evrima builds -- a whitelist may work better than relying on it.",
+    sourceNote: "Community-documented (Afterthought Studios doesn't publish a formal reference); cross-checked against real shipped Game.ini examples.",
+    dataFile: "the-isle.ini",
+    fields: [
+      { id: "server_name", label: "Server Name", type: "text", defaultValue: "My Evrima Server" },
+      { id: "max_players", label: "Max Players", type: "number", defaultValue: 100 },
+      { id: "password_enabled", label: "Require Password", type: "boolean", defaultValue: false },
+      { id: "server_password", label: "Server Password", type: "text", defaultValue: "" },
+      { id: "rcon_enabled", label: "Enable RCON", type: "boolean", defaultValue: false },
+      { id: "rcon_password", label: "RCON Password", type: "text", defaultValue: "" },
+    ],
+    fileName: () => "Game.ini",
+  },
+
+  {
+    gameId: "scp-secret-laboratory",
+    configFileLabel: "config_gameplay.txt",
+    description:
+      "The main gameplay-rules file. A separate config_remoteadmin.txt handles admin permissions and isn't covered by this generator.",
+    sourceNote: "Cross-checked against a real shipped config_gameplay.txt (Northwood Studios doesn't publish every key in one single reference page).",
+    sourceUrl: "https://techwiki.scpslgame.com/books/server-guides/page/2-gameplay-config-setup",
+    dataFile: "scp-secret-laboratory.txt",
+    fields: [
+      { id: "server_name", label: "Server Name", type: "text", defaultValue: "My SCP:SL Server" },
+      { id: "max_players", label: "Max Players", type: "number", defaultValue: 20 },
+      { id: "friendly_fire", label: "Friendly Fire", type: "boolean", defaultValue: false },
+    ],
+    fileName: () => "config_gameplay.txt",
+  },
+
+  {
+    gameId: "stationeers",
+    configFileLabel: "default.ini",
+    description: "Generated the first time you start the dedicated server; stop the server before editing.",
+    sourceNote: "Community-documented (RocketWerkz doesn't publish a formal reference); cross-checked against a real shipped default.ini.",
+    dataFile: "stationeers.ini",
+    fields: [
+      { id: "server_name", label: "Server Name", type: "text", defaultValue: "My Stationeers Server" },
+      { id: "description", label: "Description", type: "text", defaultValue: "" },
+      { id: "password", label: "Password", type: "text", defaultValue: "" },
+      { id: "max_players", label: "Max Players", type: "number", defaultValue: 10 },
+      { id: "rcon_password", label: "RCON Password", type: "text", defaultValue: "" },
+    ],
+    fileName: () => "default.ini",
+  },
+
+  {
+    gameId: "empyrion-galactic-survival",
+    configFileLabel: "dedicated.yaml",
+    description:
+      "The main dedicated-server settings file, in the server root. YAML is whitespace-sensitive -- use spaces, never tabs, when editing further by hand.",
+    sourceNote:
+      "Eleon Game Studios' own official dedicated servers page, cross-checked against the Empyrion wiki's server setup guide for exact key names.",
+    sourceUrl: "https://empyriongame.com/dedicatedservers/",
+    dataFile: "empyrion-galactic-survival.yaml",
+    fields: [
+      { id: "server_name", label: "Server Name", type: "text", defaultValue: "My Empyrion Server" },
+      { id: "server_password", label: "Server Password", type: "text", defaultValue: "" },
+      { id: "max_players", label: "Max Players", type: "number", defaultValue: 8 },
+      { id: "description", label: "Description", type: "text", defaultValue: "" },
+      { id: "public_visible", label: "List Publicly", type: "boolean", defaultValue: true },
+    ],
+    fileName: () => "dedicated.yaml",
+  },
+
+  {
+    gameId: "necesse",
+    configFileLabel: "server.cfg",
+    description: "The main server-identity block, in the server's cfg/ folder. World rules live in a separate WORLDSETTINGS block, not covered here.",
+    sourceNote: "Community-documented (Fair Weather Games doesn't publish a formal reference); cross-checked against real shipped server.cfg examples.",
+    dataFile: "necesse.cfg",
+    fields: [
+      { id: "max_players", label: "Max Players", type: "number", defaultValue: 25 },
+      { id: "password", label: "Password", type: "text", defaultValue: "" },
+      { id: "pause_when_empty", label: "Pause When Empty", type: "boolean", defaultValue: false },
+      { id: "motd", label: "Message of the Day", type: "text", defaultValue: "Hello", quoting: "double" },
+    ],
+    fileName: () => "server.cfg",
+  },
+
+  {
+    gameId: "rising-storm-2-vietnam",
+    configFileLabel: "ROGame.ini",
+    description: "The main server-identity and access-control file, in ROGame/Config.",
+    sourceNote:
+      "Tripwire Interactive's own official RS2: Vietnam Dedicated Server wiki, hosted on Tripwire's own domain; section names cross-checked against Killing Floor 2's shared Unreal Engine 3 AccessControl convention (same engine, same publisher).",
+    sourceUrl: "https://wiki.tripwireinteractive.com/index.php?redirect=no&title=RS2_DedicatedServer",
+    dataFile: "rising-storm-2-vietnam.ini",
+    fields: [
+      { id: "server_name", label: "Server Name", type: "text", defaultValue: "My RS2: Vietnam Server" },
+      { id: "short_name", label: "Short Name", type: "text", defaultValue: "RS2Server" },
+      { id: "admin_password", label: "Admin Password", type: "text", defaultValue: "" },
+      { id: "game_password", label: "Join Password", type: "text", defaultValue: "" },
+    ],
+    fileName: () => "ROGame.ini",
+  },
+
+  {
+    gameId: "vintage-story",
+    configFileLabel: "serverconfig.json",
+    description:
+      "Vintage Story writes its in-memory config back to this file on shutdown -- always stop the server before editing it by hand, or your changes are overwritten.",
+    sourceNote:
+      "Cross-checked against the Vintage Story Wiki's dedicated-server guide and the /serverconfig admin console command names, which map to this file's keys.",
+    sourceUrl: "https://wiki.vintagestory.at/Guide:Dedicated_Server",
+    dataFile: "vintage-story.json",
+    fields: [
+      { id: "server_name", label: "Server Name", type: "text", defaultValue: "My Vintage Story Server", quoting: "json" },
+      { id: "welcome_message", label: "Welcome Message", type: "text", defaultValue: "", quoting: "json" },
+      { id: "password", label: "Password", type: "text", defaultValue: "", quoting: "json" },
+      { id: "max_clients", label: "Max Players", type: "number", defaultValue: 16 },
+      { id: "allow_pvp", label: "Allow PvP", type: "boolean", defaultValue: true },
+    ],
+    fileName: () => "serverconfig.json",
+  },
+
+  {
+    gameId: "wreckfest",
+    configFileLabel: "server_config.cfg",
+    description: "The basic server-identity settings. Bugbear ships a fuller SERVER_CONFIG_GUIDE.pdf reference inside the game's own files, not as a public webpage.",
+    sourceNote: "Community-documented; cross-checked against real shipped server_config.cfg examples.",
+    dataFile: "wreckfest.cfg",
+    fields: [
+      { id: "server_name", label: "Server Name", type: "text", defaultValue: "My Wreckfest Server" },
+      { id: "welcome_message", label: "Welcome Message", type: "text", defaultValue: "" },
+      { id: "password", label: "Password", type: "text", defaultValue: "" },
+      { id: "max_players", label: "Max Players", type: "number", defaultValue: 24 },
+    ],
+    fileName: () => "server_config.cfg",
+  },
+
+  {
+    gameId: "trackmania",
+    configFileLabel: "dedicated_cfg.txt (server_options fragment)",
+    description:
+      "Just the <server_options> block -- merge it into your full dedicated_cfg.txt (copied from dedicated_cfg.default.txt), which also needs a <masterserver_account> section filled in with your own Nadeo dedicated-server account login, which this generator doesn't produce.",
+    sourceNote: "Cross-checked against the Trackmania Wiki's own dedicated-server documentation site.",
+    sourceUrl: "https://wiki.trackmania.io/en/dedicated-server/Usage/DedicatedConfig",
+    dataFile: "trackmania.xml",
+    fields: [
+      { id: "server_name", label: "Server Name", type: "text", defaultValue: "My Trackmania Server" },
+      { id: "comment", label: "Server Comment", type: "text", defaultValue: "" },
+      { id: "password", label: "Password", type: "text", defaultValue: "" },
+      { id: "max_players", label: "Max Players", type: "number", defaultValue: 16 },
+    ],
+    fileName: () => "server_options_fragment.txt",
+  },
+
+  {
+    gameId: "craftopia",
+    configFileLabel: "ServerSetting.ini",
+    description: "The main dedicated-server config, in the serverfiles folder. Note: server passwords can currently only be numeric.",
+    sourceNote: "Community-documented (Pocketpair doesn't publish a formal reference); cross-checked against real shipped ServerSetting.ini examples.",
+    dataFile: "craftopia.ini",
+    fields: [
+      { id: "server_name", label: "Server Name", type: "text", defaultValue: "My Craftopia Server" },
+      { id: "use_password", label: "Require Password", type: "boolean", defaultValue: false, booleanWords: ["1", "0"] },
+      { id: "server_password", label: "Password (Numbers Only)", type: "text", defaultValue: "" },
+      {
+        id: "world_difficulty",
+        label: "World Difficulty",
+        type: "select",
+        defaultValue: "1",
+        options: [
+          { value: "0", label: "Easy" },
+          { value: "1", label: "Normal" },
+          { value: "2", label: "Hard" },
+          { value: "3", label: "Very Hard" },
+        ],
+      },
+      {
+        id: "world_game_mode",
+        label: "Game Mode",
+        type: "select",
+        defaultValue: "1",
+        options: [
+          { value: "1", label: "Normal World" },
+          { value: "2", label: "Creative World (Build)" },
+          { value: "3", label: "Creative World (Play)" },
+        ],
+      },
+      { id: "max_players", label: "Max Players", type: "number", defaultValue: 8 },
+    ],
+    fileName: () => "ServerSetting.ini",
+  },
+
+  {
+    gameId: "path-of-titans",
+    configFileLabel: "Game.ini",
+    description:
+      "The [/Script/PathOfTitans.IGameSession] entries most servers set first. Spaces in the server name must be written as underscores. Every server also needs its own free authentication token from Alderon Games to appear in the server list -- this generator doesn't produce that.",
+    sourceNote: "Alderon Games' own official Community Server Wiki, published on Alderon's own GitHub.",
+    sourceUrl: "https://github.com/Alderon-Games/pot-community-servers/wiki/Server-Configuration-Options",
+    dataFile: "path-of-titans.ini",
+    fields: [
+      { id: "server_name", label: "Server Name (Use _ For Spaces)", type: "text", defaultValue: "My_Path_of_Titans_Server" },
+      { id: "server_password", label: "Server Password", type: "text", defaultValue: "" },
+      { id: "max_players", label: "Max Players", type: "number", defaultValue: 100 },
+    ],
+    fileName: () => "Game.ini",
+  },
+
+  {
+    gameId: "atlas",
+    configFileLabel: "GameUserSettings.ini",
+    description:
+      "ATLAS shares ARK: Survival Evolved's GameUserSettings.ini format (same studio, forked engine). World/grid layout is a separate ServerGrid.json that Grapeshot's own ServerGridEditor tool is meant to generate -- hand-editing that file risks breaking the whole cluster, so it isn't covered here.",
+    sourceNote:
+      "Community-documented, based on ATLAS sharing ARK: Survival Evolved's GameUserSettings.ini format (same developer, forked engine); Grapeshot doesn't publish a separate formal reference for ATLAS specifically.",
+    dataFile: "atlas.ini",
+    fields: [
+      { id: "server_password", label: "Server Password", type: "text", defaultValue: "" },
+      { id: "admin_password", label: "Admin Password", type: "text", defaultValue: "" },
+      { id: "max_players", label: "Max Players", type: "number", defaultValue: 40 },
+    ],
+    fileName: () => "GameUserSettings.ini",
+  },
+
+  {
+    gameId: "colony-survival",
+    configFileLabel: "server.config.json",
+    description: "The main dedicated-server settings file, used instead of passing everything as command-line flags.",
+    sourceNote:
+      "Cross-checked against Pipliz's own public Colony Survival GitHub repo; the +server.name/+server.password-style command-line parameter names map to this file's nested keys.",
+    sourceUrl: "https://github.com/pipliz/ColonySurvival/blob/master/gamedata/help/hosting.txt",
+    dataFile: "colony-survival.json",
+    fields: [
+      { id: "server_name", label: "Server Name", type: "text", defaultValue: "My Colony Survival Server", quoting: "json" },
+      { id: "password", label: "Password", type: "text", defaultValue: "", quoting: "json" },
+      { id: "rcon_password", label: "RCON Password", type: "text", defaultValue: "", quoting: "json" },
+      { id: "world_name", label: "World Name", type: "text", defaultValue: "world", quoting: "json" },
+    ],
+    fileName: () => "server.config.json",
+  },
 ];
 
 export const configTemplates: Record<string, GameConfigTemplate> = Object.fromEntries(

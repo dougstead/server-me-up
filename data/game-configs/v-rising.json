@@ -1,0 +1,11 @@
+{
+  "Name": "{{server_name}}",
+  "Description": "{{description}}",
+  "Password": "{{password}}",
+  "MaxConnectedUsers": {{max_connected_users}},
+  "MaxConnectedAdmins": 4,
+  "SaveName": "world1",
+  "ListOnMasterServer": {{list_on_master_server}},
+  "AutoSaveInterval": 600,
+  "AutoSaveCount": 50
+}

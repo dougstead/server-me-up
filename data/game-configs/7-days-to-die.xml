@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<ServerSettings>
+  <property name="ServerName" value="{{server_name}}"/>
+  <property name="ServerPassword" value="{{server_password}}"/>
+  <property name="ServerVisibility" value="{{server_visibility}}"/>
+  <property name="ServerPort" value="{{server_port}}"/>
+  <property name="ServerMaxPlayerCount" value="{{max_players}}"/>
+  <property name="GameDifficulty" value="{{game_difficulty}}"/>
+  <property name="TelnetPassword" value="{{telnet_password}}"/>
+</ServerSettings>

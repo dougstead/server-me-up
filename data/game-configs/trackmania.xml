@@ -1,0 +1,6 @@
+<server_options>
+  <name>{{server_name}}</name>
+  <comment>{{comment}}</comment>
+  <password>{{password}}</password>
+  <max_players>{{max_players}}</max_players>
+</server_options>

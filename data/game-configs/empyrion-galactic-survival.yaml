@@ -1,0 +1,6 @@
+ServerConfig:
+  Srv_Name: {{server_name}}
+  Srv_Password: {{server_password}}
+  Srv_MaxPlayers: {{max_players}}
+  Srv_Description: {{description}}
+  Srv_Public: {{public_visible}}
