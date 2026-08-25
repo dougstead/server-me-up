@@ -41,11 +41,13 @@ export const guides: Guide[] = [
 // Generated from the games list so it stays in sync automatically -- the
 // actual page content lives in app/guides/games/[gameId]/page.tsx, sourced
 // from lib/game-setup.ts.
-export const gameGuides: Guide[] = games.map((game) => ({
-  id: game.id,
-  title: game.name,
-  href: `/guides/games/${game.id}`,
-}));
+export const gameGuides: Guide[] = games
+  .map((game) => ({
+    id: game.id,
+    title: game.name,
+    href: `/guides/games/${game.id}`,
+  }))
+  .sort((a, b) => a.title.localeCompare(b.title));
 
 // Per-game config generators, shown in their own top-level "Config
 // Generators" burger-menu section. Only includes games that actually have a
@@ -56,7 +58,8 @@ export const configGeneratorGuides: Guide[] = games
     id: game.id,
     title: game.name,
     href: `/config-generator/${game.id}`,
-  }));
+  }))
+  .sort((a, b) => a.title.localeCompare(b.title));
 
 // Per-game "Can My PC Run It?" landing pages, used for sitemap generation.
 // Not shown in the burger menu (it already links to the general

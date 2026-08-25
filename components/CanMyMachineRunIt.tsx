@@ -13,6 +13,11 @@ import { detectHardware } from "@/lib/hardware-detection";
 import { configTemplates } from "@/lib/config-templates";
 import type { GameBenchmarkInsights } from "@/lib/benchmark-insights";
 
+// Alphabetical for the game picker below -- `games` itself stays in its
+// original (roughly by-addition) order since other code relies on that,
+// e.g. the games[0] fallback default elsewhere in this file.
+const gamesSortedByName = [...games].sort((a, b) => a.name.localeCompare(b.name));
+
 type MachineSpecs = {
     cpu: string;
     ramGb: number;
@@ -568,7 +573,7 @@ export default function CanMyMachineRunIt({
                     }}
                     className="mt-2 w-full rounded-lg border border-slate-700 bg-slate-900 px-4 py-3 text-white outline-none focus:border-sky-500"
                 >
-                    {games.map((game) => (
+                    {gamesSortedByName.map((game) => (
                         <option key={game.id} value={game.id}>
                             {game.name}
                         </option>

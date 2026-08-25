@@ -6,6 +6,7 @@ import { getAllBenchmarkInsights } from "@/lib/benchmark-insights";
 
 export default function Home() {
   const benchmarkInsightsByGame = getAllBenchmarkInsights();
+  const gamesSortedByName = [...games].sort((a, b) => a.name.localeCompare(b.name));
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">
@@ -65,7 +66,7 @@ export default function Home() {
           </h2>
 
           <ul className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
-            {games.map((game) => (
+            {gamesSortedByName.map((game) => (
               <li key={game.id}>
                 <Link
                   href={`/can-my-pc-run-it/${game.id}`}

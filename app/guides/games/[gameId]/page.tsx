@@ -10,6 +10,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import JsonLd from "@/components/JsonLd";
 import { pageMetadata } from "@/lib/metadata";
 import { faqSchema, howToSchema } from "@/lib/structured-data";
+import { article } from "@/lib/text";
 
 export async function generateStaticParams() {
     return games.map((game) => ({ gameId: game.id }));
@@ -40,7 +41,7 @@ export async function generateMetadata(
 
     return pageMetadata({
         title: `${game.name} Dedicated Server Setup`,
-        description: `Free guide: how to download, configure and run a ${game.name} dedicated server -- getting the server files, required ports, starting it up, and generating a config file.`,
+        description: `Free guide: how to download, configure and run ${article(game.name)} ${game.name} dedicated server -- getting the server files, required ports, starting it up, and generating a config file.`,
         path: `/guides/games/${game.id}`,
     });
 }
@@ -78,29 +79,44 @@ export default async function GameSetupGuidePage(
     // rest of the page uses, not a new claim.
     const faqs = [
         {
-            question: `How do I install a ${game.name} dedicated server?`,
+            question: `How do I install ${article(game.name)} ${game.name} dedicated server?`,
             answer:
                 setup.method.type === "steamcmd"
                     ? `Download it with SteamCMD using Steam app ID ${setup.method.appId}, then run it from the install directory. See "Get the server files" and "Start the server" above for the exact commands.`
                     : `Download it directly from ${setup.method.urlLabel}, then run it from the install directory. See "Get the server files" and "Start the server" above for the exact commands.`,
         },
         {
-            question: `What port does a ${game.name} server use?`,
+            question: `Where is the ${game.name} install directory?`,
+            answer:
+                setup.method.type === "steamcmd"
+                    ? `Wherever you point force_install_dir when downloading it with SteamCMD -- this guide uses ${setup.method.installDirExample} as an example, but any folder works.${setup.installDirNotes ? ` ${setup.installDirNotes}` : ""}`
+                    : `Wherever you extract or install the download from ${setup.method.urlLabel}.${setup.installDirNotes ? ` ${setup.installDirNotes}` : ""}`,
+        },
+        {
+            question: `What port does ${article(game.name)} ${game.name} server use?`,
             answer:
                 requiredPortText.length > 0
                     ? `${requiredPortText} by default, forwarded to the server machine's local IP address. See the port forwarding guide for how.`
                     : `We don't currently have a confirmed required port for ${game.name}.`,
         },
+        ...(setup.configFileLocation
+            ? [
+                  {
+                      question: `Where does the ${game.name} config file live?`,
+                      answer: `${setup.configFileLocation.path}. ${setup.configFileLocation.description}`,
+                  },
+              ]
+            : []),
         ...(hasConfigGenerator
             ? [
                   {
-                      question: `How do I configure a ${game.name} server?`,
+                      question: `How do I configure ${article(game.name)} ${game.name} server?`,
                       answer: `Use the ${game.name} config generator to fill in server name, password, max players and more, and download a ready-to-use ${configTemplates[game.id].configFileLabel}.`,
                   },
               ]
             : []),
         {
-            question: `How do I keep a ${game.name} server running?`,
+            question: `How do I keep ${article(game.name)} ${game.name} server running?`,
             answer:
                 "Set it up as a Windows Task Scheduler task or a Linux systemd service so it survives a reboot or crash without you starting it by hand -- see the keeping it running 24/7 guide.",
         },
@@ -143,7 +159,7 @@ export default async function GameSetupGuidePage(
                 <JsonLd
                     data={howToSchema({
                         name: `${game.name} Dedicated Server Setup`,
-                        description: `How to download, configure and run a ${game.name} dedicated server.`,
+                        description: `How to download, configure and run ${article(game.name)} ${game.name} dedicated server.`,
                         steps: howToSteps,
                     })}
                 />
@@ -173,9 +189,9 @@ export default async function GameSetupGuidePage(
                 </h1>
 
                 <p className="mt-4 text-lg leading-8 text-slate-300">
-                    How to get a {game.name} dedicated server running on your
-                    own machine, from downloading the server files to
-                    starting it up.
+                    How to get {article(game.name)} {game.name} dedicated
+                    server running on your own machine, from downloading the
+                    server files to starting it up.
                 </p>
 
                 <div className="mt-8 rounded-lg border border-sky-900 bg-sky-950/30 p-4 text-sm leading-6 text-slate-300">
@@ -184,7 +200,7 @@ export default async function GameSetupGuidePage(
                         href={`/can-my-pc-run-it/${game.id}`}
                         className="text-sky-400 hover:text-sky-300 hover:underline"
                     >
-                        Can My PC Run a {game.name} Server?
+                        Can My PC Run {article(game.name)} {game.name} Server?
                     </Link>{" "}
                     to see whether your hardware meets {game.name}&apos;s
                     requirements, and read the{" "}
@@ -232,6 +248,12 @@ export default async function GameSetupGuidePage(
                                     code={`force_install_dir "${setup.method.installDirExample}"\nlogin anonymous\napp_update ${setup.method.appId}${setup.method.betaBranch ? ` -beta ${setup.method.betaBranch}` : ""} validate\nquit`}
                                 />
 
+                                {setup.installDirNotes && (
+                                    <p className="mt-3 text-sm leading-6 text-slate-400">
+                                        {setup.installDirNotes}
+                                    </p>
+                                )}
+
                                 {setup.method.betaBranch && (
                                     <p className="mt-3 text-sm leading-6 text-slate-400">
                                         {game.name}&apos;s actively-played
@@ -257,20 +279,28 @@ export default async function GameSetupGuidePage(
                                 </p>
                             </>
                         ) : (
-                            <p className="mt-3 leading-7 text-slate-300">
-                                {game.name} isn&apos;t distributed through
-                                Steam. Download the dedicated server directly
-                                from{" "}
-                                <a
-                                    href={setup.method.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-sky-400 hover:text-sky-300 hover:underline"
-                                >
-                                    {setup.method.urlLabel}
-                                </a>
-                                .
-                            </p>
+                            <>
+                                <p className="mt-3 leading-7 text-slate-300">
+                                    {game.name} isn&apos;t distributed through
+                                    Steam. Download the dedicated server
+                                    directly from{" "}
+                                    <a
+                                        href={setup.method.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-sky-400 hover:text-sky-300 hover:underline"
+                                    >
+                                        {setup.method.urlLabel}
+                                    </a>
+                                    .
+                                </p>
+
+                                {setup.installDirNotes && (
+                                    <p className="mt-3 text-sm leading-6 text-slate-400">
+                                        {setup.installDirNotes}
+                                    </p>
+                                )}
+                            </>
                         )}
                     </section>
 
@@ -358,6 +388,20 @@ export default async function GameSetupGuidePage(
                         <p className="mt-3 leading-7 text-slate-300">
                             {setup.startNotes}
                         </p>
+
+                        {setup.configFileLocation && (
+                            <div className="mt-4 rounded-lg border border-slate-800 bg-slate-900/60 p-4">
+                                <p className="text-sm font-semibold uppercase tracking-wide text-slate-400">
+                                    Where the config file lives
+                                </p>
+                                <code className="mt-2 block break-all text-sm text-slate-200">
+                                    {setup.configFileLocation.path}
+                                </code>
+                                <p className="mt-2 text-sm leading-6 text-slate-400">
+                                    {setup.configFileLocation.description}
+                                </p>
+                            </div>
+                        )}
 
                         {setup.officialGuideUrl && (
                             <p className="mt-3 text-sm leading-6 text-slate-400">
@@ -507,6 +551,27 @@ export default async function GameSetupGuidePage(
                         </section>
                     )}
 
+                    {setup.considerations && setup.considerations.length > 0 && (
+                        <section>
+                            <h2 className="text-2xl font-semibold">
+                                Things to know before you host {game.name}
+                            </h2>
+
+                            <div className="mt-5 space-y-6">
+                                {setup.considerations.map((note) => (
+                                    <div key={note.title}>
+                                        <h3 className="font-semibold text-white">
+                                            {note.title}
+                                        </h3>
+                                        <p className="mt-2 leading-7 text-slate-300">
+                                            {note.text}
+                                        </p>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+                    )}
+
                     {softwareRequirements.length > 0 && (
                         <section>
                             <h2 className="text-2xl font-semibold">
@@ -558,6 +623,27 @@ export default async function GameSetupGuidePage(
                             ))}
                         </div>
                     </section>
+
+                    {setup.commonIssues && setup.commonIssues.length > 0 && (
+                        <section>
+                            <h2 className="text-2xl font-semibold">
+                                Common {game.name} problems
+                            </h2>
+
+                            <div className="mt-5 space-y-6">
+                                {setup.commonIssues.map((issue) => (
+                                    <div key={issue.title}>
+                                        <h3 className="font-semibold text-white">
+                                            {issue.title}
+                                        </h3>
+                                        <p className="mt-2 leading-7 text-slate-300">
+                                            {issue.text}
+                                        </p>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+                    )}
 
                     <section className="rounded-lg border border-slate-800 bg-slate-900/60 p-6">
                         <h2 className="text-lg font-semibold">

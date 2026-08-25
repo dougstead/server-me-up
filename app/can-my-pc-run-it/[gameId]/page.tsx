@@ -10,6 +10,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import JsonLd from "@/components/JsonLd";
 import { faqSchema } from "@/lib/structured-data";
 import { pageMetadata } from "@/lib/metadata";
+import { article } from "@/lib/text";
 
 export async function generateStaticParams() {
     return games.map((game) => ({ gameId: game.id }));
@@ -26,8 +27,8 @@ export async function generateMetadata(
     }
 
     return pageMetadata({
-        title: `Can My PC Run a ${game.name} Server?`,
-        description: `Free tool: check whether your PC or laptop meets the CPU, RAM, storage and network requirements to host a ${game.name} dedicated server -- enter your specs for an instant answer.`,
+        title: `Can My PC Run ${article(game.name)} ${game.name} Server?`,
+        description: `Free tool: check whether your PC or laptop meets the CPU, RAM, storage and network requirements to host ${article(game.name)} ${game.name} dedicated server -- enter your specs for an instant answer.`,
         path: `/can-my-pc-run-it/${game.id}`,
     });
 }
@@ -56,7 +57,7 @@ export default async function CanMyPcRunGamePage(
 
     const faqs = [
         {
-            question: `Can I run a ${game.name} server on an old laptop?`,
+            question: `Can I run ${article(game.name)} ${game.name} server on an old laptop?`,
             answer:
                 laptopRequirementClauses.length > 0
                     ? `It depends on the laptop. ${game.name} needs ${laptopRequirementClauses.join(
@@ -65,7 +66,7 @@ export default async function CanMyPcRunGamePage(
                     : `${game.name}'s developer doesn't publish a fixed minimum, so it depends on your laptop's exact CPU and RAM. Use the checker below to test your specific machine.`,
         },
         {
-            question: `How much RAM do I need for a ${game.name} server?`,
+            question: `How much RAM do I need for ${article(game.name)} ${game.name} server?`,
             answer:
                 ram.baseGb != null && ram.perPlayerGb != null
                     ? `Official guidance is roughly ${ram.baseGb} GB base plus ${ram.perPlayerGb} GB per connected player.`
@@ -76,7 +77,7 @@ export default async function CanMyPcRunGamePage(
                         : `The developer doesn't publish a fixed RAM requirement -- it scales with world size, mods and player count. See the notes on the checker below for what's known.`,
         },
         {
-            question: `What ports does a ${game.name} server need?`,
+            question: `What ports does ${article(game.name)} ${game.name} server need?`,
             answer:
                 requiredPorts.length > 0
                     ? `${requiredPorts
@@ -86,7 +87,7 @@ export default async function CanMyPcRunGamePage(
                     : `We don't currently have a confirmed required port for ${game.name}.`,
         },
         {
-            question: `How do I actually set up a ${game.name} server?`,
+            question: `How do I actually set up ${article(game.name)} ${game.name} server?`,
             answer: `See the full ${game.name} setup guide for downloading the server files, required ports and starting it up${hasConfigGenerator ? ", plus a config generator to produce a ready-to-use settings file" : ""}.`,
         },
     ];
@@ -112,14 +113,15 @@ export default async function CanMyPcRunGamePage(
                 </p>
 
                 <h1 className="mt-3 max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl">
-                    Can My PC Run a {game.name} Server?
+                    Can My PC Run {article(game.name)} {game.name} Server?
                 </h1>
 
                 <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-300">
                     Whether you&apos;re running a dedicated gaming rig or
-                    repurposing an old laptop, here&apos;s what a{" "}
-                    {game.name} dedicated server actually needs -- and a
-                    tool below to check it against your exact machine.
+                    repurposing an old laptop, here&apos;s what{" "}
+                    {article(game.name)} {game.name} dedicated server
+                    actually needs -- and a tool below to check it against
+                    your exact machine.
                 </p>
 
                 <section className="mt-12 max-w-2xl">

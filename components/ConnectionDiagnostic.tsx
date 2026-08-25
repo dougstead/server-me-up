@@ -4,6 +4,11 @@ import { useState } from "react";
 import Link from "next/link";
 import { games, type GameServerRequirements } from "@/lib/games";
 import { configTemplates } from "@/lib/config-templates";
+import { article } from "@/lib/text";
+
+// Alphabetical for the picker below -- `games` itself stays in its original
+// order since the games[0] default just below relies on that.
+const gamesSortedByName = [...games].sort((a, b) => a.name.localeCompare(b.name));
 
 // A small, linear branching diagnostic for "why can't people connect to my
 // dedicated server". Deliberately implemented as an explicit step chain
@@ -309,7 +314,7 @@ export default function ConnectionDiagnostic() {
                     onChange={(event) => setSelectedGameId(event.target.value)}
                     className="mt-2 w-full max-w-sm rounded-lg border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-sky-500"
                 >
-                    {games.map((candidate) => (
+                    {gamesSortedByName.map((candidate) => (
                         <option key={candidate.id} value={candidate.id}>
                             {candidate.name}
                         </option>
@@ -338,7 +343,7 @@ export default function ConnectionDiagnostic() {
     return (
         <div className="rounded-lg border border-slate-700 bg-slate-900 p-6">
             <p className="text-sm font-semibold uppercase tracking-wide text-slate-400">
-                Diagnosing a {game.name} server
+                Diagnosing {article(game.name)} {game.name} server
             </p>
 
             <p className="mt-3 text-lg font-medium text-white">{question.prompt}</p>

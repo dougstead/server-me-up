@@ -52,6 +52,31 @@ export type ConfigField = {
 
 export type ConfigValues = Record<string, string | number | boolean>;
 
+// An extra setting NOT included in the main form/rendered file above --
+// picked from a dropdown on the config generator page when someone wants
+// it, rather than shown to everyone by default (most people never touch
+// it). Unlike `fields`, these don't substitute into a {{token}} inside the
+// raw template (the base file doesn't reference them) -- instead
+// `lineTemplate` is a standalone line, with {{value}} as the substitution
+// point (e.g. `AllowThirdPersonView={{value}}` for an ini file, or
+// `sv_allowdownload "{{value}}"` for a cfg file), which the UI appends to
+// the end of the rendered output once selected -- so the preview, download
+// and copy all include it. Appending is only safe for flat, order-independent
+// formats (ini/cfg/properties): only add `additionalFields` to a
+// GameConfigTemplate whose file is one of those, never to a JSON-based one,
+// where appending a bare line would produce invalid JSON.
+export type AdditionalConfigField = {
+  id: string;
+  label: string;
+  description: string;
+  type: ConfigFieldType;
+  defaultValue: string | number | boolean;
+  options?: ConfigFieldOption[];
+  quoting?: ConfigFieldQuoting;
+  booleanWords?: [string, string];
+  lineTemplate: string;
+};
+
 export type GameConfigTemplate = {
   gameId: string;
   configFileLabel: string;
@@ -64,6 +89,10 @@ export type GameConfigTemplate = {
   // variant (Valheim's Windows/Linux launch script).
   dataFile: string | ((values: ConfigValues) => string);
   fields: ConfigField[];
+  // Optional extra settings selectable from a dropdown -- see
+  // AdditionalConfigField above. Omitted entirely for games where research
+  // didn't turn up well-established options beyond the main form.
+  additionalFields?: AdditionalConfigField[];
 };
 
 function escapeForQuoting(value: string, quoting: ConfigFieldQuoting): string {
@@ -78,6 +107,26 @@ function escapeForQuoting(value: string, quoting: ConfigFieldQuoting): string {
   }
 
   return value;
+}
+
+// Shared by renderConfigTemplate (below) and renderAdditionalFieldLine --
+// turns one field's current value into the literal text that should
+// replace its {{token}}, given the field's type/quoting rules.
+function formatFieldValue(
+  field: Pick<ConfigField, "type" | "booleanWords" | "quoting">,
+  value: string | number | boolean | undefined,
+): string {
+  if (field.type === "boolean") {
+    const [trueWord, falseWord] = field.booleanWords ?? ["true", "false"];
+    return value ? trueWord : falseWord;
+  }
+
+  if (field.type === "number") {
+    const numberValue = Number(value);
+    return String(Number.isFinite(numberValue) ? numberValue : 0);
+  }
+
+  return escapeForQuoting(String(value ?? ""), field.quoting ?? "none");
 }
 
 // Substitutes {{field.id}} tokens in a raw template with the current form
@@ -96,25 +145,19 @@ export function renderConfigTemplate(
       continue;
     }
 
-    let replacement: string;
-
-    if (field.type === "boolean") {
-      const [trueWord, falseWord] = field.booleanWords ?? ["true", "false"];
-      replacement = values[field.id] ? trueWord : falseWord;
-    } else if (field.type === "number") {
-      const numberValue = Number(values[field.id]);
-      replacement = String(Number.isFinite(numberValue) ? numberValue : 0);
-    } else {
-      replacement = escapeForQuoting(
-        String(values[field.id] ?? ""),
-        field.quoting ?? "none",
-      );
-    }
-
-    output = output.split(token).join(replacement);
+    output = output.split(token).join(formatFieldValue(field, values[field.id]));
   }
 
   return output;
+}
+
+// Renders one selected AdditionalConfigField into the literal line a user
+// should add to their config file, e.g. "AllowThirdPersonView=False".
+export function renderAdditionalFieldLine(
+  field: AdditionalConfigField,
+  value: string | number | boolean,
+): string {
+  return field.lineTemplate.split("{{value}}").join(formatFieldValue(field, value));
 }
 
 const templates: GameConfigTemplate[] = [
@@ -158,6 +201,56 @@ const templates: GameConfigTemplate[] = [
       { id: "white_list", label: "Whitelist Only", type: "boolean", defaultValue: false },
       { id: "online_mode", label: "Online Mode (Verify Purchased Accounts)", type: "boolean", defaultValue: true },
       { id: "server_port", label: "Server Port", type: "number", defaultValue: 25565 },
+    ],
+    additionalFields: [
+      {
+        id: "view_distance",
+        label: "View Distance (Chunks)",
+        description: "How far terrain renders to players. Higher costs bandwidth and RAM; the vanilla default is 10.",
+        type: "number",
+        defaultValue: 10,
+        lineTemplate: "view-distance={{value}}",
+      },
+      {
+        id: "simulation_distance",
+        label: "Simulation Distance (Chunks)",
+        description: "How far entities, crops and redstone actively simulate -- the single biggest server-performance lever. Lowering it from the default of 10 to 4-6 usually cuts tick time noticeably with little visible difference to players.",
+        type: "number",
+        defaultValue: 10,
+        lineTemplate: "simulation-distance={{value}}",
+      },
+      {
+        id: "spawn_protection",
+        label: "Spawn Protection Radius",
+        description: "Blocks within this many blocks of spawn can't be broken or placed by non-operators. Set to 0 to disable.",
+        type: "number",
+        defaultValue: 16,
+        lineTemplate: "spawn-protection={{value}}",
+      },
+      {
+        id: "allow_flight",
+        label: "Allow Flight",
+        description: "Lets survival-mode players fly without being kicked for \"flying is not enabled\" -- needed if you run flight-granting plugins or mods.",
+        type: "boolean",
+        defaultValue: false,
+        lineTemplate: "allow-flight={{value}}",
+      },
+      {
+        id: "enable_command_block",
+        label: "Enable Command Blocks",
+        description: "Lets command blocks execute. Off by default; needed for redstone-driven automation using commands.",
+        type: "boolean",
+        defaultValue: false,
+        lineTemplate: "enable-command-block={{value}}",
+      },
+      {
+        id: "level_seed",
+        label: "World Seed",
+        description: "Sets the seed used when generating a brand-new world. Has no effect on a world that already exists.",
+        type: "text",
+        defaultValue: "",
+        lineTemplate: "level-seed={{value}}",
+      },
     ],
     fileName: () => "server.properties",
   },
@@ -219,6 +312,41 @@ const templates: GameConfigTemplate[] = [
       { id: "server_pve", label: "PvE (Disable PvP)", type: "boolean", defaultValue: false, booleanWords: ["True", "False"] },
       { id: "xp_multiplier", label: "XP Multiplier", type: "number", defaultValue: 1 },
     ],
+    additionalFields: [
+      {
+        id: "difficulty_offset",
+        label: "Difficulty Offset (0-1)",
+        description: "Raises the level cap of wild creatures -- 1.0 is the maximum (level-150 wild dinos); the official default is 0.2.",
+        type: "number",
+        defaultValue: 1,
+        lineTemplate: "DifficultyOffset={{value}}",
+      },
+      {
+        id: "harvest_amount_multiplier",
+        label: "Harvest Amount Multiplier",
+        description: "Multiplies resources gained per harvest action -- a common quality-of-life setting for small or casual servers.",
+        type: "number",
+        defaultValue: 1,
+        lineTemplate: "HarvestAmountMultiplier={{value}}",
+      },
+      {
+        id: "taming_speed_multiplier",
+        label: "Taming Speed Multiplier",
+        description: "Multiplies how quickly a tamed creature's affinity fills -- higher values mean faster taming.",
+        type: "number",
+        defaultValue: 1,
+        lineTemplate: "TamingSpeedMultiplier={{value}}",
+      },
+      {
+        id: "allow_third_person",
+        label: "Allow Third-Person Camera",
+        description: "Lets players use the third-person camera. Some PvP-focused servers disable this.",
+        type: "boolean",
+        defaultValue: true,
+        booleanWords: ["True", "False"],
+        lineTemplate: "AllowThirdPersonPlayer={{value}}",
+      },
+    ],
     fileName: () => "GameUserSettings.ini",
   },
 
@@ -236,6 +364,40 @@ const templates: GameConfigTemplate[] = [
       { id: "maxplayers", label: "Max Players", type: "number", defaultValue: 50 },
       { id: "worldsize", label: "World Size", type: "number", defaultValue: 3500 },
       { id: "rcon_password", label: "RCON Password", type: "text", defaultValue: "", quoting: "double" },
+    ],
+    additionalFields: [
+      {
+        id: "server_seed",
+        label: "Map Seed",
+        description: "Together with World Size, determines the exact procedural map generated -- the same seed and size always produce the same map.",
+        type: "number",
+        defaultValue: 0,
+        lineTemplate: "server.seed {{value}}",
+      },
+      {
+        id: "decay_scale",
+        label: "Decay Scale",
+        description: "Multiplies how fast unmaintained structures decay. 1.0 is default; lower (e.g. 0.5) makes bases last longer between upkeep, 0 disables decay entirely.",
+        type: "number",
+        defaultValue: 1,
+        lineTemplate: "decay.scale {{value}}",
+      },
+      {
+        id: "server_pve",
+        label: "PvE Mode (No Player Damage)",
+        description: "Turns off player-vs-player damage server-wide.",
+        type: "boolean",
+        defaultValue: false,
+        lineTemplate: "server.pve {{value}}",
+      },
+      {
+        id: "max_team_size",
+        label: "Max Team Size",
+        description: "Caps how many players can be in one in-game team at once.",
+        type: "number",
+        defaultValue: 8,
+        lineTemplate: "relationshipmanager.maxteamsize {{value}}",
+      },
     ],
     fileName: () => "server.cfg",
   },
@@ -652,6 +814,33 @@ const templates: GameConfigTemplate[] = [
       { id: "max_players", label: "Max Players", type: "number", defaultValue: 60 },
       { id: "verify_signatures", label: "Verify Mod Signatures (0-2)", type: "number", defaultValue: 2 },
       { id: "disable_3rd_person", label: "Disable Third Person View", type: "boolean", defaultValue: false, booleanWords: ["1", "0"] },
+    ],
+    additionalFields: [
+      {
+        id: "server_time_acceleration",
+        label: "Daytime Speed Multiplier",
+        description: "Speeds up the in-game day/night cycle relative to real time. The commonly-used default is 4x.",
+        type: "number",
+        defaultValue: 4,
+        lineTemplate: "serverTimeAcceleration = {{value}};",
+      },
+      {
+        id: "force_same_build",
+        label: "Force Same Client Build",
+        description: "Rejects clients whose game build doesn't exactly match the server's -- stricter than normal version checking.",
+        type: "boolean",
+        defaultValue: false,
+        booleanWords: ["1", "0"],
+        lineTemplate: "forceSameBuild = {{value}};",
+      },
+      {
+        id: "guaranteed_updates",
+        label: "Guaranteed Updates",
+        description: "Network update protocol version for character/inventory sync. 1 is the standard, well-tested value -- only change this if the official docs specifically say otherwise.",
+        type: "number",
+        defaultValue: 1,
+        lineTemplate: "guaranteedUpdates = {{value}};",
+      },
     ],
     fileName: () => "serverDZ.cfg",
   },

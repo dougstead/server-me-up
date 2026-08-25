@@ -6,6 +6,10 @@ import { games } from "@/lib/games";
 import { gameSetups } from "@/lib/game-setup";
 import { configTemplates } from "@/lib/config-templates";
 
+// Alphabetical for the picker below -- `games` itself stays in its original
+// order since the games[0] default just below relies on that.
+const gamesSortedByName = [...games].sort((a, b) => a.name.localeCompare(b.name));
+
 // A per-game quick-reference panel for the troubleshooting page: required
 // ports and the SteamCMD app ID/install method, pulled straight from
 // lib/games.ts and lib/game-setup.ts rather than hardcoded here, so this
@@ -32,7 +36,7 @@ export default function TroubleshootingGameReference() {
                 onChange={(event) => setSelectedGameId(event.target.value)}
                 className="mt-2 w-full max-w-sm rounded-lg border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-sky-500"
             >
-                {games.map((candidate) => (
+                {gamesSortedByName.map((candidate) => (
                     <option key={candidate.id} value={candidate.id}>
                         {candidate.name}
                     </option>
