@@ -65,6 +65,15 @@ export type ConfigValues = Record<string, string | number | boolean>;
 // formats (ini/cfg/properties): only add `additionalFields` to a
 // GameConfigTemplate whose file is one of those, never to a JSON-based one,
 // where appending a bare line would produce invalid JSON.
+//
+// One more gotcha for multi-section ini files (e.g. ARK's GameUserSettings.ini,
+// which has both [ServerSettings] and [SessionSettings]): appending always
+// lands at the very end of the file, so it only lands in the *correct*
+// section if that section is the LAST one in the underlying data/game-configs/
+// file. Order the template's sections with the one your additionalFields
+// target last (section order in the file doesn't affect the game, which
+// reads keys by section regardless of where in the file that section
+// appears) -- don't add additionalFields targeting a section that isn't last.
 export type AdditionalConfigField = {
   id: string;
   label: string;
@@ -483,6 +492,29 @@ const templates: GameConfigTemplate[] = [
       { id: "password", label: "Password", type: "text", defaultValue: "" },
       { id: "motd", label: "MOTD", type: "text", defaultValue: "" },
     ],
+    additionalFields: [
+      {
+        id: "seed",
+        label: "World Seed (New World Only)",
+        description: "Sets the seed used when generating a brand-new world. Has no effect when loading an existing world.",
+        type: "text",
+        defaultValue: "",
+        lineTemplate: "seed={{value}}",
+      },
+      {
+        id: "priority",
+        label: "Process Priority",
+        description: "Sets the OS process priority for the server (0 = Normal, 1 = Above Normal, 2 = High). Only worth raising if the machine is otherwise idle.",
+        type: "select",
+        defaultValue: "0",
+        options: [
+          { value: "0", label: "Normal" },
+          { value: "1", label: "Above Normal" },
+          { value: "2", label: "High" },
+        ],
+        lineTemplate: "priority={{value}}",
+      },
+    ],
     fileName: () => "serverconfig.txt",
   },
 
@@ -544,6 +576,38 @@ const templates: GameConfigTemplate[] = [
       { id: "sv_password", label: "Join Password", type: "text", defaultValue: "", quoting: "double" },
       { id: "sv_visiblemaxplayers", label: "Visible Max Players", type: "number", defaultValue: 24 },
     ],
+    additionalFields: [
+      {
+        id: "mp_friendlyfire",
+        label: "Friendly Fire",
+        description: "Allows damage between teammates.",
+        type: "boolean",
+        defaultValue: false,
+        booleanWords: ["1", "0"],
+        lineTemplate: "mp_friendlyfire {{value}}",
+      },
+      {
+        id: "mp_timelimit",
+        label: "Round Time Limit (Minutes, 0 = No Limit)",
+        description: "Caps how long a map plays before rotating, independent of the map's own point/cart objectives.",
+        type: "number",
+        defaultValue: 0,
+        lineTemplate: "mp_timelimit {{value}}",
+      },
+      {
+        id: "sv_pure",
+        label: "sv_pure Enforcement",
+        description: "0 disables file-integrity checks entirely (most permissive for custom HUDs/reskins), 1 enforces the whitelist with some exceptions, 2 is strictest. See the notes on the TF2 setup guide before tightening this.",
+        type: "select",
+        defaultValue: "0",
+        options: [
+          { value: "0", label: "0 -- Disabled" },
+          { value: "1", label: "1 -- Whitelist, with exceptions" },
+          { value: "2", label: "2 -- Strict" },
+        ],
+        lineTemplate: "sv_pure {{value}}",
+      },
+    ],
     fileName: () => "server.cfg",
   },
 
@@ -588,6 +652,25 @@ const templates: GameConfigTemplate[] = [
       { id: "hostname", label: "Server Name", type: "text", defaultValue: "My Garry's Mod Server", quoting: "double" },
       { id: "sv_password", label: "Join Password", type: "text", defaultValue: "", quoting: "double" },
       { id: "rcon_password", label: "RCON Password", type: "text", defaultValue: "", quoting: "double" },
+    ],
+    additionalFields: [
+      {
+        id: "sbox_maxprops",
+        label: "Sandbox Max Props Per Player",
+        description: "Caps how many props one player can spawn at once in Sandbox-derived gamemodes -- the classic lever for stopping prop-spam lag on a busy server.",
+        type: "number",
+        defaultValue: 150,
+        lineTemplate: "sbox_maxprops {{value}}",
+      },
+      {
+        id: "sv_allowcslua",
+        label: "Allow Client-Side Lua",
+        description: "Lets client-side Lua scripts run -- some addons require it, but it also widens what a malicious client could attempt, so leave it off unless something you're running specifically needs it.",
+        type: "boolean",
+        defaultValue: false,
+        booleanWords: ["1", "0"],
+        lineTemplate: "sv_allowcslua {{value}}",
+      },
     ],
     fileName: () => "server.cfg",
   },
@@ -730,6 +813,41 @@ const templates: GameConfigTemplate[] = [
       { id: "server_pve", label: "PvE (Disable PvP)", type: "boolean", defaultValue: false, booleanWords: ["True", "False"] },
       { id: "xp_multiplier", label: "XP Multiplier", type: "number", defaultValue: 1 },
     ],
+    additionalFields: [
+      {
+        id: "difficulty_offset",
+        label: "Difficulty Offset (0-1)",
+        description: "Raises the level cap of wild creatures -- 1.0 is the maximum; the official default is 0.2.",
+        type: "number",
+        defaultValue: 1,
+        lineTemplate: "DifficultyOffset={{value}}",
+      },
+      {
+        id: "harvest_amount_multiplier",
+        label: "Harvest Amount Multiplier",
+        description: "Multiplies resources gained per harvest action -- a common quality-of-life setting for small or casual servers.",
+        type: "number",
+        defaultValue: 1,
+        lineTemplate: "HarvestAmountMultiplier={{value}}",
+      },
+      {
+        id: "taming_speed_multiplier",
+        label: "Taming Speed Multiplier",
+        description: "Multiplies how quickly a tamed creature's affinity fills -- higher values mean faster taming.",
+        type: "number",
+        defaultValue: 1,
+        lineTemplate: "TamingSpeedMultiplier={{value}}",
+      },
+      {
+        id: "allow_third_person",
+        label: "Allow Third-Person Camera",
+        description: "Lets players use the third-person camera. Some PvP-focused servers disable this.",
+        type: "boolean",
+        defaultValue: true,
+        booleanWords: ["True", "False"],
+        lineTemplate: "AllowThirdPersonPlayer={{value}}",
+      },
+    ],
     fileName: () => "GameUserSettings.ini",
   },
 
@@ -749,6 +867,25 @@ const templates: GameConfigTemplate[] = [
       { id: "battleye_enabled", label: "BattlEye Anti-Cheat", type: "boolean", defaultValue: false, booleanWords: ["True", "False"] },
       { id: "kick_afk_time", label: "Kick AFK Time (Seconds)", type: "number", defaultValue: 2700 },
       { id: "max_allowed_ping", label: "Max Allowed Ping (0 = Unlimited)", type: "number", defaultValue: 0 },
+    ],
+    additionalFields: [
+      {
+        id: "max_nudity",
+        label: "Max Nudity",
+        description: "Controls character nudity level (0 = none, 1 = partial, 2 = full). Some communities lower this for streaming-friendly servers.",
+        type: "number",
+        defaultValue: 2,
+        lineTemplate: "MaxNudity={{value}}",
+      },
+      {
+        id: "ambient_life_enabled",
+        label: "Ambient Wildlife",
+        description: "Toggles ambient (non-hostile, non-resource) wildlife -- disabling it can help performance on a large, busy server.",
+        type: "boolean",
+        defaultValue: true,
+        booleanWords: ["True", "False"],
+        lineTemplate: "AmbientLifeEnabled={{value}}",
+      },
     ],
     fileName: () => "ServerSettings.ini",
   },
@@ -796,6 +933,35 @@ const templates: GameConfigTemplate[] = [
       { id: "sv_password", label: "Join Password", type: "text", defaultValue: "", quoting: "double" },
       { id: "rcon_password", label: "RCON Password", type: "text", defaultValue: "", quoting: "double" },
       { id: "mp_maxplayers", label: "Max Players", type: "number", defaultValue: 10 },
+    ],
+    additionalFields: [
+      {
+        id: "mp_friendlyfire",
+        label: "Friendly Fire",
+        description: "Allows damage between teammates.",
+        type: "boolean",
+        defaultValue: false,
+        booleanWords: ["1", "0"],
+        lineTemplate: "mp_friendlyfire {{value}}",
+      },
+      {
+        id: "sv_full_alltalk",
+        label: "All-Talk Voice Chat",
+        description: "Lets every player hear every other player's voice chat, regardless of team.",
+        type: "boolean",
+        defaultValue: false,
+        booleanWords: ["1", "0"],
+        lineTemplate: "sv_full_alltalk {{value}}",
+      },
+      {
+        id: "tv_enable",
+        label: "Enable SourceTV",
+        description: "Turns on SourceTV broadcasting, letting spectators watch the match live via a SourceTV relay.",
+        type: "boolean",
+        defaultValue: false,
+        booleanWords: ["1", "0"],
+        lineTemplate: "tv_enable {{value}}",
+      },
     ],
     fileName: () => "server.cfg",
   },

@@ -77,6 +77,14 @@ export default function TroubleshootingPage() {
                   {topic.explanation}
                 </p>
 
+                {topic.steps && topic.steps.length > 0 && (
+                  <ol className="mt-3 list-decimal space-y-2 pl-6 leading-7 text-slate-300">
+                    {topic.steps.map((step) => (
+                      <li key={step}>{step}</li>
+                    ))}
+                  </ol>
+                )}
+
                 {topic.relatedGuides && topic.relatedGuides.length > 0 && (
                   <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm">
                     {topic.relatedGuides.map((guide) => (

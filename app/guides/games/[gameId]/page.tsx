@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
 import { games } from "@/lib/games";
 import { gameSetups } from "@/lib/game-setup";
@@ -77,13 +78,44 @@ export default async function GameSetupGuidePage(
     // etc. without having to parse the whole walkthrough. Every answer here
     // is derived from the same lib/games.ts / lib/game-setup.ts data the
     // rest of the page uses, not a new claim.
-    const faqs = [
+    //
+    // Each entry carries both `answer` (plain text, fed to the FAQPage
+    // JSON-LD -- schema.org text fields can't contain markup) and
+    // `answerNode` (the same text rendered on the page, with real <Link>s
+    // instead of a bare phrase like "the port forwarding guide" that
+    // wasn't actually clickable).
+    const faqs: { question: string; answer: string; answerNode: ReactNode }[] = [
         {
             question: `How do I install ${article(game.name)} ${game.name} dedicated server?`,
             answer:
                 setup.method.type === "steamcmd"
                     ? `Download it with SteamCMD using Steam app ID ${setup.method.appId}, then run it from the install directory. See "Get the server files" and "Start the server" above for the exact commands.`
                     : `Download it directly from ${setup.method.urlLabel}, then run it from the install directory. See "Get the server files" and "Start the server" above for the exact commands.`,
+            answerNode:
+                setup.method.type === "steamcmd" ? (
+                    <>
+                        Download it with SteamCMD using Steam app ID{" "}
+                        {setup.method.appId}, then run it from the install
+                        directory. See &quot;Get the server files&quot; and
+                        &quot;Start the server&quot; above for the exact
+                        commands.
+                    </>
+                ) : (
+                    <>
+                        Download it directly from{" "}
+                        <a
+                            href={setup.method.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sky-400 hover:text-sky-300 hover:underline"
+                        >
+                            {setup.method.urlLabel}
+                        </a>
+                        , then run it from the install directory. See
+                        &quot;Get the server files&quot; and &quot;Start the
+                        server&quot; above for the exact commands.
+                    </>
+                ),
         },
         {
             question: `Where is the ${game.name} install directory?`,
@@ -91,6 +123,24 @@ export default async function GameSetupGuidePage(
                 setup.method.type === "steamcmd"
                     ? `Wherever you point force_install_dir when downloading it with SteamCMD -- this guide uses ${setup.method.installDirExample} as an example, but any folder works.${setup.installDirNotes ? ` ${setup.installDirNotes}` : ""}`
                     : `Wherever you extract or install the download from ${setup.method.urlLabel}.${setup.installDirNotes ? ` ${setup.installDirNotes}` : ""}`,
+            answerNode: (
+                <>
+                    {setup.method.type === "steamcmd" ? (
+                        <>
+                            Wherever you point <code>force_install_dir</code>{" "}
+                            when downloading it with SteamCMD -- this guide
+                            uses <code>{setup.method.installDirExample}</code>{" "}
+                            as an example, but any folder works.
+                        </>
+                    ) : (
+                        <>
+                            Wherever you extract or install the download from{" "}
+                            {setup.method.urlLabel}.
+                        </>
+                    )}
+                    {setup.installDirNotes && <> {setup.installDirNotes}</>}
+                </>
+            ),
         },
         {
             question: `What port does ${article(game.name)} ${game.name} server use?`,
@@ -98,12 +148,37 @@ export default async function GameSetupGuidePage(
                 requiredPortText.length > 0
                     ? `${requiredPortText} by default, forwarded to the server machine's local IP address. See the port forwarding guide for how.`
                     : `We don't currently have a confirmed required port for ${game.name}.`,
+            answerNode:
+                requiredPortText.length > 0 ? (
+                    <>
+                        {requiredPortText} by default, forwarded to the
+                        server machine&apos;s local IP address. See the{" "}
+                        <Link
+                            href="/guides/port-forwarding"
+                            className="text-sky-400 hover:text-sky-300 hover:underline"
+                        >
+                            port forwarding guide
+                        </Link>{" "}
+                        for how.
+                    </>
+                ) : (
+                    <>
+                        We don&apos;t currently have a confirmed required
+                        port for {game.name}.
+                    </>
+                ),
         },
         ...(setup.configFileLocation
             ? [
                   {
                       question: `Where does the ${game.name} config file live?`,
                       answer: `${setup.configFileLocation.path}. ${setup.configFileLocation.description}`,
+                      answerNode: (
+                          <>
+                              <code>{setup.configFileLocation.path}</code>.{" "}
+                              {setup.configFileLocation.description}
+                          </>
+                      ),
                   },
               ]
             : []),
@@ -112,6 +187,20 @@ export default async function GameSetupGuidePage(
                   {
                       question: `How do I configure ${article(game.name)} ${game.name} server?`,
                       answer: `Use the ${game.name} config generator to fill in server name, password, max players and more, and download a ready-to-use ${configTemplates[game.id].configFileLabel}.`,
+                      answerNode: (
+                          <>
+                              Use the{" "}
+                              <Link
+                                  href={`/config-generator/${game.id}`}
+                                  className="text-sky-400 hover:text-sky-300 hover:underline"
+                              >
+                                  {game.name} config generator
+                              </Link>{" "}
+                              to fill in server name, password, max players
+                              and more, and download a ready-to-use{" "}
+                              {configTemplates[game.id].configFileLabel}.
+                          </>
+                      ),
                   },
               ]
             : []),
@@ -119,6 +208,20 @@ export default async function GameSetupGuidePage(
             question: `How do I keep ${article(game.name)} ${game.name} server running?`,
             answer:
                 "Set it up as a Windows Task Scheduler task or a Linux systemd service so it survives a reboot or crash without you starting it by hand -- see the keeping it running 24/7 guide.",
+            answerNode: (
+                <>
+                    Set it up as a Windows Task Scheduler task or a Linux
+                    systemd service so it survives a reboot or crash without
+                    you starting it by hand -- see the{" "}
+                    <Link
+                        href="/guides/keep-server-running"
+                        className="text-sky-400 hover:text-sky-300 hover:underline"
+                    >
+                        keeping it running 24/7 guide
+                    </Link>
+                    .
+                </>
+            ),
         },
     ];
 
@@ -617,7 +720,7 @@ export default async function GameSetupGuidePage(
                                         {faq.question}
                                     </h3>
                                     <p className="mt-2 leading-7 text-slate-300">
-                                        {faq.answer}
+                                        {faq.answerNode}
                                     </p>
                                 </div>
                             ))}

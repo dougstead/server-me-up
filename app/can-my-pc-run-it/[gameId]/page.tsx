@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
 import { games } from "@/lib/games";
 import { configTemplates } from "@/lib/config-templates";
@@ -55,7 +56,16 @@ export default async function CanMyPcRunGamePage(
             : null,
     ].filter((clause): clause is string => clause !== null);
 
-    const faqs = [
+    const requiredPortText = requiredPorts
+        .filter((port) => port.required)
+        .map((port) => `${port.protocol} ${port.port}`)
+        .join(", ");
+
+    // Each entry carries both `answer` (plain text, fed to the FAQPage
+    // JSON-LD -- schema.org text fields can't contain markup) and
+    // `answerNode` (the same text rendered on the page, with real <Link>s
+    // instead of a bare unlinked phrase like "the port forwarding guide").
+    const faqs: { question: string; answer: string; answerNode: ReactNode }[] = [
         {
             question: `Can I run ${article(game.name)} ${game.name} server on an old laptop?`,
             answer:
@@ -64,6 +74,24 @@ export default async function CanMyPcRunGamePage(
                           " and ",
                       )} -- an older laptop can work if it clears that bar, but older CPUs and mechanical hard drives are the most common bottleneck. Use the checker below to test your exact laptop's specs.`
                     : `${game.name}'s developer doesn't publish a fixed minimum, so it depends on your laptop's exact CPU and RAM. Use the checker below to test your specific machine.`,
+            answerNode:
+                laptopRequirementClauses.length > 0 ? (
+                    <>
+                        It depends on the laptop. {game.name} needs{" "}
+                        {laptopRequirementClauses.join(" and ")} -- an older
+                        laptop can work if it clears that bar, but older
+                        CPUs and mechanical hard drives are the most common
+                        bottleneck. Use the checker below to test your
+                        exact laptop&apos;s specs.
+                    </>
+                ) : (
+                    <>
+                        {game.name}&apos;s developer doesn&apos;t publish a
+                        fixed minimum, so it depends on your laptop&apos;s
+                        exact CPU and RAM. Use the checker below to test
+                        your specific machine.
+                    </>
+                ),
         },
         {
             question: `How much RAM do I need for ${article(game.name)} ${game.name} server?`,
@@ -75,20 +103,83 @@ export default async function CanMyPcRunGamePage(
                       : ram.minimumGb != null
                         ? `At least ${ram.minimumGb} GB.`
                         : `The developer doesn't publish a fixed RAM requirement -- it scales with world size, mods and player count. See the notes on the checker below for what's known.`,
+            answerNode:
+                ram.baseGb != null && ram.perPlayerGb != null ? (
+                    <>
+                        Official guidance is roughly {ram.baseGb} GB base
+                        plus {ram.perPlayerGb} GB per connected player.
+                    </>
+                ) : ram.recommendedGb != null ? (
+                    <>
+                        {ram.recommendedGb} GB is recommended
+                        {ram.minimumGb != null ? ` (${ram.minimumGb} GB minimum)` : ""}.
+                    </>
+                ) : ram.minimumGb != null ? (
+                    <>At least {ram.minimumGb} GB.</>
+                ) : (
+                    <>
+                        The developer doesn&apos;t publish a fixed RAM
+                        requirement -- it scales with world size, mods and
+                        player count. See the notes on the checker below
+                        for what&apos;s known.
+                    </>
+                ),
         },
         {
             question: `What ports does ${article(game.name)} ${game.name} server need?`,
             answer:
-                requiredPorts.length > 0
-                    ? `${requiredPorts
-                          .filter((port) => port.required)
-                          .map((port) => `${port.protocol} ${port.port}`)
-                          .join(", ")}, forwarded on your router to the server's local IP address. See the port forwarding guide for how.`
+                requiredPortText.length > 0
+                    ? `${requiredPortText}, forwarded on your router to the server's local IP address. See the port forwarding guide for how.`
                     : `We don't currently have a confirmed required port for ${game.name}.`,
+            answerNode:
+                requiredPortText.length > 0 ? (
+                    <>
+                        {requiredPortText}, forwarded on your router to the
+                        server&apos;s local IP address. See the{" "}
+                        <Link
+                            href="/guides/port-forwarding"
+                            className="text-sky-400 hover:text-sky-300 hover:underline"
+                        >
+                            port forwarding guide
+                        </Link>{" "}
+                        for how.
+                    </>
+                ) : (
+                    <>
+                        We don&apos;t currently have a confirmed required
+                        port for {game.name}.
+                    </>
+                ),
         },
         {
             question: `How do I actually set up ${article(game.name)} ${game.name} server?`,
             answer: `See the full ${game.name} setup guide for downloading the server files, required ports and starting it up${hasConfigGenerator ? ", plus a config generator to produce a ready-to-use settings file" : ""}.`,
+            answerNode: (
+                <>
+                    See the full{" "}
+                    <Link
+                        href={`/guides/games/${game.id}`}
+                        className="text-sky-400 hover:text-sky-300 hover:underline"
+                    >
+                        {game.name} setup guide
+                    </Link>{" "}
+                    for downloading the server files, required ports and
+                    starting it up
+                    {hasConfigGenerator && (
+                        <>
+                            , plus a{" "}
+                            <Link
+                                href={`/config-generator/${game.id}`}
+                                className="text-sky-400 hover:text-sky-300 hover:underline"
+                            >
+                                config generator
+                            </Link>{" "}
+                            to produce a ready-to-use settings file
+                        </>
+                    )}
+                    .
+                </>
+            ),
         },
     ];
 
@@ -229,7 +320,7 @@ export default async function CanMyPcRunGamePage(
                                     {faq.question}
                                 </h3>
                                 <p className="mt-2 leading-7 text-slate-300">
-                                    {faq.answer}
+                                    {faq.answerNode}
                                 </p>
                             </div>
                         ))}

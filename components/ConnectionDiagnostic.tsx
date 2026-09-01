@@ -133,8 +133,8 @@ function diagnosisFor(
             cause: answer === "no" ? "CGNAT or public-IP mismatch" : "Needs a manual check",
             explanation:
                 answer === "no"
-                    ? "If your router's WAN/internet IP genuinely doesn't match your public IP (as reported by a \"what's my IP\" site from a device on that network), you're very likely behind Carrier-Grade NAT (CGNAT) -- port forwarding cannot work in that case, since your router doesn't have a public address of its own. Ask your ISP about a static public IPv4 address, or consider a tunnelling/relay service instead."
-                    : "Check your router's WAN/internet IP address on its status page, and separately check your public IP from a \"what's my IP\" site on a device connected to that same network. If the two numbers don't match, you're likely behind CGNAT.",
+                    ? "If your router's own internet address genuinely doesn't match your public IP address (the one Google shows when you search \"what is my ip\"), you're very likely behind something called Carrier-Grade NAT (CGNAT) -- several homes sharing one address. Port forwarding cannot work in that case, no matter how correctly it's set up, since your router doesn't have a public address of its own for anyone to reach. Ask your internet provider about a static public IPv4 address, or consider a tunnelling/relay service instead."
+                    : "On your router's admin page, find its status/WAN page -- it'll show an internet-facing address there. Separately, on a device connected to that same network, search \"what is my ip\" on Google -- it shows the answer directly, no clicking needed. If those two numbers don't match, you're likely behind CGNAT.",
             nextSteps: [
                 { label: "What is CGNAT?", href: "/troubleshooting#cgnat" },
                 { label: "Port forwarding guide", href: "/guides/port-forwarding" },
@@ -167,7 +167,7 @@ function diagnosisFor(
         return {
             cause: "Common causes ruled out",
             explanation:
-                "Every common cause here checks out: the process starts, localhost/LAN/WAN all connect, the port and forwarding rule are correct, your public IP matches, the firewall allows it, and versions match. If specific players still can't connect, it's likely something on their end (their own network, firewall or ISP) rather than your server.",
+                "Every common cause here checks out: the process starts, you can connect from the server itself, from your own network, and from outside it, the port and forwarding rule are correct, your public IP matches what you've shared, the firewall allows it, and versions match. If specific players still can't connect, it's likely something on their end (their own network, firewall or internet provider) rather than your server.",
             nextSteps: [{ label: "Full troubleshooting guide", href: "/troubleshooting" }],
         };
     }
@@ -183,16 +183,16 @@ const QUESTIONS: Record<
         prompt: "Can the server process start successfully, with no errors in its console/log?",
     },
     "localhost-connects": {
-        prompt: "Can you connect to it from the server machine itself (localhost / 127.0.0.1, or its own LAN IP)?",
+        prompt: "Can you connect to it from the server machine itself, using \"localhost\" or 127.0.0.1 as the address?",
     },
     "lan-connects": {
-        prompt: "Can another device on the same home/local network connect?",
+        prompt: "Can another device on the same home network connect (like your phone on the same Wi-Fi)?",
     },
     "wan-connects": {
-        prompt: "Can someone outside your network (e.g. on mobile data, or a friend elsewhere) connect?",
+        prompt: "Can someone outside your home network connect (e.g. a friend elsewhere, or your phone on mobile data with Wi-Fi off)?",
     },
     "port-configured": {
-        prompt: "Is the server actually configured to use the game's correct port?",
+        prompt: "Is the server actually configured to use the game's correct port number?",
         options: ["yes", "no", "unsure"],
     },
     "port-forwarded": {
@@ -200,8 +200,8 @@ const QUESTIONS: Record<
         options: ["yes", "no", "unsure"],
     },
     "wan-ip-matches": {
-        prompt: "Does your router's WAN/internet IP (on its status page) match your public IP (from a \"what's my IP\" site)?",
-        help: "Check both from a device on the server's own network -- don't guess, look them both up.",
+        prompt: "Does your router's own internet address match your public IP address?",
+        help: "Find your router's address on its status/WAN page. Find your public IP by searching \"what is my ip\" on Google from a device on that same network -- it shows the answer directly, no need to click anything. Look both up now rather than guessing.",
         options: ["yes", "no", "unsure"],
     },
     "firewall-allows": {
